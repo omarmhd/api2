@@ -6,14 +6,16 @@ use App\Http\Controllers\Controller;
 use App\User;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\DB;
+use Illuminate\Support\Facades\Hash;
 use Illuminate\Support\Facades\Validator;
+use Illuminate\Support\Str;
 
 class UserController extends Controller
 {
     public function index(){
 
 
-     $Users=User::where('Role','=','broker')->get();
+     $Users=User::where('Role','=','2')->get();
         return response([
             'status' =>'success',
             'data' => $Users
@@ -24,12 +26,12 @@ class UserController extends Controller
 
 
         $validator = Validator::make($request->all(), [
-            'name' => 'required',
+            'name' => 'required|unique:users',
             'password' => 'required',
             'phone' => 'required|Numeric',
             'date_work' => 'required|date',
             'address' => 'required',
-            'Commission' => 'required',
+            'Commission' => 'required|Numeric',
             'image' => 'required',
 
 
@@ -46,10 +48,12 @@ class UserController extends Controller
                 $Users=User::create([
 
                     'name' => $request->name,
-                    'password'=>$request->password,
-                    'Role' =>$request->Role ?? 'broker',
+                    'password'=>Hash::make($request->password),
+                    'Role' =>$request->Role ?? '2',
                     'date_work' => $request->date_work,
                     'address'=>$request->address,
+                    'api_token'=>Str::random(60),
+
                     'phone'=>$request->phone,
                     'Commission'=>$request->Commission,
                     'image'=>$request->image
@@ -92,7 +96,7 @@ class UserController extends Controller
                 $Users=User::find($id)->update([
 
                     'name' => $request->name,
-                    'password'=>$request->password,
+                    'password'=> Hash::make($request->password),
                     'Role' =>$request->Role,
 
                     'date_work' => $request->date_work,

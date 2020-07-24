@@ -7,6 +7,7 @@ use App\User;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Auth;
 use Illuminate\Support\Facades\Validator;
+use Illuminate\Support\Str;
 
 class AuthController extends Controller
 {
@@ -14,7 +15,7 @@ class AuthController extends Controller
     public function login(Request $request)
     {
 
-
+  $login=['name'=>$request->name,'password'=>$request->password];
         $validator = Validator::make($request->all(), [
             'name' => 'required|string',
             'password' => 'required',
@@ -24,23 +25,32 @@ class AuthController extends Controller
             return response(['errors' => $validator->errors()->all()], 422);
         }
 
-        $user = User::where('name', $request->name)->first();
 
-        if ($user) {
 
-            if ($user->password == $request->password) {
+        if (Auth::attempt($login,true)) {
 
-                $token = $user->createToken('Laravel Password Grant Client')->accessToken;
-                $response = ['token' => $token, 'status' => 'success'];
+           $user=User::find(Auth::id());
+           $user->api_token= Str::random(60);
+
+           $user->save();
+
+
+                $response = ['token' => $user->api_token, 'status' => 'success'];
                 return response($response);
-            } else {
-                $response = ["message" => "Password mismatch"];
-                return response($response, 422);
-            }
+
         } else {
-            $response = ["message" => 'User does not exist'];
+            $response = ["message" => 'فشل فى المصادقة'];
             return response($response, 422);
         }
+
+    }
+
+
+
+    public function register(Request $request){
+
+
+
 
     }
 }
