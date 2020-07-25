@@ -43,7 +43,10 @@ class CompanyController extends Controller
 
            if(!empty(DataCompany::find(1))){
 
+            return response([
+                'status'=>'errors',
 
+                ]);
             $company_up=DataCompany::where('id','1')->update([
 
                 'name_company' => $request->name_company,
@@ -66,7 +69,7 @@ class CompanyController extends Controller
     'license_number' => $request->license_number,
     'address' => $request->address,
     'phone_number'=>$request->phone_number,
-    'image'=>$request->image,]);
+    'image'=>$request->image]);
     // $company  = DB::table('data_company')->updateOrInsert([
     //     'name_company' => $request->name_company,
     //     'license_number' => $request->license_number,
