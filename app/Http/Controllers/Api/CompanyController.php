@@ -77,11 +77,12 @@ class CompanyController extends Controller
 
 
     //  ]);
+    if(!empty($company)){
     return response([
         'status'=>'success',
         'data'=>$company
 
-        ]);}
+        ]);}}
    }
     public function show(){
 
