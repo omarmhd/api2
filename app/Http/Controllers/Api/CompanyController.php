@@ -43,10 +43,7 @@ class CompanyController extends Controller
 
            if(!empty(DataCompany::find(1))){
 
-            return response([
-                'status'=>'errors',
 
-                ]);
             $company_up=DataCompany::where('id','1')->update([
 
                 'name_company' => $request->name_company,
@@ -63,6 +60,10 @@ class CompanyController extends Controller
                 ]);
 
         }else{
+            return response([
+                'status'=>'errors',
+
+                ]);
     $company=DataCompany::create([
     'id'=>'1',
     'name_company' => $request->name_company,
