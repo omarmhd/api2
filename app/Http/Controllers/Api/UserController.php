@@ -77,7 +77,7 @@ class UserController extends Controller
             'password' => 'required',
 
             'phone' => 'required|Numeric',
-            'date_work' => 'required|`date`',
+            'date_work' => 'required|date',
             'address' => 'required',
             'Commission' => 'required',
             'image' => 'required',
@@ -120,6 +120,7 @@ class UserController extends Controller
             User::find($id)->destroy;
             return response([
                 'status'=>'success',
+                'message'=>'تم الحذف بنجاح ',
 
                 ]);
          }
