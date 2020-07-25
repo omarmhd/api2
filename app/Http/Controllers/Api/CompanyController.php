@@ -60,10 +60,6 @@ class CompanyController extends Controller
                 ]);
 
         }else{
-            return response([
-                'status'=>'errors',
-
-                ]);
     $company=DataCompany::create([
     'id'=>'1',
     'name_company' => $request->name_company,
