@@ -3,6 +3,7 @@
 namespace App\Http\Controllers\Api;
 
 use App\Http\Controllers\Controller;
+use App\Http\Resources\UserResource;
 use App\User;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\DB;
@@ -16,11 +17,8 @@ class UserController extends Controller
 
 
      $Users=User::where('Role','=','2')->get();
-        return response([
-            'status' =>'success',
-            'data' => $Users
+     return UserResource::collection($Users);
 
-        ]);
        }
        public function store(Request $request){
 
@@ -44,8 +42,11 @@ class UserController extends Controller
 
             ]);
         }
+        $uplodeimge = $request->file('image');
+        $imageName = time() . '.' . $uplodeimge->getClientOriginalExtension();
+        $uplodeimge->move('upload_images', $imageName);
 
-                $Users=User::create([
+        $Users=User::create([
 
                     'name' => $request->name,
                     'password'=>Hash::make($request->password),
@@ -56,7 +57,7 @@ class UserController extends Controller
 
                     'phone'=>$request->phone,
                     'Commission'=>$request->Commission,
-                    'image'=>$request->image
+                    'image'=> $imageName
 
                 ]);
                 return response([
