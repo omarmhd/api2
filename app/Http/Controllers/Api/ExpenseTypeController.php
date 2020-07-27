@@ -87,14 +87,14 @@ class ExpenseTypeController extends Controller
     }
 
 
-    public function destroy(Request $request, $id){
+    public function destroy(Request $request,$id){
 
         $type=Expense_type::find($id)->destroy;
 
         if($type){
 
             return response([
-                'status' => 'success',
+                'status' => 'تم الحذف بنجاح',
 
             ]);
 

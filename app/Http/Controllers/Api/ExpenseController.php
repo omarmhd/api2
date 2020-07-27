@@ -166,8 +166,13 @@ class ExpenseController extends Controller
      * @param  \App\Expense  $expense
      * @return \Illuminate\Http\Response
      */
-    public function destroy(Expense $expense)
+    public function destroy($id)
     {
-       
+        $exponse=Expense::find($id)->destroy;
+
+        return response([
+            'status' => 'تم الحذف بنجاح ',
+          
+        ]);
     }
 }
