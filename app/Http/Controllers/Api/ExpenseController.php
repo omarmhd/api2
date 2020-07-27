@@ -25,8 +25,7 @@ class ExpenseController extends Controller
         $validator = Validator::make($request->all(), [
             'from' => 'required|date',
             'to'=>'required|date',
-        
-
+    
         ], [
            'from.required'=>'الرجاء إدخال التاريخ',
            'from.date'=>'الرجاء إدخال التاريخ بالصيغة الصحيحة ',
@@ -40,10 +39,10 @@ class ExpenseController extends Controller
                 'errors' => $validator->errors()
 
             ]);
-
+            }
         $expenses=Expense::whereBetween('date', [$from, $to])->get();
         return ExpenseResource::collection($expenses);
-    }}
+    }
     public function index()
     {
 
