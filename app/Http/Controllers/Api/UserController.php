@@ -73,10 +73,10 @@ class UserController extends Controller
          public function update(Request $request,$id){
 
 
+
         $validator = Validator::make($request->all(), [
             'name' => 'required',
             'password' => 'required',
-
             'phone' => 'required|Numeric',
             'date_work' => 'required|date',
             'address' => 'required',
@@ -99,7 +99,6 @@ class UserController extends Controller
                     'name' => $request->name,
                     'password'=> Hash::make($request->password),
                     'Role' =>$request->Role,
-
                     'date_work' => $request->date_work,
                     'address'=>$request->address,
                     'phone'=>$request->phone,

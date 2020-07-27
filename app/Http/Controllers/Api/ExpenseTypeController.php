@@ -2,21 +2,24 @@
 
 namespace App\Http\Controllers\Api;
 
-use App\DataCompany;
-use App\Http\Controllers\Controller;
-use App\Type;
+use App\Expense;
+use App\Expense_type;
 use Illuminate\Http\Request;
-use Illuminate\Support\Facades\DB;
+use App\Http\Controllers\Controller;
 use Illuminate\Support\Facades\Validator;
 
-class TypeController extends Controller
+class ExpenseTypeController extends Controller
 {
-
+    /**
+     * Display a listing of the resource.
+     *
+     * @return \Illuminate\Http\Response
+     */
     public function index()
     {
 
 
-        $types = Type::all();
+        $types = Expense_type::all();
 
         return response([
             'status' => 'success',
@@ -33,7 +36,7 @@ class TypeController extends Controller
         $validator = Validator::make($request->all(), [
             'name' => 'required|unique:types',
 
-        ], ['name.required' => 'الرجاء إدخال إسم الشركة']);
+        ], ['name.required' => 'الرجاء إدخال  نوع المصروف','name.unique'=>'نوع المصروف موجود مسبقا']);
 
         if ($validator->fails()) {
             return response([
@@ -43,7 +46,7 @@ class TypeController extends Controller
             ]);
         }
 
-        $Type = Type::create([
+        $Type = Expense_type::create([
 
             'name' => $request->name
         ]);
@@ -73,7 +76,7 @@ class TypeController extends Controller
             ]);
         }
 
-        $Type = Type::find($id)->update([
+        $Type = Expense_type::find($id)->update([
 
             'name' => $request->name
         ]);
@@ -86,7 +89,7 @@ class TypeController extends Controller
 
     public function destroy(Request $request, $id){
 
-        $type=Type::find($id)->destroy;
+        $type=Expense_type::find($id)->destroy;
 
         if($type){
 
@@ -97,6 +100,4 @@ class TypeController extends Controller
 
         }
     }
-
-
 }

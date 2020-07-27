@@ -23,3 +23,6 @@ Route::post('register','Api\AuthController@register');
 
 Route::apiResource('company','Api\CompanyController');
 Route::apiResource('user','Api\UserController');
+Route::apiResource('Expense','Api\ExpenseController');
+Route::apiResource('ExpenseType','Api\ExpenseTypeController');
+Route::post('/Expense','Api\ExpenseController@tofrom');

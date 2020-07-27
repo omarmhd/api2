@@ -15,7 +15,7 @@ public function registrationEaqaars(){
 
     public function plans(){
 
-        $this->hasMany('App\plan');
+        return $this->hasMany('App\plan');
 
         }
 }

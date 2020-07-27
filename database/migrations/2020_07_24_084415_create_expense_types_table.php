@@ -4,7 +4,7 @@ use Illuminate\Database\Migrations\Migration;
 use Illuminate\Database\Schema\Blueprint;
 use Illuminate\Support\Facades\Schema;
 
-class CreatePlansTable extends Migration
+class CreateExpenseTypesTable extends Migration
 {
     /**
      * Run the migrations.
@@ -13,12 +13,9 @@ class CreatePlansTable extends Migration
      */
     public function up()
     {
-        Schema::create('plans', function (Blueprint $table) {
+        Schema::create('expense_types', function (Blueprint $table) {
             $table->id();
-
             $table->string('name');
-            $table->foreign('type_id')->references('id')->on('types')->onDelete('cascade');
-
             $table->timestamps();
         });
     }
@@ -30,6 +27,6 @@ class CreatePlansTable extends Migration
      */
     public function down()
     {
-        Schema::dropIfExists('plans');
+        Schema::dropIfExists('expense_types');
     }
 }
