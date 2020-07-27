@@ -7,7 +7,7 @@ use Illuminate\Database\Eloquent\Model;
 class Expense_type extends Model
 {
 
-    public $table='Expense_types';
+    public $table='expense_types';
     protected $fillable = ['name'];
 
 }
