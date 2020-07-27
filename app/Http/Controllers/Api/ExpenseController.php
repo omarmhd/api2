@@ -139,7 +139,7 @@ class ExpenseController extends Controller
 
         if ($validator->fails()) {
             return response([
-                'status' => 'errors',
+                'status' => 'خطأ',
                 'errors' => $validator->errors()
 
             ]);
@@ -154,7 +154,7 @@ class ExpenseController extends Controller
 
         ]);
         return response([
-            'status' => 'success',
+            'status' => 'تم تحديث المصروفات بنجاح ',
             'data' => $Expense
         ]);
 

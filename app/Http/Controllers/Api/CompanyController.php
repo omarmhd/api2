@@ -16,7 +16,7 @@ class CompanyController extends Controller
 
     $company=DB::table('data_company')->get();
     return response([
-        'status' =>'success',
+        'status' =>'نجاح ',
         'data' =>$company
 
     ]);
@@ -35,7 +35,7 @@ class CompanyController extends Controller
 
     if ($validator->fails()) {
         return response([
-        'status'=>'errors',
+        'status'=>'خطأ',
         'errors'=>$validator->errors()
 
         ]);
@@ -54,7 +54,7 @@ class CompanyController extends Controller
 
             ]);
             return response([
-                'status'=>'success',
+                'status'=>'تم تحديث بيانات الشركة بنجاح ',
                 'data'=>DataCompany::find(1)
 
                 ]);
@@ -79,7 +79,7 @@ class CompanyController extends Controller
     //  ]);
     if(!empty($company)){
     return response([
-        'status'=>'success',
+        'status'=>'تم أضافة البيانات ',
         'data'=>$company
 
         ]);}}

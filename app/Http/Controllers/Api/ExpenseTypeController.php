@@ -22,7 +22,7 @@ class ExpenseTypeController extends Controller
         $types = Expense_type::all();
 
         return response([
-            'status' => 'success',
+            'status' => 'نجاح',
             'data' => $types
 
 
@@ -40,7 +40,7 @@ class ExpenseTypeController extends Controller
 
         if ($validator->fails()) {
             return response([
-                'status' => 'errors',
+                'status' => 'خطأ',
                 'errors' => $validator->errors()
 
             ]);
@@ -51,7 +51,7 @@ class ExpenseTypeController extends Controller
             'name' => $request->name
         ]);
         return response([
-            'status' => 'success',
+            'status' => 'نجاح ',
             'data' => $Type
         ]);
     }
@@ -70,7 +70,7 @@ class ExpenseTypeController extends Controller
 
         if ($validator->fails()) {
             return response([
-                'status' => 'errors',
+                'status' => 'خطأ',
                 'errors' => $validator->errors()
 
             ]);
@@ -81,7 +81,7 @@ class ExpenseTypeController extends Controller
             'name' => $request->name
         ]);
         return response([
-            'status' => 'success',
+            'status' => 'تم تحديث النوع بنجاح ',
             'data' => $Type
         ]);
     }
