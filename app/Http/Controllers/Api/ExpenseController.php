@@ -43,7 +43,7 @@ class ExpenseController extends Controller
 
         $expenses=Expense::whereBetween('date', [$from, $to])->get();
         return ExpenseResource::collection($expenses);
-    }
+    }}
     public function index()
     {
 
@@ -169,6 +169,6 @@ class ExpenseController extends Controller
      */
     public function destroy(Expense $expense)
     {
-        //
+       
     }
 }
