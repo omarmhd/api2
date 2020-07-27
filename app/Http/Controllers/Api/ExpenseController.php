@@ -123,7 +123,7 @@ class ExpenseController extends Controller
      * @param  \App\Expense  $expense
      * @return \Illuminate\Http\Response
      */
-    public function update(Request $request, Expense $expense)
+    public function update(Request $request,$id)
     {
         $validator = Validator::make($request->all(), [
             'details' => 'required',
@@ -145,7 +145,7 @@ class ExpenseController extends Controller
             ]);
         }
 
-        $Expense = Expense::create([
+        $Expense = Expense::find($id)->update([
 
             'type_id' => $request->type_id,
             'amount'=>$request->amount,
