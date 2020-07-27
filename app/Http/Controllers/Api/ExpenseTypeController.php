@@ -89,7 +89,7 @@ class ExpenseTypeController extends Controller
 
     public function destroy(Request $request,$id){
 
-        $type=Expense_type::find($id)->destroy;
+        $type=Expense_type::where('id',$id)->delete();
 
         if($type){
 

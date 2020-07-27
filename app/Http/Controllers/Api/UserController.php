@@ -117,12 +117,13 @@ class UserController extends Controller
 
 
 
-            User::find($id)->destroy;
+            $user=User::where('id',$id)->delete();
+            if($user){
             return response([
                 'status'=>'success',
                 'message'=>'تم الحذف بنجاح ',
 
-                ]);
+                ]);}
          }
     }
 

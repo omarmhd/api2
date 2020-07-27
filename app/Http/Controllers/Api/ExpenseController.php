@@ -168,11 +168,13 @@ class ExpenseController extends Controller
      */
     public function destroy($id)
     {
-        $exponse=Expense::find($id)->destroy;
+        $exponse=Expense::where('id',$id)->delete();
 
+
+        if($exponse){
         return response([
             'status' => 'تم الحذف بنجاح ',
           
         ]);
-    }
+    }}
 }
