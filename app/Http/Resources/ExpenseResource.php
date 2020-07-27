@@ -14,9 +14,10 @@ class ExpenseResource extends JsonResource
      */
     public function toArray($request)
     {
-        return ([
+        return (
+          [
             'amount'=>$this->amount,
-        'details'=>$this->details,
+            'details'=>$this->details,
             'date'=>$this->date,
             'type'=>$this->type,
 

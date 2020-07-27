@@ -34,7 +34,7 @@ class ExpenseTypeController extends Controller
 
 
         $validator = Validator::make($request->all(), [
-            'name' => 'required|unique:types',
+            'name' => 'required|unique:Expense_types',
 
         ], ['name.required' => 'الرجاء إدخال  نوع المصروف','name.unique'=>'نوع المصروف موجود مسبقا']);
 
