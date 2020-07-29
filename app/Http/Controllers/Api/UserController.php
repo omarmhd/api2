@@ -7,6 +7,7 @@ use App\Http\Resources\UserResource;
 use App\User;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\DB;
+use Illuminate\Support\Facades\File;
 use Illuminate\Support\Facades\Hash;
 use Illuminate\Support\Facades\Validator;
 use Illuminate\Support\Str;
@@ -16,7 +17,7 @@ class UserController extends Controller
     public function index(){
 
 
-     $Users=User::where('Role','=','2')->get();
+     $Users=User::where('Role','=','2')->paginate(10);
      return UserResource::collection($Users);
 
        }
@@ -30,14 +31,27 @@ class UserController extends Controller
             'date_work' => 'required|date',
             'address' => 'required',
             'Commission' => 'required|Numeric',
-            'image' => 'required',
+            'image' => 'required|image',
 
 
-        ]);
+        ], ['name.required' => 'الرجاء إدخال إسم السمسار ',
+        'name.unique' => 'السمسار موجود مسبقا  ',
+        'password.required' => 'الرجاء إدخال كلمة السر',
+        'phone.required' => 'الرجاء إدخال رقم الهاتف',
+        'phone.Numeric' => 'خطأ فى إدخال رفم الهاتف    ',
+        'date_work.date' => 'خطأ فى  إدخال التاريخ ',
+        'date_work.required' => 'الرجاء إدخال  التاريخ ',
+
+        'address.required' => 'الرجاء إدخال العنوان ',
+        'Commission.required' => 'الرجاء إدخال العمولة ',
+        'Commission.Numeric' => 'خطأ فى إدخال قيمة العمولة ',
+
+        'image.required' => 'الرجاء إدخال صورة السمسار '],
+);
 
         if ($validator->fails()) {
             return response([
-            'status'=>'errors',
+            'status'=>'خطأ',
             'errors'=>$validator->errors()
 
             ]);
@@ -61,7 +75,7 @@ class UserController extends Controller
 
                 ]);
                 return response([
-                    'status'=>'success',
+                    'status'=>'تمت بنجاح ',
                     'data'=>$Users
 
                     ]);
@@ -74,25 +88,38 @@ class UserController extends Controller
 
 
 
-        $validator = Validator::make($request->all(), [
-            'name' => 'required',
-            'password' => 'required',
-            'phone' => 'required|Numeric',
-            'date_work' => 'required|date',
-            'address' => 'required',
-            'Commission' => 'required',
-            'image' => 'required',
+            $validator = Validator::make($request->all(), [
+                'name' => 'required|unique:users',
+                'password' => 'required',
+                'phone' => 'required|Numeric',
+                'date_work' => 'required|date',
+                'address' => 'required',
+                'Commission' => 'required|Numeric',
+                'image' => 'required|image',
 
 
-        ]);
+            ], ['name.required' => 'الرجاء إدخال إسم السمسار ',
+            'name.unique' => 'السمسار موجود مسبقا  ',
+            'password.required' => 'الرجاء إدخال كلمة السر',
+            'phone.required' => 'الرجاء إدخال رقم الهاتف',
+            'phone.Numeric' => 'خطأ فى إدخال رفم الهاتف    ',
+            'date_work.date' => 'خطأ فى  إدخال التاريخ ',
+            'date_work.required' => 'الرجاء إدخال  التاريخ ',
 
-        if ($validator->fails()) {
-            return response([
-            'status'=>'errors',
-            'errors'=>$validator->errors()
+            'address.required' => 'الرجاء إدخال العنوان ',
+            'Commission.required' => 'الرجاء إدخال العمولة ',
+            'Commission.Numeric' => 'خطأ فى إدخال قيمة العمولة ',
 
-            ]);
-        }
+            'image.required' => 'الرجاء إدخال صورة السمسار '],
+    );
+
+            if ($validator->fails()) {
+                return response([
+                'status'=>'خطأ',
+                'errors'=>$validator->errors()
+
+                ]);
+            }
 
                 $Users=User::find($id)->update([
 
@@ -107,7 +134,7 @@ class UserController extends Controller
 
                 ]);
                 return response([
-                    'status'=>'success',
+                    'status'=>'تمت بنجاح',
                     'data'=>User::find($id)
 
                     ]);
@@ -115,12 +142,18 @@ class UserController extends Controller
          }
          public function destroy ($id){
 
+            $user=User::where('id',$id)->first();
 
 
-            $user=User::where('id',$id)->delete();
+            $image_path =public_path('upload_images').'/'.$user->image;
+
+            if(file_exists($image_path)) {
+                File::delete($image_path);
+            }
+            $user->delete();
             if($user){
             return response([
-                'status'=>'success',
+                'status'=>'نجاح ',
                 'message'=>'تم الحذف بنجاح ',
 
                 ]);}

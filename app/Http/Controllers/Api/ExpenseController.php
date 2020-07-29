@@ -21,11 +21,11 @@ class ExpenseController extends Controller
     public function tofrom(Request $request){
         $from =$request->from;
         $to = $request->to;
-        
+
         $validator = Validator::make($request->all(), [
             'from' => 'required|date',
             'to'=>'required|date',
-    
+
         ], [
            'from.required'=>'الرجاء إدخال التاريخ',
            'from.date'=>'الرجاء إدخال التاريخ بالصيغة الصحيحة ',
@@ -40,14 +40,14 @@ class ExpenseController extends Controller
 
             ]);
             }
-        $expenses=Expense::whereBetween('date', [$from, $to])->get();
+        $expenses=Expense::whereBetween('date', [$from, $to])->paginate(10);
         return ExpenseResource::collection($expenses);
     }
     public function index()
     {
 
-      
-            $expenses=Expense::all();
+
+            $expenses=Expense::paginate(10);
 
         return ExpenseResource::collection($expenses);
 
@@ -114,7 +114,7 @@ class ExpenseController extends Controller
      * @param  \App\Expense  $expense
      * @return \Illuminate\Http\Response
      */
-    
+
 
     /**
      * Update the specified resource in storage.
@@ -174,7 +174,7 @@ class ExpenseController extends Controller
         if($exponse){
         return response([
             'status' => 'تم الحذف بنجاح ',
-          
+
         ]);
     }}
 }

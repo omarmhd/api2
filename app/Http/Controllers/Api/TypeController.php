@@ -67,7 +67,7 @@ class TypeController extends Controller
 
         if ($validator->fails()) {
             return response([
-                'status' => 'errors',
+                'status' => 'خطأ',
                 'errors' => $validator->errors()
 
             ]);
@@ -78,7 +78,7 @@ class TypeController extends Controller
             'name' => $request->name
         ]);
         return response([
-            'status' => 'success',
+            'status' => 'نجاح ',
             'data' => $Type
         ]);
     }
@@ -86,12 +86,14 @@ class TypeController extends Controller
 
     public function destroy(Request $request, $id){
 
-        $type=Type::find($id)->destroy;
+        $type=Type::find($id)->delete();
 
         if($type){
 
             return response([
-                'status' => 'success',
+                'status'=>'نجاح ',
+                'message'=>'تم الحذف بنجاح ',
+
 
             ]);
 
