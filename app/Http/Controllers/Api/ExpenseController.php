@@ -21,6 +21,7 @@ class ExpenseController extends Controller
     public function tofrom(Request $request){
         $from =$request->from;
         $to = $request->to;
+        $return_paginate = $request->return_paginate;
 
         $validator = Validator::make($request->all(), [
             'from' => 'required|date',
@@ -40,9 +41,15 @@ class ExpenseController extends Controller
 
             ]);
             }
+
+           if($return_paginate==1){
         $expenses=Expense::whereBetween('date', [$from, $to])->paginate(10);
         return ExpenseResource::collection($expenses);
-    }
+    }else{
+        $expenses=Expense::whereBetween('date', [$from, $to])->get();
+        return ExpenseResource::collection($expenses);
+
+    }}
     public function index()
     {
 
