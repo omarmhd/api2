@@ -17,12 +17,16 @@ use Illuminate\Support\Facades\Route;
 Route::middleware('auth:api')->get('/user', function (Request $request) {
     return $request->user();
 });
-
 Route::post('login','Api\AuthController@login');
 Route::post('register','Api\AuthController@register');
-
-Route::apiResource('company','Api\CompanyController');
 Route::apiResource('user','Api\UserController');
-Route::apiResource('Expense','Api\ExpenseController');
-Route::apiResource('ExpenseType','Api\ExpenseTypeController');
-Route::post('/Expense_date','Api\ExpenseController@tofrom');
+
+Route::group(['middleware' => ['auth:api']], function () {
+
+    Route::apiResource('company','Api\CompanyController');
+    Route::apiResource('Expense','Api\ExpenseController');
+    Route::apiResource('ExpenseType','Api\ExpenseTypeController');
+    Route::post('/Expense_date','Api\ExpenseController@tofrom');
+
+});
+

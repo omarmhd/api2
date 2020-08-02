@@ -29,13 +29,14 @@ class AuthController extends Controller
 
         if (Auth::attempt($login,true)) {
 
-           $user=User::find(Auth::id());
-           $user->api_token= Str::random(60);
+      $user=User::find(Auth::id());
+        //   $user->api_token= Str::random(60);
+        $token = $user->createToken('Token Name')->accessToken;
 
-           $user->save();
+           //$user->save();
 
 
-                $response = ['token' => $user->api_token, 'status' => 'success'];
+                $response = ['token' => $token , 'status' => 'success'];
                 return response($response);
 
         } else {
