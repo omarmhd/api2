@@ -15,9 +15,9 @@ class AuthController extends Controller
     public function login(Request $request)
     {
 
-  $login=['name'=>$request->name,'password'=>$request->password];
+  $login=['login_name'=>$request->login_name,'password'=>$request->password];
         $validator = Validator::make($request->all(), [
-            'name' => 'required|string',
+            'login_name' => 'required|string',
             'password' => 'required',
         ]);
 
@@ -31,7 +31,7 @@ class AuthController extends Controller
 
       $user=User::find(Auth::id());
         //   $user->api_token= Str::random(60);
-        $token = $user->createToken('Token Name')->accessToken;
+        $token = $user->createToken('Token_Name')->accessToken;
 
            //$user->save();
 

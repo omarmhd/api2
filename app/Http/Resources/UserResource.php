@@ -22,7 +22,9 @@ class UserResource extends JsonResource
           'api_token'=>$this->api_token,
           'phone'=>$this->phone,
           'Commission'=>$this->Commission,
-          'image_path'=>public_path('upload_images').'/'.$this->image,
+          'card'=>$this->card,
+
+          'image_path'=>  asset('upload_images/'.$this->image) ,
           'id'=>$this->id
 
         ]);

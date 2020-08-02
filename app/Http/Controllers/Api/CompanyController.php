@@ -4,6 +4,7 @@ namespace App\Http\Controllers\Api;
 
 use App\DataCompany;
 use App\Http\Controllers\Controller;
+use App\Http\Resources\CompanyResource;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\DB;
 use Illuminate\Support\Facades\Validator;
@@ -15,11 +16,8 @@ class CompanyController extends Controller
 
 
     $company=DB::table('data_company')->get();
-    return response([
-        'status' =>'نجاح ',
-        'data' =>$company
+    return CompanyResource::collection( $company);
 
-    ]);
    }
    public function store(Request $request){
 
@@ -29,7 +27,17 @@ class CompanyController extends Controller
         'license_number' => 'required',
         'address' => 'required',
         'phone_number' => 'required|Numeric',
-        'image' => 'required',
+        'image' => 'required|image',
+
+    ],[
+        'name_company.required'=>'الرجاءإدخال اسم الشركة ',
+        'license_number.required' => 'الرجاءإدخال رقم الترخيص ',
+        'address.required'=>'الرجاء إدخال عنوان الشركة ',
+        'phone_number.required'=>'الرجاءإدخال رقم الموبايل',
+        'phone_number.Numeric'=>' خطأ فى إدخال رقم الموبايل',
+        'image.required'=>'الرجاء إدخال صورة الشركة ',
+        'image.image'=>'خطأ فى إدخال الصورة ',
+
 
     ]);
 
@@ -39,7 +47,9 @@ class CompanyController extends Controller
         'errors'=>$validator->errors()
 
         ]);
-    }
+    } $uplodeimge = $request->file('image');
+    $imageName = time() . '.' . $uplodeimge->getClientOriginalExtension();
+    $uplodeimge->move('upload_images', $imageName);
 
            if(!empty(DataCompany::find(1))){
 
@@ -50,7 +60,7 @@ class CompanyController extends Controller
                 'license_number' => $request->license_number,
                 'address' => $request->address,
                 'phone_number'=>$request->phone_number,
-                'image'=>$request->image
+                'image'=>$imageName
 
             ]);
             return response([
@@ -66,7 +76,7 @@ class CompanyController extends Controller
     'license_number' => $request->license_number,
     'address' => $request->address,
     'phone_number'=>$request->phone_number,
-    'image'=>$request->image]);
+    'image'=> $imageName]);
     // $company  = DB::table('data_company')->updateOrInsert([
     //     'name_company' => $request->name_company,
     //     'license_number' => $request->license_number,
