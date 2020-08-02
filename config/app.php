@@ -174,7 +174,8 @@ return [
         App\Providers\EventServiceProvider::class,
         App\Providers\RouteServiceProvider::class,
         Laravel\Passport\PassportServiceProvider::class,
-
+        App\Providers\CodeGrantProvider::class,
+         Spatie\Permission\PermissionServiceProvider::class,
 
     ],
 
