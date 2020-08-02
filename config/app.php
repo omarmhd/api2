@@ -176,7 +176,7 @@ return [
         /*Laravel\Passport\PassportServiceProvider::class,
         App\Providers\CodeGrantProvider::class,
          Spatie\Permission\PermissionServiceProvider::class,*/
-
+         Laravel\Passport\PassportServiceProvider::class,
     ],
 
     /*
