@@ -33,7 +33,7 @@ class TypeController extends Controller
         $validator = Validator::make($request->all(), [
             'name' => 'required|unique:types',
 
-        ], ['name.required' => 'الرجاء إدخال إسم الشركة']);
+        ], ['name.required' => '']);
 
         if ($validator->fails()) {
             return response([
@@ -56,22 +56,6 @@ class TypeController extends Controller
 
     public function update(Request $request, $id)
     {
-
-
-
-        $validator = Validator::make($request->all(), [
-            'name' => 'required|unique:types',
-
-        ], ['name.required' => 'الرجاء إدخال الإسم ',
-        'name.unique' => 'الاسم موجود مسبقا ',]);
-
-        if ($validator->fails()) {
-            return response([
-                'status' => 'خطأ',
-                'errors' => $validator->errors()
-
-            ]);
-        }
 
         $Type = Type::find($id)->update([
 

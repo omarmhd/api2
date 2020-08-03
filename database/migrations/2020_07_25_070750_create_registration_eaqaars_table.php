@@ -15,10 +15,12 @@ class CreateRegistrationEaqaarsTable extends Migration
     {
         Schema::create('registration_eaqaars', function (Blueprint $table) {
             $table->id();
+            $table->unsignedBigInteger('user_id')->nullable();
             $table->unsignedBigInteger('type_id')->nullable();
             $table->unsignedBigInteger('plan_id')->nullable();
             $table->foreign('type_id')->references('id')->on('types')->onDelete('cascade');
             $table->foreign('plan_id')->references('id')->on('plans')->onDelete('cascade');
+            $table->foreign('user_id')->references('id')->on('users')->onDelete('cascade');
 
             $table->string('state');
 
@@ -29,8 +31,7 @@ class CreateRegistrationEaqaarsTable extends Migration
             $table->string('Survey_number');
             $table->string('name_seller');
             $table->string('card_seller');
-            $table->string('name_buyer');
-            $table->string('card_buyer');
+
             $table->string('phone_seller');
             $table->string('date_buy');
             $table->string('price_buy');
@@ -38,7 +39,7 @@ class CreateRegistrationEaqaarsTable extends Migration
             $table->string('estimated_price');
 
             $table->timestamps();
-          
+
         });
     }
 

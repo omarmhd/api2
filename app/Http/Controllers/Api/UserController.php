@@ -144,7 +144,7 @@ class UserController extends Controller
             'Role' => $request->Role,
             'date_work' => $request->date_work,
             'address' => $request->address,
-            'phone' => $request->phone,
+            'phone' => $request ->phone,
             'card'=> $request->address,
             'Commission' => $request->Commission,
             'image' => $request->image
