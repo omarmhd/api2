@@ -19,17 +19,16 @@ Route::middleware('auth:api')->get('/user', function (Request $request) {
 });
 Route::post('login','Api\AuthController@login');
 Route::post('register','Api\AuthController@register');
-Route::apiResource('user','Api\UserController');
 
 Route::group(['middleware' => ['auth:api']], function () {
+    Route::apiResource('user','Api\UserController');
 
     Route::apiResource('company','Api\CompanyController');
+    Route::apiResource('Expense','Api\ExpenseController');
+    Route::apiResource('ExpenseType','Api\ExpenseTypeController');
+    Route::post('/Expense_date','Api\ExpenseController@tofrom');
 
 });
-Route::apiResource('Expense','Api\ExpenseController');
-Route::apiResource('ExpenseType','Api\ExpenseTypeController');
-Route::post('/Expense_date','Api\ExpenseController@tofrom');
-
 Route::apiResource('/Registration_Eaqaar','Api\RegistrationEaqaarController');
 Route::apiResource('/type','Api\TypeController');
 Route::apiResource('/plan','Api\PlanController');
