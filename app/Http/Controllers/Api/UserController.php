@@ -21,6 +21,12 @@ class UserController extends Controller
         $Users = User::where('Role', '=', '2')->paginate(10);
         return UserResource::collection($Users);
     }
+    public function profile()
+    {
+
+        $Users = User::where('id', '=',  auth('api')->user()->id)->get();
+        return UserResource::collection($Users);
+    }
     public function store(Request $request)
     {
 
@@ -34,6 +40,7 @@ class UserController extends Controller
             'address' => 'required',
             'card'=>'required',
             'Commission' => 'required|Numeric',
+            'account_number'=>'required|Numeric',
             'image' => 'required|image',
 
 
@@ -47,11 +54,11 @@ class UserController extends Controller
             'phone.Numeric' => 'خطأ فى إدخال رفم الهاتف    ',
             'date_work.date' => 'خطأ فى  إدخال التاريخ ',
             'date_work.required' => 'الرجاء إدخال  التاريخ ',
-
             'address.required' => 'الرجاء إدخال العنوان ',
             'Commission.required' => 'الرجاء إدخال العمولة ',
             'Commission.Numeric' => 'خطأ فى إدخال قيمة العمولة ',
-
+            'account_number.Numeric' => 'خطأ فى إدخال رقم الحساب  ',
+            'account_number.required' => 'الرجاء إدخال رقم الحساب',
             'image.required' => 'الرجاء إدخال صورة السمسار ',
             'image.image' => 'خطأ فى  إدخال صورة السمسار '
 
@@ -76,11 +83,11 @@ class UserController extends Controller
             'Role' => $request->Role ?? '2',
             'date_work' => $request->date_work,
             'address' => $request->address,
-            'api_token' => Str::random(60),
-              'card'=> $request->address,
+            'card'=> $request->card,
             'phone' => $request->phone,
             'Commission' => $request->Commission,
-            'image' => $imageName
+            'image' => $imageName,
+            'account_number'=>$request->account_number
 
         ]);
         return response([
@@ -106,7 +113,8 @@ class UserController extends Controller
             'date_work' => 'required|date',
             'address' => 'required',
             'Commission' => 'required|Numeric',
-            'image' => 'required|image',
+            'image' => 'nullable|image',
+            'account_number'=>'required|Numeric'
 
 
         ], [
@@ -123,6 +131,8 @@ class UserController extends Controller
             'address.required' => 'الرجاء إدخال العنوان ',
             'Commission.required' => 'الرجاء إدخال العمولة ',
             'Commission.Numeric' => 'خطأ فى إدخال قيمة العمولة ',
+            'account_number.Numeric' => 'خطأ فى إدخال رقم الحساب  ',
+            'account_number.required' => 'الرجاء إدخال قيمة العمولة ',
 
             'image.required' => 'الرجاء إدخال صورة السمسار ',
             'image.image' => 'خطأ فى  إدخال صورة السمسار '
@@ -144,7 +154,8 @@ class UserController extends Controller
             'Role' => $request->Role,
             'date_work' => $request->date_work,
             'address' => $request->address,
-            'phone' => $request ->phone,
+            'phone' => $request->phone,
+            'account_number'=>$request->account_number,
             'card'=> $request->address,
             'Commission' => $request->Commission,
             'image' => $request->image
