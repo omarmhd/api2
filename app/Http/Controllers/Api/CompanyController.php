@@ -12,107 +12,105 @@ use Illuminate\Support\Facades\Validator;
 class CompanyController extends Controller
 {
 
-   public function index(){
+    public function index()
+    {
 
 
-    $company=DB::table('data_company')->get();
-    return CompanyResource::collection( $company);
-
-   }
-   public function store(Request $request){
-
-
-    $validator = Validator::make($request->all(), [
-        'name_company' => 'required',
-        'license_number' => 'required',
-        'address' => 'required',
-        'phone_number' => 'required|Numeric',
-        'image' => 'nullable|image',
-        'details'=>'required'
-
-    ],[
-        'name_company.required'=>'الرجاءإدخال اسم الشركة ',
-        'license_number.required' => 'الرجاءإدخال رقم الترخيص ',
-        'address.required'=>'الرجاء إدخال عنوان الشركة ',
-        'phone_number.required'=>'الرجاءإدخال رقم الموبايل',
-        'phone_number.Numeric'=>' خطأ فى إدخال رقم الموبايل',
-        'image.image'=>'خطأ فى إدخال الصورة ',
-        'details.required'=>'الرجاء إدخال التفاصيل'
+        $company = DB::table('data_company')->get();
+        return CompanyResource::collection($company);
+    }
+    public function store(Request $request)
+    {
 
 
-    ]);
+        $validator = Validator::make($request->all(), [
+            'name_company' => 'required',
+            'license_number' => 'required',
+            'address' => 'required',
+            'phone_number' => 'required|Numeric',
+            'image' => 'nullable|image',
+            'details' => 'required'
 
-    if ($validator->fails()) {
-        return response([
-        'status'=>'خطأ',
-        'errors'=>$validator->errors()
+        ], [
+            'name_company.required' => 'الرجاءإدخال اسم الشركة ',
+            'license_number.required' => 'الرجاءإدخال رقم الترخيص ',
+            'address.required' => 'الرجاء إدخال عنوان الشركة ',
+            'phone_number.required' => 'الرجاءإدخال رقم الموبايل',
+            'phone_number.Numeric' => ' خطأ فى إدخال رقم الموبايل',
+            'image.image' => 'خطأ فى إدخال الصورة ',
+            'details.required' => 'الرجاء إدخال التفاصيل'
+
 
         ]);
-    }
 
-    $uplodeimge = $request->file('image');
-    if($uplodeimge!==null){
-    $imageName = time() . '.' . $uplodeimge->getClientOriginalExtension();
-    $uplodeimge->move('upload_images', $imageName);
-    }else{
-        $imageName=null;
-    }
-           if(!empty(DataCompany::find(1))){
-
-
-            $company_up=DataCompany::where('id','1')->update([
-
-                'name_company' => $request->name_company,
-                'license_number' => $request->license_number,
-                'address' => $request->address,
-                'phone_number'=>$request->phone_number,
-                'details'=>$request->details,
-
-                'image'=>$imageName
+        if ($validator->fails()) {
+            return response([
+                'status' => 'خطأ',
+                'errors' => $validator->errors()
 
             ]);
+        }
+
+        if (!empty(DataCompany::find(1))) {
+
+            $company_up = DataCompany::find(1);
+            $company_up->name_company = $request->name_company;
+            $company_up->license_number = $request->license_number;
+            $company_up->address = $request->address;
+            $company_up->phone_number = $request->phone_number;
+            $company_up->details = $request->details;
+            if ($request->hasFile('image')) {
+                $uplodeimge = $request->file('image');
+                $imageName = time() . '.' . $uplodeimge->getClientOriginalExtension();
+                $uplodeimge->move('upload_images', $imageName);
+                $company_up->image = $imageName;
+
+            }
+            $company_up->save();
             // return response([
             //     'status'=>'تم تحديث بيانات الشركة بنجاح ',
             //     'data'=>
 
             //     ]);
-            $company=DataCompany::find(1)->get();
-             return CompanyResource::collection($company);
+            return CompanyResource::collection(  DataCompany::find(1)->get());
+        } else {
+               $company = new DataCompany;
+               $company->name_company = $request->name_company;
+               $company->license_number = $request->license_number;
+               $company->address = $request->address;
+               $company->phone_number = $request->phone_number;
+               $company->details = $request->details;
+               if ($request->hasFile('image')) {
+                   $uplodeimge = $request->file('image');
+                   $imageName = time() . '.' . $uplodeimge->getClientOriginalExtension();
+                   $uplodeimge->move('upload_images', $imageName);
+                   $company->image = $imageName;
+
+               }
+               $company->save();
+            // $company  = DB::table('data_company')->updateOrInsert([
+            //     'name_company' => $request->name_company,
+            //     'license_number' => $request->license_number,
+            //     'address' => $request->address,
+            //     'phone_number'=>$request->address,
+            //     'image'=>$request->image,
 
 
-        }else{
-    $company=DataCompany::create([
-    'id'=>'1',
-    'name_company' => $request->name_company,
-    'license_number' => $request->license_number,
-    'address' => $request->address,
-    'phone_number'=>$request->phone_number,
-    'details'=>$request->details,
 
-    'image'=> $imageName]);
-    // $company  = DB::table('data_company')->updateOrInsert([
-    //     'name_company' => $request->name_company,
-    //     'license_number' => $request->license_number,
-    //     'address' => $request->address,
-    //     'phone_number'=>$request->address,
-    //     'image'=>$request->image,
-
-
-
-    //  ]);
-    if(!empty($company)){
-        return CompanyResource::collection($company);
-
-
+            //  ]);
+            if (!empty($company)) {
+                return CompanyResource::collection( DataCompany::find(1)->get());
+            }
         }
-   }}
-    public function show(){
-
     }
-     public function update(){
-
-     }
-     public function destroy (){
-
-     }
+    public function show()
+    {
+    }
+    public function update()
+    {
+    }
+    public function destroy($id)
+    {
+        DataCompany::find(1)->delete();
+    }
 }
