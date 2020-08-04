@@ -35,8 +35,10 @@ class CreateRegistrationEaqaarsTable extends Migration
             $table->string('phone_seller');
             $table->string('date_buy');
             $table->string('price_buy');
+            $table->string('Remaining_amount');
             $table->string('Downpayment');
             $table->string('estimated_price');
+            $table->string('image');
 
             $table->timestamps();
 

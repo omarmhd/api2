@@ -20,6 +20,8 @@ class CompanyResource extends JsonResource
               'license_number'=>$this->license_number,
               'address'=>$this->address,
               'phone_number'=>$this->phone_number,
+              'details'=>$this->details,
+
               'image'=> asset('upload_images/'.$this->image),
 
             ]);
