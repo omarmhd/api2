@@ -19,8 +19,8 @@ class CreateDataCompanyTable extends Migration
             $table->string('license_number');
             $table->string('address');
             $table->string('phone_number');
-            $table->string('image');
-
+            $table->string('details');
+            $table->string('image')->nullable();
             $table->timestamps();
         });
     }
@@ -32,6 +32,6 @@ class CreateDataCompanyTable extends Migration
      */
     public function down()
     {
-        Schema::dropIfExists('_data_company');
+        Schema::dropIfExists('data_company');
     }
 }

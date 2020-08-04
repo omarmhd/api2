@@ -27,7 +27,8 @@ class CompanyController extends Controller
         'license_number' => 'required',
         'address' => 'required',
         'phone_number' => 'required|Numeric',
-        'image' => 'required|image',
+        'image' => 'nullable|image',
+        'details'=>'required'
 
     ],[
         'name_company.required'=>'الرجاءإدخال اسم الشركة ',
@@ -35,8 +36,8 @@ class CompanyController extends Controller
         'address.required'=>'الرجاء إدخال عنوان الشركة ',
         'phone_number.required'=>'الرجاءإدخال رقم الموبايل',
         'phone_number.Numeric'=>' خطأ فى إدخال رقم الموبايل',
-        'image.required'=>'الرجاء إدخال صورة الشركة ',
         'image.image'=>'خطأ فى إدخال الصورة ',
+        'details.required'=>'الرجاء إدخال التفاصيل'
 
 
     ]);
@@ -47,10 +48,15 @@ class CompanyController extends Controller
         'errors'=>$validator->errors()
 
         ]);
-    } $uplodeimge = $request->file('image');
+    }
+
+    $uplodeimge = $request->file('image');
+    if($uplodeimge!==null){
     $imageName = time() . '.' . $uplodeimge->getClientOriginalExtension();
     $uplodeimge->move('upload_images', $imageName);
-
+    }else{
+        $imageName=null;
+    }
            if(!empty(DataCompany::find(1))){
 
 
@@ -60,6 +66,8 @@ class CompanyController extends Controller
                 'license_number' => $request->license_number,
                 'address' => $request->address,
                 'phone_number'=>$request->phone_number,
+                'details'=>$request->details,
+
                 'image'=>$imageName
 
             ]);
@@ -76,6 +84,8 @@ class CompanyController extends Controller
     'license_number' => $request->license_number,
     'address' => $request->address,
     'phone_number'=>$request->phone_number,
+    'details'=>$request->details,
+
     'image'=> $imageName]);
     // $company  = DB::table('data_company')->updateOrInsert([
     //     'name_company' => $request->name_company,
@@ -89,7 +99,7 @@ class CompanyController extends Controller
     //  ]);
     if(!empty($company)){
     return response([
-        'status'=>'تم أضافة البيانات ',
+        'status'=>'نجاح',
         'data'=>$company
 
         ]);}}

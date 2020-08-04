@@ -23,13 +23,13 @@ Route::post('register','Api\AuthController@register');
 Route::group(['middleware' => ['auth:api']], function () {
     Route::apiResource('user','Api\UserController');
 
-    Route::apiResource('company','Api\CompanyController');
     Route::apiResource('Expense','Api\ExpenseController');
     Route::apiResource('ExpenseType','Api\ExpenseTypeController');
     Route::post('/Expense_date','Api\ExpenseController@tofrom');
 
 });
-Route::apiResource('/Registration_Eaqaar','Api\RegistrationEaqaarController');
+Route::apiResource('/eaqaar','Api\RegistrationEaqaarController');
 Route::apiResource('/type','Api\TypeController');
 Route::apiResource('/plan','Api\PlanController');
 
+Route::apiResource('company','Api\CompanyController');
