@@ -77,7 +77,7 @@ class CompanyController extends Controller
 
             //     ]);
             $company=DataCompany::find(1)->get();
-                return CompanyResource::collection($company);
+             return CompanyResource::collection($company);
 
 
         }else{

@@ -52,7 +52,7 @@ class RegistrationEaqaarController extends Controller
             ]);
         }
         $RegistrationEaqaars = RegistrationEaqaar::create([
-            'user_id' => auth('api')->user()->id,
+            'user_id' =>1, //auth('api')->user()->id,
             'type_id' => $request->type_id,
             'plan_id' => $request->plan_id,
             'state' => $request->state,
