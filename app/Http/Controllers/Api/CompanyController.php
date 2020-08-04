@@ -71,11 +71,14 @@ class CompanyController extends Controller
                 'image'=>$imageName
 
             ]);
-            return response([
-                'status'=>'تم تحديث بيانات الشركة بنجاح ',
-                'data'=>DataCompany::find(1)
+            // return response([
+            //     'status'=>'تم تحديث بيانات الشركة بنجاح ',
+            //     'data'=>
 
-                ]);
+            //     ]);
+            $company=DataCompany::find(1)->get();
+                return CompanyResource::collection($company);
+
 
         }else{
     $company=DataCompany::create([
@@ -98,12 +101,11 @@ class CompanyController extends Controller
 
     //  ]);
     if(!empty($company)){
-    return response([
-        'status'=>'نجاح',
-        'data'=>$company
+        return CompanyResource::collection($company);
 
-        ]);}}
-   }
+
+        }
+   }}
     public function show(){
 
     }
