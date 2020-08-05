@@ -4,7 +4,7 @@ use Illuminate\Database\Migrations\Migration;
 use Illuminate\Database\Schema\Blueprint;
 use Illuminate\Support\Facades\Schema;
 
-class CreateRegistrationEaqaarsTable extends Migration
+class CreateEaqaarsTable extends Migration
 {
     /**
      * Run the migrations.
@@ -13,7 +13,7 @@ class CreateRegistrationEaqaarsTable extends Migration
      */
     public function up()
     {
-        Schema::create('registration_eaqaars', function (Blueprint $table) {
+        Schema::create('eaqaars', function (Blueprint $table) {
             $table->id();
             $table->unsignedBigInteger('user_id')->nullable();
             $table->unsignedBigInteger('type_id')->nullable();
@@ -22,7 +22,7 @@ class CreateRegistrationEaqaarsTable extends Migration
             $table->foreign('plan_id')->references('id')->on('plans')->onDelete('cascade');
             $table->foreign('user_id')->references('id')->on('users')->onDelete('cascade');
 
-            $table->string('state');
+             $table->string('state');
 
             $table->string('area');
             $table->string('square');
@@ -31,15 +31,16 @@ class CreateRegistrationEaqaarsTable extends Migration
             $table->string('Survey_number');
             $table->string('name_seller');
             $table->string('card_seller');
-
             $table->string('phone_seller');
             $table->string('date_buy');
             $table->string('price_buy');
             $table->string('Remaining_amount');
             $table->string('Downpayment');
             $table->string('estimated_price');
-            $table->string('image');
+            $table->string('detials')->nullable();
+            $table->string('status')->default('متوفر');
 
+            $table->string('image');
             $table->timestamps();
 
         });
@@ -52,6 +53,6 @@ class CreateRegistrationEaqaarsTable extends Migration
      */
     public function down()
     {
-        Schema::dropIfExists('registration_eaqaars');
+        Schema::dropIfExists('eaqaars');
     }
 }
