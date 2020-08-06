@@ -4,10 +4,10 @@ namespace App;
 
 use Illuminate\Database\Eloquent\Model;
 
-class RegistrationEaqaar extends Model
+class Eaqaar extends Model
 {
 
-
+  public $table='eaqaars';
 
     protected $fillable = [
         'user_id',
@@ -24,7 +24,9 @@ class RegistrationEaqaar extends Model
         'phone_seller',
         'date_buy', 'price_buy',
         'Downpayment',
-        'estimated_price'
+        'estimated_price',
+        'image',
+        'detials'
     ];
 
 

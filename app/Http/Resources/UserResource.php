@@ -17,14 +17,12 @@ class UserResource extends JsonResource
         return ([
           'login_name'=>$this->login_name,
           'full_name'=>$this->full_name,
-
           'Role'=>$this->Role,
           'date_work'=>$this->date_work,
           'address'=>$this->address,
           'phone'=>$this->phone,
           'Commission'=>$this->Commission,
           'card'=>$this->card,
-
           'image_path'=>  asset('upload_images/'.$this->image) ,
           'id'=>$this->id
 

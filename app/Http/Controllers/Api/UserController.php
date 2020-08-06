@@ -41,7 +41,7 @@ class UserController extends Controller
             'card'=>'required',
             'Commission' => 'required|Numeric',
             'account_number'=>'required|Numeric',
-            'image' => 'required|image',
+            'image' => 'nullable|image',
 
 
         ], [
@@ -71,10 +71,12 @@ class UserController extends Controller
 
             ]);
         }
+
+        if($file=$request->file('image')){
         $uplodeimge = $request->file('image');
         $imageName = time() . '.' . $uplodeimge->getClientOriginalExtension();
         $uplodeimge->move('upload_images', $imageName);
-
+        }
         $Users = User::create([
 
             'full_name' => $request->full_name,
@@ -86,9 +88,8 @@ class UserController extends Controller
             'card'=> $request->card,
             'phone' => $request->phone,
             'Commission' => $request->Commission,
-            'image' => $imageName,
-            'account_number'=>$request->account_number
-
+            'account_number'=>$request->account_number,
+            'image'=>$request->image
         ]);
         return response([
             'status' => 'تمت بنجاح ',
@@ -104,19 +105,16 @@ class UserController extends Controller
 
         $validator = Validator::make($request->all(), [
 
-            'full_name' => 'required|unique:users',
-            'login_name' => 'required|unique:users',
+            'full_name' => 'sometimes|unique:users'  . ',id,' . $id,
+            'login_name' => 'sometimes|unique:users' . ',id,' . $id,
             'password' => 'required',
             'phone' => 'required|Numeric',
             'card'=>'required',
-
             'date_work' => 'required|date',
             'address' => 'required',
             'Commission' => 'required|Numeric',
             'image' => 'nullable|image',
             'account_number'=>'required|Numeric'
-
-
         ], [
             'full_name.required' => 'الرجاء إدخال إسم السمسار ',
             'full_name.unique' => 'السمسار موجود مسبقا  ',
@@ -127,13 +125,11 @@ class UserController extends Controller
             'phone.Numeric' => 'خطأ فى إدخال رفم الهاتف    ',
             'date_work.date' => 'خطأ فى  إدخال التاريخ ',
             'date_work.required' => 'الرجاء إدخال  التاريخ ',
-
             'address.required' => 'الرجاء إدخال العنوان ',
             'Commission.required' => 'الرجاء إدخال العمولة ',
             'Commission.Numeric' => 'خطأ فى إدخال قيمة العمولة ',
             'account_number.Numeric' => 'خطأ فى إدخال رقم الحساب  ',
             'account_number.required' => 'الرجاء إدخال قيمة العمولة ',
-
             'image.required' => 'الرجاء إدخال صورة السمسار ',
             'image.image' => 'خطأ فى  إدخال صورة السمسار '
 
@@ -146,21 +142,26 @@ class UserController extends Controller
             ]);
         }
 
-        $Users = User::find($id)->update([
+        $Users = User::find($id);
 
-            'full_name' => $request->full_name,
-            'login_name' => $request->login_name,
-            'password' => Hash::make($request->password),
-            'Role' => $request->Role,
-            'date_work' => $request->date_work,
-            'address' => $request->address,
-            'phone' => $request->phone,
-            'account_number'=>$request->account_number,
-            'card'=> $request->address,
-            'Commission' => $request->Commission,
-            'image' => $request->image
+        $Users->full_name = $request->full_name;
+        $Users->login_name = $request->login_name;
+        $Users->password = Hash::make($request->password);
+        $Users->Role = $request->Role;
+        $Users->date_work= $request->date_work;
+        $Users->address = $request->address;
+        $Users->phone= $request->phone;
+        $Users->account_number =$request->account_number;
+        $Users->card= $request->address;
+        $Users->Commission = $request->Commission;
 
-        ]);
+        if($file=$request->file('image')){
+            $uplodeimge = $request->file('image');
+            $imageName = time() . '.' . $uplodeimge->getClientOriginalExtension();
+            $uplodeimge->move('upload_images', $imageName);
+            $Users->image = $imageName;
+            }
+            $Users->save();
         return response([
             'status' => 'تمت بنجاح',
             'data' => User::find($id)

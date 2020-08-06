@@ -13,7 +13,7 @@ class PlanController extends Controller
     public function index()
     {
         $plan = Plan::all();
-        return PlanResource::collection($plan);
+              return PlanResource::collection($plan);
     }
 
 
@@ -40,11 +40,17 @@ class PlanController extends Controller
             ]);
         }
 
-        $plan = Plan::create([
+        $plan = new Plan();
 
-            'name' => $request->name,
-            'type_id'=> $request->type_id,
-        ]);
+            $plan->name =  $request->name;
+            if ($file=$request->hasFile('image')) {
+
+                $plan->image= $this->upload_image($file);
+
+            }
+            $plan->save();
+
+
         return response([
             'status' => 'success',
             'data' => $plan
@@ -53,13 +59,19 @@ class PlanController extends Controller
     public function update(Request $request, $id)
     {
 
-        $Plan = Plan::find($id)->update([
+        $plan = Plan::find($id);
 
-            'name' => $request->name
-        ]);
+        $plan->name =  $request->name;
+        if ($file=$request->hasFile('image')) {
+
+            $plan->image= $this->upload_image($file);
+
+        }
+        $plan->save();
+
         return response([
             'status' => 'نجاح ',
-            'data' => $Plan
+            'data' => $plan
         ]);
     }
 
@@ -78,6 +90,17 @@ class PlanController extends Controller
             ]);
 
         }
+    }
+
+
+    public function upload_image($file){
+
+
+
+        $imageName = time() . '.' .$file->getClientOriginalExtension();
+        $file->move('upload_images', $imageName);
+
+        return $imageName;
     }
 
 

@@ -32,8 +32,12 @@ class TypeController extends Controller
 
         $validator = Validator::make($request->all(), [
             'name' => 'required|unique:types',
+            'image' => 'nullable|image',
 
-        ], ['name.required' => '']);
+        ], ['name.required' => 'الرجاء إدخال اسم النوع ',
+        'image.image' => 'خطأ فى إدخال الصورة ',
+
+        ]);
 
         if ($validator->fails()) {
             return response([
@@ -42,11 +46,16 @@ class TypeController extends Controller
 
             ]);
         }
+        $Type=new Type();
+        $Type->name=$request->name;
 
-        $Type = Type::create([
+        if ($file=$request->File('image')) {
 
-            'name' => $request->name
-        ]);
+            $Type->image= $this->upload_image($file);
+
+        }
+        $Type->save();
+
         return response([
             'status' => 'success',
             'data' => $Type
@@ -57,10 +66,16 @@ class TypeController extends Controller
     public function update(Request $request, $id)
     {
 
-        $Type = Type::find($id)->update([
+        $Type = Type::find($id);
+        $Type->name=$request->name;
 
-            'name' => $request->name
-        ]);
+        if ($file=$request->File('image')) {
+
+            $Type->image= $this->upload_image($file);
+
+        }
+        $Type->save();
+
         return response([
             'status' => 'نجاح ',
             'data' => $Type
@@ -82,6 +97,16 @@ class TypeController extends Controller
             ]);
 
         }
+    }
+
+    public function upload_image($file){
+
+
+
+        $imageName = time() . '.' .$file->getClientOriginalExtension();
+        $file->move('upload_images', $imageName);
+
+        return $imageName;
     }
 
 

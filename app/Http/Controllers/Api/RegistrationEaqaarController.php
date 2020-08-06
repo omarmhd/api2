@@ -4,9 +4,10 @@ namespace App\Http\Controllers\Api;
 
 use App\Http\Controllers\Controller;
 use App\Http\Resources\EaqaarResource;
-use App\RegistrationEaqaar;
+use App\Eaqaar;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Auth;
+use Illuminate\Support\Facades\DB;
 use Illuminate\Support\Facades\Validator;
 
 class RegistrationEaqaarController extends Controller
@@ -15,8 +16,8 @@ class RegistrationEaqaarController extends Controller
     public function index()
     {
 
-        $RegistrationEaqaars = RegistrationEaqaar::all();
-        return EaqaarResource::collection($RegistrationEaqaars);
+        $Eaqaar = Eaqaar::all();
+        return EaqaarResource::collection($Eaqaar);
     }
 
 
@@ -51,29 +52,30 @@ class RegistrationEaqaarController extends Controller
 
             ]);
         }
-        $RegistrationEaqaars = RegistrationEaqaar::create([
-            'user_id' => auth('api')->user()->id,
-            'type_id' => $request->type_id,
-            'plan_id' => $request->plan_id,
-            'state' => $request->state,
-            'area' => $request->area,
-            'square' =>  $request->square,
-            'Part_number' => $request->Part_number,
-            'space' => $request->space,
-            'Survey_number' => $request->Survey_number,
-            'name_seller' => $request->name_seller,
-            'card_seller' => $request->card_seller,
-            'phone_seller' => $request->phone_seller,
-            'date_buy' => $request->date_buy,
-            'price_buy' => $request->price_buy,
-            'Downpayment' => $request->Downpayment,
-            'Remaining_amount' => $request->Remaining_amount,
-            'estimated_price' => $request->estimated_price,
-            'image'=>$this->upload_image($request->file('image'))
+        $eqaar = new Eaqaar();
 
-        ]);
-        return EaqaarResource::collection($RegistrationEaqaars);
+        $eqaar->plan_id = $request->plan_id;
+        $eqaar->state = $request->state;
+        $eqaar->area = $request->area;
+        $eqaar->square = $request->square;
+        $eqaar->Part_number = $request->Part_number;
+        $eqaar->space = $request->space;
+        $eqaar->Survey_number = $request->Survey_number;
+        $eqaar->name_seller = $request->name_seller;
+        $eqaar->card_seller = $request->card_seller;
+        $eqaar->phone_seller = $request->phone_seller;
+        $eqaar->date_buy = $request->date_buy;
+        $eqaar->price_buy = $request->price_buy;
+        $eqaar->Downpayment = $request->Downpayment;
+        $eqaar->estimated_price = $request->estimated_price;
+        $eqaar->Remaining_amount = $request->price_buy - $request->Downpayment;
+        $eqaar->detials = $request->detials;
+        if ($file = $request->file('image')) {
 
+            $eqaar->image = $this->upload_image($file);
+        }
+        $eqaar->save();
+        return EaqaarResource::collection(Eaqaar::orderBy('id', 'desc')->take(1)->get());
     }
 
     public function Update(Request $request, $id)
@@ -96,8 +98,7 @@ class RegistrationEaqaarController extends Controller
             'price_buy' => 'required|Numeric',
             'Downpayment' => 'required|Numeric',
             'estimated_price' => 'required|Numeric',
-            'Remaining_amount' => 'required|Numeric',
-            'image' => 'image'
+            'image' => 'nullable|image'
         ]);
 
         if ($validator->fails()) {
@@ -108,40 +109,44 @@ class RegistrationEaqaarController extends Controller
             ]);
         }
 
-        $Users = RegistrationEaqaar::find($id)->update([
+        $eqaar = Eaqaar::find($id);;
 
-            'type_id' => $request->type_id,
-            'plan_id' => $request->plan_id,
-            'state' => $request->state,
-            'area' => $request->area,
-            'square' =>  $request->square,
-            'Part_number' => $request->Part_number,
-            'space' => $request->space,
-            'Survey_number' => $request->Survey_number,
-            'name_seller' => $request->name_seller,
-            'card_seller' => $request->card_seller,
-            'phone_seller' => $request->phone_seller,
-            'date_buy' => $request->date_buy,
-            'price_buy' => $request->price_buy,
-            'Downpayment' => $request->Downpayment,
-            'estimated_price' => $request->estimated_price,
-            'Remaining_amount' => $request->Remaining_amount,
-            'estimated_price' => $request->estimated_price,
-            'image'=>$this->upload_image($request->file('image'))
+        $eqaar->type_id = $request->type_id;
+        $eqaar->plan_id = $request->plan_id;
+        $eqaar->state = $request->state;
+        $eqaar->area = $request->area;
+        $eqaar->square = $request->square;
+        $eqaar->Part_number = $request->Part_number;
+        $eqaar->space = $request->space;
+        $eqaar->Survey_number = $request->Survey_number;
+        $eqaar->name_seller = $request->name_seller;
+        $eqaar->card_seller = $request->card_seller;
+        $eqaar->phone_seller = $request->phone_seller;
+        $eqaar->date_buy = $request->date_buy;
+        $eqaar->price_buy = $request->price_buy;
+        $eqaar->Downpayment = $request->Downpayment;
+        $eqaar->estimated_price = $request->estimated_price;
+        $eqaar->Remaining_amount = $request->price_buy - $request->Downpayment;
+        $eqaar->estimated_price = $request->estimated_price;
+        $eqaar->detials = $request->detials;
 
-        ]);
+        if ($file = $request->file('image')) {
+
+            $eqaar->image = $this->upload_image($file);
+        }
+        $eqaar->save;
         return response([
             'status' => 'success',
-            'data' => $Users,
+            'data' => $eqaar,
         ]);
     }
 
     public function destroy($id)
     {
 
-        $RegistrationEaqaar = RegistrationEaqaar::find($id)->delete();
+        $Eaqaar = Eaqaar::find($id)->delete();
 
-        if ($RegistrationEaqaar) {
+        if ($Eaqaar) {
             return response([
                 'status' => 'تم حذف العقار بنجاح ',
             ]);
@@ -152,13 +157,9 @@ class RegistrationEaqaarController extends Controller
     {
 
 
-        if ($file !== null) {
-            $imageName = time() . '.' . $file->getClientOriginalExtension();
-            $file->move('upload_images', $imageName);
+        $imageName = time() . '.' . $file->getClientOriginalExtension();
+        $file->move('upload_images', $imageName);
 
-            return $imageName;
-        } else {
-            return null;
-        }
+        return $imageName;
     }
 }
