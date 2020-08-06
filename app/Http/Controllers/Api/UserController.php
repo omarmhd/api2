@@ -76,6 +76,7 @@ class UserController extends Controller
         $uplodeimge = $request->file('image');
         $imageName = time() . '.' . $uplodeimge->getClientOriginalExtension();
         $uplodeimge->move('upload_images', $imageName);
+        $request['image']=$imageName;
         }
         $Users = User::create([
 
