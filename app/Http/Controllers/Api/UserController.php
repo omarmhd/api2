@@ -105,8 +105,8 @@ class UserController extends Controller
 
         $validator = Validator::make($request->all(), [
 
-            'full_name' => 'sometimes|unique:users,id,'.$id,
-            'login_name' => 'sometimes|unique:users,id,'.$id,
+            'full_name' => 'sometimes|unique:users,full_name,'.$id,
+            'login_name' => 'sometimes|unique:users,login_name,'.$id,
             'password' => 'required',
             'phone' => 'required|Numeric',
             'card'=>'required',
