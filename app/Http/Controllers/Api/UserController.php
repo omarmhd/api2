@@ -76,7 +76,6 @@ class UserController extends Controller
         $uplodeimge = $request->file('image');
         $imageName = time() . '.' . $uplodeimge->getClientOriginalExtension();
         $uplodeimge->move('upload_images', $imageName);
-        $request['image']=$imageName;
         }
         $Users = User::create([
 
@@ -90,7 +89,7 @@ class UserController extends Controller
             'phone' => $request->phone,
             'Commission' => $request->Commission,
             'account_number'=>$request->account_number,
-            'image'=>$request->image
+            'image'=> $imageName ?? 'null'
         ]);
         return response([
             'status' => 'تمت بنجاح ',

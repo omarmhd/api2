@@ -30,6 +30,11 @@ Route::group(['middleware' => ['auth:api']], function () {
     Route::post('/Expense_date','Api\ExpenseController@tofrom');
 
 });
+Route::apiResource('/receivables','Api\ReceivableController');
+
+Route::apiResource('/eaqaar_sale','Api\SoldEaqaarController');
+
+Route::apiResource('/eaqaar_sale','Api\SoldEaqaarController');
 Route::apiResource('/eaqaar','Api\RegistrationEaqaarController');
 Route::apiResource('/type','Api\TypeController');
 Route::apiResource('/plan','Api\PlanController');

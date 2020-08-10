@@ -15,7 +15,24 @@ class CreateSoldEaqaarsTable extends Migration
     {
         Schema::create('sold_eaqaars', function (Blueprint $table) {
             $table->id();
+            $table->unsignedBigInteger('user_id')->nullable();
+            $table->unsignedBigInteger('eaqaar_id')->nullable();
+
+            $table->string('name_buyer');
+
+            $table->string('card_buyer');
+            $table->string('phone_buyer');
+            $table->string('price_buy');
+            $table->string('Date_sale');
+            $table->string('Remaining_amount');
+            $table->string('Downpayment');
+            $table->string('due_date');
+
             $table->timestamps();
+            $table->foreign('user_id')->references('id')->on('users')->onDelete('cascade');
+            $table->foreign('eaqaar_id')->references('id')->on('eaqaars')->onDelete('cascade');
+
+
         });
     }
 

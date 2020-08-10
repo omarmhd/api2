@@ -26,7 +26,8 @@ class Eaqaar extends Model
         'Downpayment',
         'estimated_price',
         'image',
-        'detials'
+        'detials',
+        'due_date'
     ];
 
 

@@ -5,6 +5,8 @@ namespace App\Http\Controllers\Api;
 use App\Http\Controllers\Controller;
 use App\Http\Resources\EaqaarResource;
 use App\Eaqaar;
+use App\Plan;
+use App\Receivable;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Auth;
 use Illuminate\Support\Facades\DB;
@@ -52,8 +54,10 @@ class RegistrationEaqaarController extends Controller
 
             ]);
         }
-        $eqaar = new Eaqaar();
+        $Remaining_amount = $request->price_buy - $request->Downpayment;
 
+        $eqaar = new Eaqaar();
+        $eqaar->user_id = '1'; //auth('api')->user()->id;
         $eqaar->plan_id = $request->plan_id;
         $eqaar->state = $request->state;
         $eqaar->area = $request->area;
@@ -68,14 +72,27 @@ class RegistrationEaqaarController extends Controller
         $eqaar->price_buy = $request->price_buy;
         $eqaar->Downpayment = $request->Downpayment;
         $eqaar->estimated_price = $request->estimated_price;
-        $eqaar->Remaining_amount = $request->price_buy - $request->Downpayment;
+        $eqaar->Remaining_amount =  $Remaining_amount;
         $eqaar->detials = $request->detials;
+        $eqaar->due_date = $request->due_date;
+
         if ($file = $request->file('image')) {
 
             $eqaar->image = $this->upload_image($file);
         }
         $eqaar->save();
-        return EaqaarResource::collection(Eaqaar::orderBy('id', 'desc')->take(1)->get());
+
+        $eaqaar = Eaqaar::orderBy('id', 'desc')->take(1)->get();
+        $plan = Eaqaar::find($request->eaqaar_id)->plan;
+
+        Plan::where('id', $plan->id)->increment("count", 1);
+        Receivable::create([
+            'eaqaar_id' => $eqaar->id,
+            'type' => 'on',
+            'Remaining_amount' => $Remaining_amount,
+            'date' => $request->due_date
+        ]);
+        return EaqaarResource::collection($eaqaar);
     }
 
     public function Update(Request $request, $id)
@@ -113,7 +130,7 @@ class RegistrationEaqaarController extends Controller
 
         $eqaar->type_id = $request->type_id;
         $eqaar->plan_id = $request->plan_id;
-        $eqaar->state = $request->state;
+        $eqaar->state = 'متوفر';
         $eqaar->area = $request->area;
         $eqaar->square = $request->square;
         $eqaar->Part_number = $request->Part_number;
@@ -135,6 +152,7 @@ class RegistrationEaqaarController extends Controller
             $eqaar->image = $this->upload_image($file);
         }
         $eqaar->save;
+
         return response([
             'status' => 'success',
             'data' => $eqaar,

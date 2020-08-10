@@ -43,6 +43,7 @@ class PlanController extends Controller
         $plan = new Plan();
 
             $plan->name =  $request->name;
+            $plan->type_id= $request->type_id;
             if ($file=$request->hasFile('image')) {
 
                 $plan->image= $this->upload_image($file);
