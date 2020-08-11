@@ -18,7 +18,7 @@ class UserController extends Controller
     {
 
 
-        $Users = User::where('Role', '=', '2')->paginate(10);
+        $Users = User::all()->paginate(10);
         return UserResource::collection($Users);
     }
     public function profile()
@@ -105,8 +105,8 @@ class UserController extends Controller
 
         $validator = Validator::make($request->all(), [
 
-            'full_name' => 'sometimes|unique:users,full_name,'.$id,
-            'login_name' => 'sometimes|unique:users,login_name,'.$id,
+            'full_name' => 'unique:users,full_name,'.$id,
+            'login_name' => 'unique:users,login_name,'.$id,
             'password' => 'required',
             'phone' => 'required|Numeric',
             'card'=>'required',
