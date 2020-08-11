@@ -15,6 +15,8 @@ class UserResource extends JsonResource
     public function toArray($request)
     {
         return ([
+            'status'=>'success',
+            'data'=>[
           'login_name'=>$this->login_name,
           'full_name'=>$this->full_name,
           'Role'=>$this->Role,
@@ -25,7 +27,7 @@ class UserResource extends JsonResource
           'card'=>$this->card,
           'account_number'=>$this->account_number,
           'image_path'=>  asset('upload_images/'.$this->image) ,
-          'id'=>$this->id
+          'id'=>$this->id]
 
         ]);
     }
