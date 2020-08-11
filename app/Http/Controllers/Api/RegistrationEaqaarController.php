@@ -83,7 +83,7 @@ class RegistrationEaqaarController extends Controller
         $eqaar->save();
 
         $eaqaar = Eaqaar::orderBy('id', 'desc')->take(1)->get();
-        $plan = Eaqaar::find($request->eaqaar_id)->plan;
+        $plan = Eaqaar::find($eqaar->id)->plan;
 
         Plan::where('id', $plan->id)->increment("count", 1);
         Receivable::create([
@@ -163,6 +163,7 @@ class RegistrationEaqaarController extends Controller
     {
 
         $Eaqaar = Eaqaar::find($id)->delete();
+
 
         if ($Eaqaar) {
             return response([

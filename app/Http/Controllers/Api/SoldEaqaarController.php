@@ -196,8 +196,8 @@ class SoldEaqaarController extends Controller
         $plan=Eaqaar::find($sold_esqaar->eaqaar_id)->plan;
         Plan::where('id',$plan->id)->update([
 
-            'Remaining_amount'=>$request->price_buy - $request->Downpayment,
-            ''
+             'Remaining_amount'=>$request->price_buy - $request->Downpayment,
+            'due_date'=>$request->due_date
         ]);
         return response([
             'status' => 'success',

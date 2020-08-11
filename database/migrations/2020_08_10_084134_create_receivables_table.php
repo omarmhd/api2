@@ -21,6 +21,8 @@ class CreateReceivablesTable extends Migration
             $table->date('date');
 
             $table->timestamps();
+            $table->foreign('eaqaar_id')->references('id')->on('eaqaars')->onDelete('cascade');
+
         });
     }
 

@@ -23,6 +23,7 @@ class UserResource extends JsonResource
           'phone'=>$this->phone,
           'Commission'=>$this->Commission,
           'card'=>$this->card,
+          'account_number'=>$this->account_number,
           'image_path'=>  asset('upload_images/'.$this->image) ,
           'id'=>$this->id
 

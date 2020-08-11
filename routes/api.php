@@ -25,11 +25,12 @@ Route::group(['middleware' => ['auth:api']], function () {
 
     Route::apiResource('company','Api\CompanyController');
     Route::get('user-profile','Api\UserController@profile');
-    Route::apiResource('Expense','Api\ExpenseController');
-    Route::apiResource('ExpenseType','Api\ExpenseTypeController');
-    Route::post('/Expense_date','Api\ExpenseController@tofrom');
+
 
 });
+Route::apiResource('Expense','Api\ExpenseController');
+    Route::apiResource('ExpenseType','Api\ExpenseTypeController');
+    Route::post('/Expense_date','Api\ExpenseController@tofrom');
 Route::apiResource('/receivables','Api\ReceivableController');
 
 Route::apiResource('/eaqaar_sale','Api\SoldEaqaarController');
