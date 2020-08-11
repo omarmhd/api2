@@ -217,6 +217,8 @@ class SoldEaqaarController extends Controller
     public function destroy($id)
     {
         $soldEaqaar = soldEaqaar::find($id)->delete();
+        $Receivable=Receivable::where('eaqaar_id',$id)->delete();
+
         if ($soldEaqaar) {
             return response([
                 'status' => 'تم الحذف بنجاح ',

@@ -170,7 +170,7 @@ class UserController extends Controller
             $Users->image = $imageName;
             }
             $Users->save();
-            return UserResource::collection($Users);
+            return UserResource::collection($Users->get());
 
     }
     public function destroy($id)
