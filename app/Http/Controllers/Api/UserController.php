@@ -170,7 +170,8 @@ class UserController extends Controller
             $Users->image = $imageName;
             }
             $Users->save();
-  UserResource::collection(User::where('id',$id)->get());
+
+          return  UserResource::collection(User::where('id',$id)->get());
 
     }
     public function destroy($id)
