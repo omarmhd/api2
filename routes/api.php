@@ -28,6 +28,8 @@ Route::group(['middleware' => ['auth:api']], function () {
 
 
 });
+Route::get('all-users','Api\UserController@all_users');
+
 Route::apiResource('Expense','Api\ExpenseController');
     Route::apiResource('ExpenseType','Api\ExpenseTypeController');
     Route::post('/Expense_date','Api\ExpenseController@tofrom');

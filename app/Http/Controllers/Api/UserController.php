@@ -21,6 +21,14 @@ class UserController extends Controller
         $Users = User::where('Role', '=', '2')->paginate(10);
         return UserResource::collection($Users);
     }
+
+    public function all_users()
+    {
+
+
+        $Users = User::paginate(10);
+        return UserResource::collection($Users);
+    }
     public function profile()
     {
 
@@ -162,11 +170,8 @@ class UserController extends Controller
             $Users->image = $imageName;
             }
             $Users->save();
-        return response([
-            'status' => 'تمت بنجاح',
-            'data' => User::find($id)
+            return UserResource::collection($Users);
 
-        ]);
     }
     public function destroy($id)
     {
