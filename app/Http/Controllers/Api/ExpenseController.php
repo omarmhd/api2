@@ -7,7 +7,6 @@ use App\Http\Resources\ExpenseResource;
 
 use App\Expense;
 use Illuminate\Http\Request;
-use Illuminate\Support\Facades\DB;
 use Illuminate\Support\Facades\Validator;
 
 class ExpenseController extends Controller
@@ -20,8 +19,8 @@ class ExpenseController extends Controller
 
 
     public function tofrom(Request $request){
-        $from = $request->from;
-        $to =  $request->to;
+        $from =$request->from;
+        $to = $request->to;
         $return_paginate = $request->return_paginate;
 
         $validator = Validator::make($request->all(), [
@@ -47,7 +46,7 @@ class ExpenseController extends Controller
         $expenses=Expense::whereBetween('date', [$from, $to])->paginate(10);
         return ExpenseResource::collection($expenses);
     }else{
-        $expenses=DB::table('expenses')->whereBetween('date', [$from, $to])->get();
+        $expenses=Expense::whereBetween('date', [$from, $to])->get();
         return ExpenseResource::collection($expenses);
 
     }}

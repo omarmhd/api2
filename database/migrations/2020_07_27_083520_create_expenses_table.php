@@ -18,7 +18,7 @@ class CreateExpensesTable extends Migration
             $table->unsignedBigInteger('type_id')->nullable();
             $table->string('amount');
             $table->text('details');
-            $table->String('date');
+            $table->date('date');
 
 
             $table->timestamps();
