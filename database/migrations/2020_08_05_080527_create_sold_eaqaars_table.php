@@ -23,10 +23,10 @@ class CreateSoldEaqaarsTable extends Migration
             $table->string('card_buyer');
             $table->string('phone_buyer');
             $table->string('price_buy');
-            $table->string('Date_sale');
+            $table->date('Date_sale');
             $table->string('Remaining_amount');
             $table->string('Downpayment');
-            $table->string('due_date');
+            $table->date('due_date');
 
             $table->timestamps();
             $table->foreign('user_id')->references('id')->on('users')->onDelete('cascade');

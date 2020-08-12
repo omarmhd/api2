@@ -57,7 +57,7 @@ class RegistrationEaqaarController extends Controller
         $Remaining_amount = $request->price_buy - $request->Downpayment;
 
         $eqaar = new Eaqaar();
-        $eqaar->user_id = '1'; //auth('api')->user()->id;
+        $eqaar->user_id = auth('api')->user()->id;
         $eqaar->plan_id = $request->plan_id;
         $eqaar->state = $request->state;
         $eqaar->area = $request->area;
@@ -75,6 +75,7 @@ class RegistrationEaqaarController extends Controller
         $eqaar->Remaining_amount =  $Remaining_amount;
         $eqaar->detials = $request->detials;
         $eqaar->due_date = $request->due_date;
+        $eqaar->status = 'مباع';
 
         if ($file = $request->file('image')) {
 
@@ -89,10 +90,11 @@ class RegistrationEaqaarController extends Controller
         Receivable::create([
             'eaqaar_id' => $eqaar->id,
             'type' => 'on',
+            'user_name' => auth('api')->user()->full_name,
             'Remaining_amount' => $Remaining_amount,
             'date' => $request->due_date
         ]);
-        return EaqaarResource::collection($eaqaar);
+        return EaqaarResource::collection($eaqaar->first);
     }
 
     public function Update(Request $request, $id)
@@ -130,7 +132,7 @@ class RegistrationEaqaarController extends Controller
 
         $eqaar->type_id = $request->type_id;
         $eqaar->plan_id = $request->plan_id;
-        $eqaar->state = 'متوفر';
+        $eqaar->state = $request->state;
         $eqaar->area = $request->area;
         $eqaar->square = $request->square;
         $eqaar->Part_number = $request->Part_number;
@@ -161,8 +163,9 @@ class RegistrationEaqaarController extends Controller
 
     public function destroy($id)
     {
-
+        $plan = Eaqaar::find($id)->plan;
         $Eaqaar = Eaqaar::find($id)->delete();
+        Plan::where('id', $plan->id)->decrement("count", 1);
 
 
         if ($Eaqaar) {

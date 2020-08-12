@@ -23,9 +23,9 @@ class SoldEaqaarResource extends JsonResource
             'price_buy'=>$this->price_buy,
             'Date_sale'=>$this->Date_sale,
             'Downpayment'=>$this->Downpayment,
-
             'Remaining_amount'=>$this->Remaining_amount,
             'due_date'=>$this->due_date,
+            'image'=>asset('upload_images/'.$this->eaqaar->image),
             'user'=>$this->user,
 
         ]);

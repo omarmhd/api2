@@ -16,6 +16,8 @@ class CreateReceivablesTable extends Migration
         Schema::create('receivables', function (Blueprint $table) {
             $table->id();
             $table->unsignedBigInteger('eaqaar_id')->nullable();
+            $table->string('user_name');
+
             $table->string('type');
             $table->string('Remaining_amount');
             $table->date('date');

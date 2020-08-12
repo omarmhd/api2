@@ -7,6 +7,7 @@ use App\Http\Controllers\Controller;
 use App\Type;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\DB;
+use Illuminate\Support\Facades\File;
 use Illuminate\Support\Facades\Validator;
 
 class TypeController extends Controller
@@ -34,8 +35,9 @@ class TypeController extends Controller
             'name' => 'required|unique:types',
             'image' => 'nullable|image',
 
-        ], ['name.required' => 'الرجاء إدخال اسم النوع ',
-        'image.image' => 'خطأ فى إدخال الصورة ',
+        ], [
+            'name.required' => 'الرجاء إدخال اسم النوع ',
+            'image.image' => 'خطأ فى إدخال الصورة ',
 
         ]);
 
@@ -46,13 +48,12 @@ class TypeController extends Controller
 
             ]);
         }
-        $Type=new Type();
-        $Type->name=$request->name;
+        $Type = new Type();
+        $Type->name = $request->name;
 
-        if ($file=$request->File('image')) {
+        if ($file = $request->File('image')) {
 
-            $Type->image= $this->upload_image($file);
-
+            $Type->image = asset('upload_images/' . $this->upload_image($file));
         }
         $Type->save();
 
@@ -67,12 +68,11 @@ class TypeController extends Controller
     {
 
         $Type = Type::find($id);
-        $Type->name=$request->name;
+        $Type->name = $request->name;
 
-        if ($file=$request->File('image')) {
+        if ($file = $request->File('image')) {
 
-            $Type->image= $this->upload_image($file);
-
+            $Type->image = asset('upload_images/'.$this->upload_image($file));
         }
         $Type->save();
 
@@ -83,31 +83,33 @@ class TypeController extends Controller
     }
 
 
-    public function destroy(Request $request, $id){
+    public function destroy(Request $request, $id)
+    {
 
-        $type=Type::find($id)->delete();
+        $type = Type::find($id);
 
-        if($type){
 
+        if (file_exists($type->image)) {
+            File::delete($type->image);
+        }
+        $type->delete();
+        if ($type) {
             return response([
-                'status'=>'نجاح ',
-                'message'=>'تم الحذف بنجاح ',
-
+                'status' => 'نجاح ',
+                'message' => 'تم الحذف بنجاح ',
 
             ]);
-
         }
     }
 
-    public function upload_image($file){
+    public function upload_image($file)
+    {
 
 
 
-        $imageName = time() . '.' .$file->getClientOriginalExtension();
+        $imageName = time() . '.' . $file->getClientOriginalExtension();
         $file->move('upload_images', $imageName);
 
         return $imageName;
     }
-
-
 }

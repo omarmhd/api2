@@ -30,4 +30,9 @@ class SoldEaqaar extends Model
 
         return $this->belongsTo('App\Eaqaar');
     }
+
+
+
+
+
 }

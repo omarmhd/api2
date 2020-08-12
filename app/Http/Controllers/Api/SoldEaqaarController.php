@@ -85,8 +85,8 @@ class SoldEaqaarController extends Controller
 
         $Remaining_amount=$request->price_buy - $request->Downpayment;
         $sold_esqaar = SoldEaqaar::create([
-            'user_id' => 1,
-            "eaqaar_id" => $request->eaqaar_id,
+            'user_id' =>1, //auth('api')->user()->id,
+            'eaqaar_id' => $request->eaqaar_id,
             'name_buyer' => $request->name_buyer,
             'card_buyer' => $request->card_buyer,
             'phone_buyer' => $request->phone_buyer,
@@ -106,14 +106,17 @@ class SoldEaqaarController extends Controller
         Receivable::create([
         'eaqaar_id'=>$request->eaqaar_id,
         'type'=>'to',
+        'user_name'=>$request->name_buyer,
         'Remaining_amount'=> $Remaining_amount,
 
         'date'=>$request->due_date
         ]);
+    $sold= SoldEaqaar::orderBy('id', 'desc')->take(1)->get();
+
         $plan=Eaqaar::find($request->eaqaar_id)->plan;
         Plan::where('id',$plan->id)->decrement("count",1);
 
-        return SoldEaqaarResource::collection( $sold_esqaar);
+        return SoldEaqaarResource::collection($sold);
 
     }
 

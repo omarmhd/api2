@@ -17,28 +17,27 @@ use Illuminate\Support\Facades\Route;
 Route::middleware('auth:api')->get('/user', function (Request $request) {
     return $request->user();
 });
-Route::post('login','Api\AuthController@login');
-Route::post('register','Api\AuthController@register');
-Route::apiResource('user','Api\UserController');
+Route::post('login', 'Api\AuthController@login');
+Route::post('register', 'Api\AuthController@register');
 
 Route::group(['middleware' => ['auth:api']], function () {
+    Route::get('all-users', 'Api\UserController@all_users');
+    Route::apiResource('user', 'Api\UserController');
 
-    Route::apiResource('company','Api\CompanyController');
-    Route::get('user-profile','Api\UserController@profile');
-
-
+    Route::apiResource('company', 'Api\CompanyController');
+    Route::get('user-profile', 'Api\UserController@profile');
+    Route::apiResource('/eaqaar', 'Api\RegistrationEaqaarController');
 });
-Route::get('all-users','Api\UserController@all_users');
 
-Route::apiResource('Expense','Api\ExpenseController');
-    Route::apiResource('ExpenseType','Api\ExpenseTypeController');
-    Route::post('/Expense_date','Api\ExpenseController@tofrom');
-Route::apiResource('/receivables','Api\ReceivableController');
 
-Route::apiResource('/eaqaar_sale','Api\SoldEaqaarController');
+Route::apiResource('Expense', 'Api\ExpenseController');
+Route::apiResource('ExpenseType', 'Api\ExpenseTypeController');
+Route::post('/Expense_date', 'Api\ExpenseController@tofrom');
 
-Route::apiResource('/eaqaar_sale','Api\SoldEaqaarController');
-Route::apiResource('/eaqaar','Api\RegistrationEaqaarController');
-Route::apiResource('/type','Api\TypeController');
-Route::apiResource('/plan','Api\PlanController');
+Route::apiResource('/receivables', 'Api\ReceivableController');
+Route::post('/receivables-date', 'Api\ReceivableController@from_to');
 
+Route::apiResource('/eaqaar_sale', 'Api\SoldEaqaarController');
+
+Route::apiResource('/type', 'Api\TypeController');
+Route::apiResource('/plan', 'Api\PlanController');

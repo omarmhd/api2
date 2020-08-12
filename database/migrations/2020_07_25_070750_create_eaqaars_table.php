@@ -32,7 +32,7 @@ class CreateEaqaarsTable extends Migration
             $table->string('name_seller');
             $table->string('card_seller');
             $table->string('phone_seller');
-            $table->string('date_buy');
+            $table->date('date_buy');
             $table->string('price_buy');
             $table->string('image')->nullable();
             $table->string('Remaining_amount');
@@ -40,7 +40,7 @@ class CreateEaqaarsTable extends Migration
             $table->string('estimated_price');
             $table->string('detials')->nullable();
             $table->string('status')->default('متوفر');
-            $table->string('due_date');
+            $table->date('due_date');
 
             $table->timestamps();
 

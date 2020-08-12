@@ -21,8 +21,6 @@ class ReceivableController extends Controller
 
     public function  from_to(Request $request)
     {
-        $to = $request->to;
-        $from = $request->from;
 
         $return_paginate = $request->return_paginate;
 
@@ -43,13 +41,16 @@ class ReceivableController extends Controller
                 'errors' => $validator->errors()
 
             ]);
-        }
 
+
+        }
+        $to = $request->to;
+        $from = $request->from;
         if ($return_paginate == 1) {
-            $Receivables = Receivable::whereBetween('date', [$from, $to])->paginate(10);
+            $Receivables = Receivable::whereBetween('date', [$from, $to])->where('type',$request->type)->paginate(10);
             return ReceivableResource::collection($Receivables);
         } else {
-            $Receivables = Receivable::whereBetween('date', [$from, $to])->get();
+            $Receivables = Receivable::whereBetween('date', [$from, $to])->where('type',$request->type)->get();
             return ReceivableResource::collection($Receivables);
         }
     }

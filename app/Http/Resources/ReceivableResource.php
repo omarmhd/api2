@@ -15,10 +15,11 @@ class ReceivableResource extends JsonResource
     public function toArray($request)
     {
         return ([
-
             'id'=>$this->id,
+            'user_name'=>$this->user_name,
             'type'=>$this->type,
             'date'=>$this->date,
+
 
 
             ]);

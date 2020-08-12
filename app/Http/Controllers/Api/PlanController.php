@@ -7,13 +7,14 @@ use App\Plan;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Validator;
 use App\Http\Controllers\Controller;
+use Illuminate\Support\Facades\File;
 
 class PlanController extends Controller
 {
     public function index()
     {
         $plan = Plan::all();
-              return PlanResource::collection($plan);
+        return PlanResource::collection($plan);
     }
 
 
@@ -21,7 +22,7 @@ class PlanController extends Controller
     {
         return response([
             'status' => 'success',
-            'data' => Plan::where('type_id',$id)->get()
+            'data' => Plan::where('type_id', $id)->get()
         ]);
     }
 
@@ -30,7 +31,8 @@ class PlanController extends Controller
 
 
         $validator = Validator::make($request->all(), [
-            'name' => 'required|unique:types'], ['name.required' => 'الرجاء إدخال إسم المخطط']);
+            'name' => 'required|unique:types'
+        ], ['name.required' => 'الرجاء إدخال إسم المخطط']);
 
         if ($validator->fails()) {
             return response([
@@ -42,14 +44,13 @@ class PlanController extends Controller
 
         $plan = new Plan();
 
-            $plan->name =  $request->name;
-            $plan->type_id= $request->type_id;
-            if ($file=$request->hasFile('image')) {
+        $plan->name =  $request->name;
+        $plan->type_id = $request->type_id;
+        if ($request->hasFile('image')) {
 
-                $plan->image= $this->upload_image($file);
-
-            }
-            $plan->save();
+            $plan->image = asset('upload_images/'.$this->upload_image($request->file('image')));
+        }
+        $plan->save();
 
 
         return response([
@@ -61,12 +62,9 @@ class PlanController extends Controller
     {
 
         $plan = Plan::find($id);
-
         $plan->name =  $request->name;
-        if ($file=$request->hasFile('image')) {
-
-            $plan->image= $this->upload_image($file);
-
+        if ($request->hasFile('image')) {
+            $plan->image = asset('upload_images/'.$this->upload_image($request->file('image')));
         }
         $plan->save();
 
@@ -77,32 +75,35 @@ class PlanController extends Controller
     }
 
 
-    public function destroy(Request $request, $id){
+    public function destroy(Request $request, $id)
+    {
 
-        $Plan=Plan::find($id)->delete();
+        $Plan = Plan::find($id);
 
-        if($Plan){
+        if (file_exists($Plan->image)) {
+            File::delete($Plan->image);
+        }
+        $Plan->delete();
+        if ($Plan) {
 
             return response([
-                'status'=>'نجاح ',
-                'message'=>'تم الحذف بنجاح ',
+                'status' => 'نجاح ',
+                'message' => 'تم الحذف بنجاح ',
 
 
             ]);
-
         }
     }
 
 
-    public function upload_image($file){
+    public function upload_image($file)
+    {
 
 
 
-        $imageName = time() . '.' .$file->getClientOriginalExtension();
+        $imageName = time() . '.' . $file->getClientOriginalExtension();
         $file->move('upload_images', $imageName);
 
         return $imageName;
     }
-
-
 }
