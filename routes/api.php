@@ -34,6 +34,7 @@ Route::apiResource('Expense', 'Api\ExpenseController');
 Route::apiResource('ExpenseType', 'Api\ExpenseTypeController');
 Route::post('/Expense_date', 'Api\ExpenseController@tofrom');
 
+
 Route::apiResource('/receivables', 'Api\ReceivableController');
 Route::post('/receivables-date', 'Api\ReceivableController@from_to');
 
