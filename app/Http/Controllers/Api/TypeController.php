@@ -67,6 +67,24 @@ class TypeController extends Controller
     public function update(Request $request, $id)
     {
 
+        $validator = Validator::make($request->all(), [
+            'name' => 'required|unique:types',
+            'image' => 'nullable|image',
+
+        ], [
+            'name.required' => 'الرجاء إدخال اسم النوع ',
+            'image.image' => 'خطأ فى إدخال الصورة ',
+
+        ]);
+
+        if ($validator->fails()) {
+            return response([
+                'status' => 'errors',
+                'errors' => $validator->errors()
+
+            ]);
+        }
+
         $Type = Type::find($id);
         $Type->name = $request->name;
 
