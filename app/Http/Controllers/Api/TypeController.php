@@ -72,7 +72,6 @@ class TypeController extends Controller
             'image' => 'nullable|image',
 
         ], [
-            'name.required' => 'الرجاء إدخال اسم النوع ',
             'image.image' => 'خطأ فى إدخال الصورة ',
 
         ]);
