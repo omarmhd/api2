@@ -68,7 +68,7 @@ class TypeController extends Controller
     {
 
         $validator = Validator::make($request->all(), [
-            'name' => 'unique:types',
+            'name' => 'required|unique:types,name,'.$id,
             'image' => 'nullable|image',
 
         ], [

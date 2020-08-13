@@ -61,6 +61,18 @@ class PlanController extends Controller
     public function update(Request $request, $id)
     {
 
+        $validator = Validator::make($request->all(), [
+            'name' => 'required|unique:types,name,'.$id
+        ], ['name.required' => 'الرجاء إدخال إسم المخطط']);
+
+        if ($validator->fails()) {
+            return response([
+                'status' => 'errors',
+                'errors' => $validator->errors()
+
+            ]);
+        }
+
         $plan = Plan::find($id);
         $plan->name =  $request->name;
         if ($request->hasFile('image')) {
