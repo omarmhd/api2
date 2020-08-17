@@ -42,7 +42,7 @@ class RegistrationEaqaarController extends Controller
             'date_buy' => 'required|date',
             'price_buy' => 'required|Numeric',
             'Downpayment' => 'required|Numeric',
-            'estimated_price' => 'required|Numeric',
+            'estim ated_price' => 'required|Numeric',
             'Remaining_amount' => 'required|Numeric',
             'image_card' => 'nullable|image',
             'image' => 'nullable|image'
@@ -115,11 +115,11 @@ class RegistrationEaqaarController extends Controller
         $validator = Validator::make($request->all(), [
 
             'state' => 'required',
-            'area' => 'required|Numeric',
-            'square' => 'required|Numeric',
-            'Part_number' => 'required|Numeric',
-            'space' => 'required|Numeric',
-            'Survey_number' => 'required|Numeric',
+            'area' => 'required',
+            'square' => 'required',
+            'Part_number' => 'required',
+            'space' => 'required',
+            'Survey_number' => 'required',
             'name_seller' => 'required|string',
             'card_seller' => 'required|Numeric',
             'phone_seller' => 'required|Numeric',
