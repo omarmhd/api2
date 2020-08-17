@@ -27,7 +27,8 @@ class Eaqaar extends Model
         'estimated_price',
         'image',
         'detials',
-        'due_date'
+        'due_date',
+        'image_card'
     ];
 
 

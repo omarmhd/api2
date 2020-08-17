@@ -31,11 +31,11 @@ class RegistrationEaqaarController extends Controller
         $validator = Validator::make($request->all(), [
 
             'state' => 'required',
-            'area' => 'required|Numeric',
-            'square' => 'required|Numeric',
-            'Part_number' => 'required|Numeric',
-            'space' => 'required|Numeric',
-            'Survey_number' => 'required|Numeric',
+            'area' => 'required',
+            'square' => 'required',
+            'Part_number' => 'required',
+            'space' => 'required',
+            'Survey_number' => 'required',
             'name_seller' => 'required|string',
             'card_seller' => 'required|Numeric',
             'phone_seller' => 'required|Numeric',
@@ -44,6 +44,7 @@ class RegistrationEaqaarController extends Controller
             'Downpayment' => 'required|Numeric',
             'estimated_price' => 'required|Numeric',
             'Remaining_amount' => 'required|Numeric',
+            'image_card'=>'required|image'
 
         ]);
 
@@ -57,7 +58,7 @@ class RegistrationEaqaarController extends Controller
         $Remaining_amount = $request->price_buy - $request->Downpayment;
 
         $eqaar = new Eaqaar();
-        $eqaar->user_id = auth('api')->user()->id;
+       $eqaar->user_id =auth('api')->user()->id;
         $eqaar->plan_id = $request->plan_id;
         $eqaar->state = $request->state;
         $eqaar->area = $request->area;
@@ -75,18 +76,26 @@ class RegistrationEaqaarController extends Controller
         $eqaar->Remaining_amount =  $Remaining_amount;
         $eqaar->detials = $request->detials;
         $eqaar->due_date = $request->due_date;
-        $eqaar->status = 'مباع';
+        $eqaar->status = 'متوفر';
 
-        if ($file = $request->file('image')) {
+        if ( $request->file('image')) {
+            $file = $request->file('image');
+            $eqaar->image = asset('upload_images/'.$this->upload_image($file));
+        }
 
-            $eqaar->image = $this->upload_image($file);
+        if( $file2=$request->file('image_card')) {
+
+        $image = time()+'2' . '.' . $file2->getClientOriginalExtension();
+        $file2->move('upload_images', $image);
+
+            $eqaar->image_card = asset('upload_images/'. $image);
         }
         $eqaar->save();
 
-        $eaqaar = Eaqaar::orderBy('id', 'desc')->take(1)->get();
-        $plan = Eaqaar::find($eqaar->id)->plan;
+       $eaqaar = Eaqaar::orderBy('id','desc')->take(1)->get();
+     $plan = Eaqaar::find($eqaar->id)->plan;
 
-        Plan::where('id', $plan->id)->increment("count", 1);
+     Plan::where('id', $plan->id)->increment("count", 1);
         Receivable::create([
             'eaqaar_id' => $eqaar->id,
             'type' => 'on',
@@ -94,7 +103,7 @@ class RegistrationEaqaarController extends Controller
             'Remaining_amount' => $Remaining_amount,
             'date' => $request->due_date
         ]);
-        return EaqaarResource::collection($eaqaar->first);
+        return EaqaarResource::collection( $eaqaar);
     }
 
     public function Update(Request $request, $id)
@@ -117,7 +126,8 @@ class RegistrationEaqaarController extends Controller
             'price_buy' => 'required|Numeric',
             'Downpayment' => 'required|Numeric',
             'estimated_price' => 'required|Numeric',
-            'image' => 'nullable|image'
+            'image' => 'nullable|image',
+            'image_card' => 'nullable|image'
         ]);
 
         if ($validator->fails()) {
@@ -151,7 +161,14 @@ class RegistrationEaqaarController extends Controller
 
         if ($file = $request->file('image')) {
 
-            $eqaar->image = $this->upload_image($file);
+            $eqaar->image = asset('upload_images/'.$this->upload_image($file));
+        }
+        if ($file2 = $request->file('image_card')) {
+
+            $image = time()+'2' . '.' . $file2->getClientOriginalExtension();
+            $file2->move('upload_images', $image);
+
+                $eqaar->image_card = asset('upload_images/'. $image);
         }
         $eqaar->save;
 

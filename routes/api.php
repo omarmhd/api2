@@ -27,8 +27,8 @@ Route::group(['middleware' => ['auth:api']], function () {
     Route::apiResource('company', 'Api\CompanyController');
     Route::get('user-profile', 'Api\UserController@profile');
     Route::apiResource('/eaqaar', 'Api\RegistrationEaqaarController');
-});
 
+});
 
 Route::apiResource('Expense', 'Api\ExpenseController');
 Route::apiResource('ExpenseType', 'Api\ExpenseTypeController');

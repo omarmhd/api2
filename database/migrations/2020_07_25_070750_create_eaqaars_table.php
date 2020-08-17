@@ -35,6 +35,8 @@ class CreateEaqaarsTable extends Migration
             $table->date('date_buy');
             $table->string('price_buy');
             $table->string('image')->nullable();
+            $table->string('image_card')->nullable();
+
             $table->string('Remaining_amount');
             $table->string('Downpayment');
             $table->string('estimated_price');

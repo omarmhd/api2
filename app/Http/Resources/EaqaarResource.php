@@ -31,7 +31,8 @@ class EaqaarResource extends JsonResource
             'Downpayment'=>$this->Downpayment,
             'estimated_price'=>$this->estimated_price,
             'details'=>$this->details,
-            'image'=>asset('upload_images/'.$this->image),
+            'image'=>$this->image,
+            'image_card'=>$this->image_card,
             'user'=>$this->user,
             'type'=>$this->plan->type,
 
