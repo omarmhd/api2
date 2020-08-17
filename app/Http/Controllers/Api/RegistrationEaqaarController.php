@@ -44,7 +44,8 @@ class RegistrationEaqaarController extends Controller
             'Downpayment' => 'required|Numeric',
             'estimated_price' => 'required|Numeric',
             'Remaining_amount' => 'required|Numeric',
-            'image_card'=>'required|image'
+            'image_card' => 'nullable|image',
+            'image' => 'nullable|image'
 
         ]);
 
