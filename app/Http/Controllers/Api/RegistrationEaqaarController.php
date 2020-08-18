@@ -95,7 +95,7 @@ class RegistrationEaqaarController extends Controller
 
        $eaqaar = Eaqaar::orderBy('id','desc')->take(1)->get();
 
-    // Plan::where('id', $eqaar->plan_id)->increment('count', 1);
+    Plan::find($eqaar->plan_id)->increment('count', 1);
         Receivable::create([
             'eaqaar_id' => $eqaar->id,
             'type' => 'on',
