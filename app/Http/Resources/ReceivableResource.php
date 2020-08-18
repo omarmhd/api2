@@ -19,7 +19,7 @@ class ReceivableResource extends JsonResource
             'user_name'=>$this->user_name,
             'type'=>$this->type,
             'date'=>$this->date,
-
+            'Remaining_amount'=>$this->Remaining_amount
 
 
             ]);

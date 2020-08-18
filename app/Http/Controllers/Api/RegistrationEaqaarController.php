@@ -101,13 +101,14 @@ class RegistrationEaqaarController extends Controller
 
 
    // Plan::find($eqaar->plan_id)->increment('count', 1);
+   if( $Remaining_amount>0){
         Receivable::create([
             'eaqaar_id' => $eqaar->id,
             'type' => 'on',
             'user_name' => auth('api')->user()->full_name,
             'Remaining_amount' => $Remaining_amount,
             'date' => $request->due_date
-        ]);
+        ]);}
         return EaqaarResource::collection( $eaqaar);
     }
 
