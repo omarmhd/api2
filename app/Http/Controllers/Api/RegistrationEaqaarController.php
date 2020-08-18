@@ -143,7 +143,7 @@ class RegistrationEaqaarController extends Controller
 
             ]);
         }
-
+        $Remaining_amount =  $request->price_buy - $request->Downpayment;
         $eqaar = Eaqaar::find($id);;
 
         $eqaar->type_id = $request->type_id;
@@ -164,6 +164,8 @@ class RegistrationEaqaarController extends Controller
         $eqaar->Remaining_amount = $request->price_buy - $request->Downpayment;
         $eqaar->estimated_price = $request->estimated_price;
         $eqaar->detials = $request->detials;
+        $eqaar->due_date = $request->due_date;
+
 
         if ($file = $request->file('image')) {
 
@@ -176,8 +178,16 @@ class RegistrationEaqaarController extends Controller
 
                 $eqaar->image_card = asset('upload_images/'. $image);
         }
+
+
+
         $eqaar->save;
 
+        Receivable::where('eaqaar_id',$id)->update([
+
+            'Remaining_amount' => $Remaining_amount,
+            'date' => $request->due_date
+        ]);
         return response([
             'status' => 'success',
             'data' => $eqaar,
@@ -188,6 +198,8 @@ class RegistrationEaqaarController extends Controller
     {
         $plan = Eaqaar::find($id)->plan;
         $Eaqaar = Eaqaar::find($id)->delete();
+
+        Receivable::where('eaqaar_id',$id)->delete();
         Plan::where('id', $plan->id)->decrement("count", 1);
 
 
