@@ -96,7 +96,7 @@ class RegistrationEaqaarController extends Controller
        $eaqaar = Eaqaar::orderBy('id','desc')->take(1)->get();
 
        $Plan = Plan::find($eqaar->plan_id);
-       $Plan = $Plan->count + 1;
+       $count = $Plan->count + 1;
        $Plan->update(['count' => $Plan]);
 
 
