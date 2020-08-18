@@ -200,9 +200,9 @@ class RegistrationEaqaarController extends Controller
 
 
 
-    public function paginate_eqaars(){
+    public function search_eqaars(Request $request){
 
-        $Eaqaar = Eaqaar::paginate(10);
+        $Eaqaar = Eaqaar::where('plan_id',$request->plan_id)->paginate(10);
         return EaqaarResource::collection($Eaqaar);
 
     }
