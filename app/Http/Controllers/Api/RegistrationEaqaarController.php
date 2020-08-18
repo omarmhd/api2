@@ -42,7 +42,7 @@ class RegistrationEaqaarController extends Controller
             'date_buy' => 'required|date',
             'price_buy' => 'required|Numeric',
             'Downpayment' => 'required|Numeric',
-            'estim ated_price' => 'required|Numeric',
+            'estimated_price' => 'required|Numeric',
             'Remaining_amount' => 'required|Numeric',
             'image_card' => 'nullable|image',
             'image' => 'nullable|image'
