@@ -14,7 +14,7 @@ class ReceivableResource extends JsonResource
      */
     public function toArray($request)
     {
-        return ([
+        return [
             'id'=>$this->id,
             'user_name'=>$this->user_name,
             'type'=>$this->type,
@@ -22,6 +22,6 @@ class ReceivableResource extends JsonResource
             'Remaining_amount'=>$this->Remaining_amount
 
 
-            ]);
+            ];
     }
 }

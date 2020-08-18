@@ -198,6 +198,14 @@ class RegistrationEaqaarController extends Controller
         }
     }
 
+
+
+    public function all_eqaars(){
+
+        $Eaqaar = Eaqaar::paginate(10);
+        return EaqaarResource::collection($Eaqaar);
+
+    }
     public function upload_image($file)
     {
 

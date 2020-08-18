@@ -14,8 +14,9 @@ class EaqaarResource extends JsonResource
      */
     public function toArray($request)
     {
-        return ([
-
+        return [
+            'status'=>'success',
+              'data'=>[
              'id'=>$this->id,
              'state'=>$this->state,
              'area'=>$this->area,
@@ -36,7 +37,7 @@ class EaqaarResource extends JsonResource
             'user'=>$this->user,
             'type'=>$this->plan->type,
 
-            'plan'=>$this->plan,
-            ]);
+            'plan'=>$this->plan,]
+            ];
     }
 }

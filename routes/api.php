@@ -29,6 +29,7 @@ Route::group(['middleware' => ['auth:api']], function () {
     Route::apiResource('/eaqaar', 'Api\RegistrationEaqaarController');
 
 });
+Route::get('all-eqaars', 'Api\RegistrationEaqaarController@all_eqaars');
 
 Route::apiResource('Expense', 'Api\ExpenseController');
 Route::apiResource('ExpenseType', 'Api\ExpenseTypeController');
