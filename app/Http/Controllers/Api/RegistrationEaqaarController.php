@@ -200,7 +200,7 @@ class RegistrationEaqaarController extends Controller
 
 
 
-    public function all_eqaars(){
+    public function paginate_eqaars(){
 
         $Eaqaar = Eaqaar::paginate(10);
         return EaqaarResource::collection($Eaqaar);
