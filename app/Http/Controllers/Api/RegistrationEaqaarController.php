@@ -97,7 +97,7 @@ class RegistrationEaqaarController extends Controller
 
        $Plan = Plan::find($eqaar->plan_id);
        $count = $Plan->count + 1;
-       $Plan->update(['count' => $Plan]);
+       $Plan->update(['count' =>  $count]);
 
 
    // Plan::find($eqaar->plan_id)->increment('count', 1);
