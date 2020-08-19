@@ -45,7 +45,8 @@ class RegistrationEaqaarController extends Controller
             'estimated_price' => 'required|Numeric',
             'Remaining_amount' => 'required|Numeric',
             'image_card' => 'nullable|image',
-            'image' => 'nullable|image'
+            'image' => 'nullable|image',
+            'url'=>'nullable|url'
 
         ]);
 
@@ -133,7 +134,9 @@ class RegistrationEaqaarController extends Controller
             'Downpayment' => 'required|Numeric',
             'estimated_price' => 'required|Numeric',
             'image' => 'nullable|image',
-            'image_card' => 'nullable|image'
+            'image_card' => 'nullable|image',
+            'url'=>'nullable|url'
+
         ]);
 
         if ($validator->fails()) {
@@ -218,12 +221,15 @@ class RegistrationEaqaarController extends Controller
 
 
 
-            $Eaqaar= Eaqaar::where('plan_id',$request->plan_id)->orwhere('state','like','%'. $request->search .'%')
-            ->orwhere('state','like','%'. $request->search .'%')
-            ->orwhere('area','like','%'. $request->search .'%')
-            ->orwhere('square','like','%'. $request->search .'%')
-            ->orwhere('space','like','%'. $request->search .'%')
-            ->orwhere('price_buy','like','%'. $request->search .'%')
+            $Eaqaar= Eaqaar::where('plan_id',$request->plan_id)
+            ->where('state','like','%'. $request->search .'%')
+            ->where('state','like','%'. $request->search .'%')
+            ->where('area','like','%'. $request->search .'%')
+            ->where('square','like','%'. $request->search .'%')
+            ->where('space','like','%'. $request->search .'%')
+            ->where('price_buy','like','%'. $request->search .'%')
+            ->where('detials','like','%'. $request->search .'%')
+
             ->paginate(10);
 
 
