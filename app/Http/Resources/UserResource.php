@@ -14,6 +14,19 @@ class UserResource extends JsonResource
      */
     public function toArray($request)
     {
+
+
+        if($this->image=='null'){
+
+
+            $img =$this->image;
+        }else{
+
+
+           $img= asset('upload_images/'.$this->image);
+        }
+
+
         return ([
             'status'=>'success',
             'data'=>[
@@ -26,7 +39,7 @@ class UserResource extends JsonResource
           'Commission'=>$this->Commission,
           'card'=>$this->card,
           'account_number'=>$this->account_number,
-          'image_path'=>  asset('upload_images/'.$this->image) ,
+          'image_path'=>$img ,
           'id'=>$this->id]
 
         ]);
