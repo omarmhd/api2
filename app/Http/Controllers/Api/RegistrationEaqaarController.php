@@ -223,7 +223,6 @@ class RegistrationEaqaarController extends Controller
 
             $Eaqaar= Eaqaar::where('plan_id',$request->plan_id)
             ->orwhere('state','like','%'. $request->search .'%')
-            ->orwhere('state','like','%'. $request->search .'%')
             ->orwhere('area','like','%'. $request->search .'%')
             ->orwhere('square','like','%'. $request->search .'%')
             ->orwhere('space','like','%'. $request->search .'%')
