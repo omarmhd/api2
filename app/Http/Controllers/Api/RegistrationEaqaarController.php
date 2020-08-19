@@ -239,6 +239,10 @@ class RegistrationEaqaarController extends Controller
             ->union($state)
             ->union($area)
             ->union($square)
+            ->union($space)
+            ->union($price_buy)
+            ->union($detials)
+
             ->paginate(10);
 
         return EaqaarResource::collection($Eaqaar);
