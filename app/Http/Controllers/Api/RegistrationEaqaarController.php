@@ -221,16 +221,25 @@ class RegistrationEaqaarController extends Controller
 
 
 
+            $state= Eaqaar::where('state',$request->search);
+            $area= Eaqaar::where('area',$request->search);
+            $square= Eaqaar::where('square',$request->search);
+            $space= Eaqaar::where('space',$request->search);
+            $price_buy= Eaqaar::where('price_buy',$request->search);
+            $detials= Eaqaar::where('detials',$request->search);
+
+            // ->orwhere('state','like','%'. $request->search .'%')
+            // ->orwhere('area','like','%'. $request->search .'%')
+            // ->orwhere('square','like','%'. $request->search .'%')
+            // ->orwhere('space','like','%'. $request->search .'%')
+            // ->orwhere('price_buy','like','%'. $request->search .'%')
+            // ->orwhere('detials','like','%'. $request->search .'%')
+
             $Eaqaar= Eaqaar::where('plan_id',$request->plan_id)
-            ->orwhere('state','like','%'. $request->search .'%')
-            ->orwhere('area','like','%'. $request->search .'%')
-            ->orwhere('square','like','%'. $request->search .'%')
-            ->orwhere('space','like','%'. $request->search .'%')
-            ->orwhere('price_buy','like','%'. $request->search .'%')
-            ->orwhere('detials','like','%'. $request->search .'%')
-
+            ->union($state)
+            ->union($area)
+            ->union($square)
             ->paginate(10);
-
 
         return EaqaarResource::collection($Eaqaar);
 
