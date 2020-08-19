@@ -235,16 +235,26 @@ class RegistrationEaqaarController extends Controller
             // ->orwhere('price_buy','like','%'. $request->search .'%')
             // ->orwhere('detials','like','%'. $request->search .'%')
 
-            $Eaqaar= Eaqaar::where('plan_id',$request->plan_id)
-            ->union($state)
-            ->union($area)
-            ->union($square)
-            ->union($space)
-            ->union($price_buy)
-            ->union($detials)
 
-            ->paginate(10);
 
+            // $Eaqaar= Eaqaar::where('plan_id',$request->plan_id$request->plan_id)
+            // ->union($state)
+            // ->union($area)
+            // ->union($square)
+            // ->union($space)
+            // ->union($price_buy)
+            // ->union($detials)
+
+            // ->paginate(10);
+            $search=$request->search;
+            $Eaqaar = Eaqaar::where('plan_id', $request->plan_id)->where(function($query) use ($search) {
+                $query->where('state','like','%'. $search .'%')
+                ->orwhere('area','like','%'.$search .'%')
+                ->orwhere('square','like','%'. $search .'%')
+                ->orwhere('space','like','%'. $search .'%')
+                ->orwhere('price_buy','like','%'. $search .'%')
+                ->orwhere('detials','like','%'. $search .'%');
+            })->paginate(10);
         return EaqaarResource::collection($Eaqaar);
 
     }
