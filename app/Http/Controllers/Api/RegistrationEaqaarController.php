@@ -252,7 +252,7 @@ class RegistrationEaqaarController extends Controller
                 ->orwhere('area','like','%'.$search .'%')
                 ->orwhere('square','like','%'. $search .'%')
                 ->orwhere('space','like','%'. $search .'%')
-                ->orwhere('price_buy','like','%'. $search .'%')
+                ->orwhere('estimated_price','like','%'. $search .'%')
                 ->orwhere('detials','like','%'. $search .'%');
             })->paginate(10);
         return EaqaarResource::collection($Eaqaar);
