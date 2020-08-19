@@ -222,13 +222,13 @@ class RegistrationEaqaarController extends Controller
 
 
             $Eaqaar= Eaqaar::where('plan_id',$request->plan_id)
-            ->where('state','like','%'. $request->search .'%')
-            ->where('state','like','%'. $request->search .'%')
-            ->where('area','like','%'. $request->search .'%')
-            ->where('square','like','%'. $request->search .'%')
-            ->where('space','like','%'. $request->search .'%')
-            ->where('price_buy','like','%'. $request->search .'%')
-            ->where('detials','like','%'. $request->search .'%')
+            ->orwhere('state','like','%'. $request->search .'%')
+            ->orwhere('state','like','%'. $request->search .'%')
+            ->orwhere('area','like','%'. $request->search .'%')
+            ->orwhere('square','like','%'. $request->search .'%')
+            ->orwhere('space','like','%'. $request->search .'%')
+            ->orwhere('price_buy','like','%'. $request->search .'%')
+            ->orwhere('detials','like','%'. $request->search .'%')
 
             ->paginate(10);
 
