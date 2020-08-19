@@ -236,12 +236,12 @@ class RegistrationEaqaarController extends Controller
             // ->orwhere('detials','like','%'. $request->search .'%')
 
             $Eaqaar= Eaqaar::where('plan_id',$request->plan_id)
-            // ->union($state)
-            // ->union($area)
-            // ->union($square)
-            // ->union($space)
-            // ->union($price_buy)
-            // ->union($detials)
+            ->union($state)
+            ->union($area)
+            ->union($square)
+            ->union($space)
+            ->union($price_buy)
+            ->union($detials)
 
             ->paginate(10);
 
