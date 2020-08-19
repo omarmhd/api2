@@ -40,6 +40,8 @@ class CreateEaqaarsTable extends Migration
             $table->string('Remaining_amount');
             $table->string('Downpayment');
             $table->string('estimated_price');
+            $table->string('url')->nullable();
+
             $table->string('detials')->nullable();
             $table->string('status')->default('متوفر');
             $table->date('due_date');

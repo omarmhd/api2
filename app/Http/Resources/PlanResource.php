@@ -19,7 +19,7 @@ class PlanResource extends JsonResource
             'name'=>$this->name,
             'type'=>$this->type,
             'count'=>$this->count,
-            'image'=> asset('upload_images/'.$this->image)
+            'image'=> $this->image
 
         ]);
     }
