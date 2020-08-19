@@ -199,18 +199,18 @@ class RegistrationEaqaarController extends Controller
 
     public function destroy($id)
     {
-        $plan = Eaqaar::find($id)->plan;
-        $Eaqaar = Eaqaar::find($id)->delete();
 
-        Receivable::where('eaqaar_id',$id)->delete();
         $Plan = Plan::find($id);
         $count = $Plan->count - 1;
         $Plan->update(['count' =>  $count]);
+        $Eaqaar = Eaqaar::find($id)->delete();
+        Receivable::where('eaqaar_id',$id)->delete();
+
 
 
         if ($Eaqaar) {
             return response([
-                'status' => 'تم حذف العقار بنجاح ',
+                'status' => 'success',
             ]);
         }
     }
