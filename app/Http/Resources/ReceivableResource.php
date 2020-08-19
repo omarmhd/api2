@@ -17,6 +17,8 @@ class ReceivableResource extends JsonResource
         return [
             'id'=>$this->id,
             'user_name'=>$this->user_name,
+            'user'=>$this->user,
+
             'type'=>$this->type,
             'date'=>$this->date,
             'Remaining_amount'=>$this->Remaining_amount

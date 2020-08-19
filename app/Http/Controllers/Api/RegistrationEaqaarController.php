@@ -105,7 +105,7 @@ class RegistrationEaqaarController extends Controller
         Receivable::create([
             'eaqaar_id' => $eqaar->id,
             'type' => 'on',
-            'user_name' => auth('api')->user()->full_name,
+            'user_name' => $request->name_seller,
             'Remaining_amount' => $Remaining_amount,
             'date' => $request->due_date
         ]);}
@@ -200,7 +200,9 @@ class RegistrationEaqaarController extends Controller
         $Eaqaar = Eaqaar::find($id)->delete();
 
         Receivable::where('eaqaar_id',$id)->delete();
-        Plan::where('id', $plan->id)->decrement("count", 1);
+        $Plan = Plan::find($id);
+        $count = $Plan->count - 1;
+        $Plan->update(['count' =>  $count]);
 
 
         if ($Eaqaar) {
@@ -214,7 +216,17 @@ class RegistrationEaqaarController extends Controller
 
     public function search_eqaars(Request $request){
 
-        $Eaqaar = Eaqaar::where('plan_id',$request->plan_id)->paginate(10);
+
+
+            $Eaqaar= Eaqaar::where('plan_id',$request->plan_id)->orwhere('state','like','%'. $request->search .'%')
+            ->orwhere('state','like','%'. $request->search .'%')
+            ->orwhere('area','like','%'. $request->search .'%')
+            ->orwhere('square','like','%'. $request->search .'%')
+            ->orwhere('space','like','%'. $request->search .'%')
+            ->orwhere('price_buy','like','%'. $request->search .'%')
+            ->paginate(10);
+
+
         return EaqaarResource::collection($Eaqaar);
 
     }
