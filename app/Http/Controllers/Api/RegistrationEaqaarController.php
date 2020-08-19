@@ -78,6 +78,8 @@ class RegistrationEaqaarController extends Controller
         $eqaar->Remaining_amount =  $Remaining_amount;
         $eqaar->detials = $request->detials;
         $eqaar->due_date = $request->due_date;
+        $eqaar->url = $request->url;
+
         $eqaar->status = 'متوفر';
 
         if ( $request->file('image')) {
@@ -168,6 +170,7 @@ class RegistrationEaqaarController extends Controller
         $eqaar->estimated_price = $request->estimated_price;
         $eqaar->detials = $request->detials;
         $eqaar->due_date = $request->due_date;
+        $eqaar->url = $request->url;
 
 
         if ($file = $request->file('image')) {
@@ -185,12 +188,13 @@ class RegistrationEaqaarController extends Controller
 
 
         $eqaar->save;
+        if( $Remaining_amount>0){
 
         Receivable::where('eaqaar_id',$id)->update([
 
             'Remaining_amount' => $Remaining_amount,
             'date' => $request->due_date
-        ]);
+        ]);}
         return response([
             'status' => 'success',
             'data' => $eqaar,

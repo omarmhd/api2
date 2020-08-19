@@ -40,6 +40,7 @@ class UserResource extends JsonResource
           'card'=>$this->card,
           'account_number'=>$this->account_number,
           'image_path'=>$img ,
+          'url'=>$this->url,
           'id'=>$this->id]
 
         ]);

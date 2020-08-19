@@ -35,6 +35,8 @@ class EaqaarResource extends JsonResource
             'details'=>$this->detials,
             'image'=>$this->image,
             'image_card'=>$this->image_card,
+            'url'=>$this->url,
+
             'user'=>$this->user,
             'type'=>$this->plan->type,
             'plan'=>$this->plan,]
