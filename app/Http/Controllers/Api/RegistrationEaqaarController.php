@@ -199,11 +199,11 @@ class RegistrationEaqaarController extends Controller
 
     public function destroy($id)
     {
-
-        $Plan = Plan::find($id);
+        $Eaqaar = Eaqaar::find($id);
+        $Plan = Plan::find($Eaqaar->plan_id);
         $count = $Plan->count - 1;
         $Plan->update(['count' =>  $count]);
-        $Eaqaar = Eaqaar::find($id)->delete();
+        $Eaqaar->delete();
         Receivable::where('eaqaar_id',$id)->delete();
 
 
