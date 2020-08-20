@@ -149,7 +149,7 @@ class RegistrationEaqaarController extends Controller
             ]);
         }
         $Remaining_amount =  $request->price_buy - $request->Downpayment;
-        $eqaar = Eaqaar::find($id);;
+        $eqaar = Eaqaar::find($id);
 
         $eqaar->type_id = $request->type_id;
         $eqaar->plan_id = $request->plan_id;
@@ -187,7 +187,7 @@ class RegistrationEaqaarController extends Controller
 
 
 
-        $eqaar->save;
+        $eqaar->save();
         if( $Remaining_amount>0){
 
         Receivable::where('eaqaar_id',$id)->update([
