@@ -195,7 +195,8 @@ class RegistrationEaqaarController extends Controller
 
             $receivable->delete();
 
-        }elseif($Remaining_amount!==0 and  !$receivables ){
+        }
+        if($Remaining_amount!==0 and  !$receivables ){
             Receivable::create([
                 'eaqaar_id' => $eqaar->id,
                 'type' => 'on',
