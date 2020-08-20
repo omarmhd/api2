@@ -11,6 +11,7 @@ use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Auth;
 use Illuminate\Support\Facades\DB;
 use Illuminate\Support\Facades\Validator;
+use PHPUnit\Framework\Constraint\IsEmpty;
 
 class RegistrationEaqaarController extends Controller
 {
@@ -189,14 +190,14 @@ class RegistrationEaqaarController extends Controller
 
         $eqaar->save();
 
-        $receivable=Receivable::where('eaqaar_id',$id);
+        $receivable=Receivable::where('eaqaar_id',$id)->first();
         $receivables=$receivable->get();
         if( $Remaining_amount==0 and $receivables){
 
             $receivable->delete();
 
         }
-        if($Remaining_amount!==0 and  !$receivables ){
+        if($Remaining_amount!==0 and  IsEmpty($receivable) ){
             Receivable::create([
                 'eaqaar_id' => $eqaar->id,
                 'type' => 'on',
