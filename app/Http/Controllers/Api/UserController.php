@@ -160,7 +160,7 @@ class UserController extends Controller
         $Users->address = $request->address;
         $Users->phone = $request->phone;
         $Users->account_number = $request->account_number;
-        $Users->card = $request->address;
+        $Users->card = $request->card;
         $Users->Commission = $request->Commission;
 
         if ($file = $request->file('image')) {
