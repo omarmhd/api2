@@ -22,12 +22,13 @@ class CreateSoldEaqaarsTable extends Migration
 
             $table->string('card_buyer');
             $table->string('phone_buyer');
-            $table->string('price_buy');
+            $table->double('price_sell');
             $table->date('Date_sale');
             $table->string('Remaining_amount');
             $table->string('Downpayment');
             $table->date('due_date');
-
+            $table->string('image_card')->nullable();
+            $table->double('profit_company');
             $table->timestamps();
             $table->foreign('user_id')->references('id')->on('users')->onDelete('cascade');
             $table->foreign('eaqaar_id')->references('id')->on('eaqaars')->onDelete('cascade');

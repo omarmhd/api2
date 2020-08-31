@@ -11,6 +11,7 @@ use App\Http\Resources\SoldEaqaarResource;
 use App\Plan;
 use App\Receivable;
 use App\SoldEaqaar;
+use App\User;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Validator;
 
@@ -53,8 +54,7 @@ class SoldEaqaarController extends Controller
 
             'name_buyer' => 'required',
             'card_buyer' => 'required|Numeric',
-            'phone_buyer' => 'required|Numeric',
-            'price_buy' => 'required|Numeric',
+            'price_sell' => 'required|Numeric',
             'Date_sale' => 'required|date',
             'due_date' => 'required|date',
             'Downpayment' => 'required|Numeric',
@@ -63,10 +63,10 @@ class SoldEaqaarController extends Controller
             'name_buyer.required' => 'الرجاء إدخال إسم المشترى ',
             'card_buyer.required' => 'الرجاء إدخال رقم بطاقة المشترى  ',
             'card_buyer.Numeric' => '    خطأ فى البطاقة المدخلة   ',
-            'phone_buyer.required' => 'الرجاء إدخال رقم هاتف المشترى  ',
-            'phone_buyer.Numeric' => '  خطأ فى إدخال رقم الهاتف  ',
-            'price_buy.required' => 'الرجاء إدخال  سعر الشراء   ',
-            'price_buy.Numeric' => '  خطأ فى إدخال سعر الشراء    ',
+            'price_sell.required' => 'الرجاء إدخال رقم هاتف المشترى  ',
+            'price_sell.Numeric' => '  خطأ فى إدخال رقم الهاتف  ',
+            'price_sell.required' => 'الرجاء إدخال  سعر الشراء   ',
+            'price_sell.Numeric' => '  خطأ فى إدخال سعر الشراء    ',
             'Date_sale.required' => 'الرجاءإدخال تاريخ البيع ',
             'Date_sale.date' => 'خطأ فى إدخال سعر البيع',
             'Downpayment.required' => 'الرجاء إدخال الدفعة الأولى',
@@ -83,71 +83,88 @@ class SoldEaqaarController extends Controller
         }
 
 
-        $Remaining_amount=$request->price_buy - $request->Downpayment;
+
+        $Remaining_amount = $request->price_sell - $request->Downpayment;
+
+
+
+        $user = User::find(auth('api')->user()->id);
+        $number_deals = $user->number_deals + 1;
+        $profit_broker1 = $user->profit_broker;
+        $profit_company1 = $user->Profit_Company;
+
+
+        $eqaar = Eaqaar::find($request->eaqaar_id);
+        $profit_broker = ($request->price_sell - $eqaar->price_buy) * ($user->Commission / 100);
+        $profit_company = ($request->price_sell - $eqaar->price_buy) * (100 - $user->Commission) / 100;
+        $profit_broker1 = $profit_broker1 + $profit_broker;
+        $profit_company1 = $profit_company1 + $profit_company;
+
+
+        $user->update([
+            'number_deals' => $number_deals,
+            'profit_broker' => $profit_broker1,
+            'Profit_Company' => $profit_company1
+        ]);
+
         $sold_esqaar = SoldEaqaar::create([
-            'user_id' =>1, //auth('api')->user()->id,
+            'user_id' => auth('api')->user()->id,
             'eaqaar_id' => $request->eaqaar_id,
             'name_buyer' => $request->name_buyer,
             'card_buyer' => $request->card_buyer,
             'phone_buyer' => $request->phone_buyer,
-            'price_buy' => $request->price_buy,
+            'price_sell' => $request->price_sell,
             'Date_sale' => $request->Date_sale,
             'Downpayment' => $request->Downpayment,
-            'Remaining_amount' =>$Remaining_amount,
-
+            'Remaining_amount' => $Remaining_amount,
             'due_date' => $request->due_date,
+
+            'profit_company' => $profit_company,
+            'image_card' => $this->upload_image($request->image_card)
         ]);
+
+
+
+
 
 
         Eaqaar::find($request->eaqaar_id)->update([
             'state' => 'مباع',
         ]);
 
-        Receivable::create([
-        'eaqaar_id'=>$request->eaqaar_id,
-        'type'=>'to',
-        'user_name'=>$request->name_buyer,
-        'Remaining_amount'=> $Remaining_amount,
+        $receivable = Receivable::where('eaqaar_id', $request->eaqaar_id)->first();
 
-        'date'=>$request->due_date
-        ]);
-    $sold= SoldEaqaar::orderBy('id', 'desc')->take(1)->get();
+        if ($Remaining_amount !== 0 and $receivable == null) {
+            Receivable::create([
+                'eaqaar_id' => $request->eaqaar_id,
+                'type' => 'to',
+                'user_name' => auth('api')->user()->full_name,
+                'Remaining_amount' => $Remaining_amount,
+                'date' => $request->due_date
+            ]);
+        }
+        if ($Remaining_amount == 0 and $receivable) {
 
-        $plan=Eaqaar::find($request->eaqaar_id)->plan;
-        Plan::where('id',$plan->id)->decrement("count",1);
+            $receivable->delete();
+        }
+        if ($Remaining_amount > 0) {
+
+            Receivable::where('eaqaar_id', $request->eaqaar_id)->update([
+
+                'Remaining_amount' => $Remaining_amount,
+                'date' => $request->due_date
+            ]);
+        }
+        $sold = SoldEaqaar::orderBy('id', 'desc')->take(1)->get();
+        $plan = Eaqaar::find($request->eaqaar_id)->plan;
+        $Plan = Plan::find($plan->id);
+        $count = $Plan->count - 1;
+        $Plan->update(['count' =>  $count]);
 
         return SoldEaqaarResource::collection($sold);
-
     }
 
-    /**
-     * Display the specified resource.
-     *
-     * @param  \App\SoldEaqaar  $soldEaqaar
-     * @return \Illuminate\Http\Response
-     */
-    public function show(SoldEaqaar $soldEaqaar)
-    {
-        //
-    }
 
-    /**
-     * Show the form for editing the specified resource.
-     *
-     * @param  \App\SoldEaqaar  $soldEaqaar
-     * @return \Illuminate\Http\Response
-     */
-    public function edit(SoldEaqaar $soldEaqaar)
-    {
-    }
-
-    /**
-     * Update the specified resource in storage.
-     *
-     * @param  \Illuminate\Http\Request  $request
-     * @param  \App\SoldEaqaar  $soldEaqaar
-     * @return \Illuminate\Http\Response
-     */
     public function update(Request $request, $id)
     {
         $validator = Validator::make($request->all(), [
@@ -155,7 +172,7 @@ class SoldEaqaarController extends Controller
             'name_buyer' => 'required',
             'card_buyer' => 'required|Numeric',
             'phone_buyer' => 'equired|Numeric',
-            'price_buy' => 'required|Numeric',
+            'price_sell' => 'required|Numeric',
             'Date_sale' => 'required|date',
             'due_date' => 'required|date',
 
@@ -165,8 +182,8 @@ class SoldEaqaarController extends Controller
             'card_buyer.Numeric' => '    خطأ فى البطاقة المدخلة   ',
             'phone_buyer.required' => 'الرجاء إدخال رقم هاتف المشترى  ',
             'phone_buyer.Numeric' => '  خطأ فى إدخال رقم الهاتف  ',
-            'price_buy.required' => 'الرجاء إدخال  سعر الشراء   ',
-            'price_buy.Numeric' => '  خطأ فى إدخال سعر الشراء    ',
+            'price_sell.required' => 'الرجاء إدخال  سعر الشراء   ',
+            'price_sell.Numeric' => '  خطأ فى إدخال سعر الشراء    ',
             'Date_sale.required' => 'الرجاءإدخال تاريخ البيع ',
             'Date_sale.date' => 'خطأ فى إدخال سعر البيع',
             'due_date.required' => 'الرجاء إدخال المبلغ المتبقى   ',
@@ -181,27 +198,57 @@ class SoldEaqaarController extends Controller
             ]);
         }
 
+        if ($file = $request->file('image')) {
+
+            $image_name = $this->upload_image($file);
+        } else {
+            $image_name = null;
+        }
+        $user = User::find(auth('api')->user()->id);
+        $number_deals = $user->number_deals + 1;
+        $profit_broker1 = $user->profit_broker;
+        $profit_company1 = $user->Profit_Company;
+
+        $eqaar = Eaqaar::find($request->eaqaar_id);
+        $profit_broker = ($request->price_sell - $eqaar->price_buy) * ($user->Commission / 100);
+        $profit_company = ($request->price_sell - $eqaar->price_buy) * (100 - $user->Commission) / 100;
+        $profit_broker1 = $profit_broker1 + $profit_broker;
+        $profit_company1 = $profit_company1 + $profit_company;
 
 
-
+        $user->update([
+            'number_deals' => $number_deals,
+            'profit_broker' => $profit_broker1,
+            'Profit_Company' => $profit_company1
+        ]);
         $sold_esqaar = SoldEaqaar::find($id)->update([
 
             'name_buyer' => $request->name_buyer,
             'card_buyer' => $request->card_buyer,
             'phone_buyer' => $request->phone_buyer,
-            'price_buy' => $request->price_buy,
+            'price_sell' => $request->price_sell,
             'Date_sale' => $request->Date_sale,
-            'Remaining_amount' => $request->price_buy - $request->Downpayment,
+            'Remaining_amount' => $request->price_sell - $request->Downpayment,
             'Downpayment' => $request->Downpayment,
             'due_date' => $request->due_date,
+            'image_card' => $image_name,
+            'profit_company' => $profit_company
+
         ]);
 
-        $plan=Eaqaar::find($sold_esqaar->eaqaar_id)->plan;
-        Plan::where('id',$plan->id)->update([
-
-             'Remaining_amount'=>$request->price_buy - $request->Downpayment,
-            'due_date'=>$request->due_date
+        $plan = Eaqaar::find($sold_esqaar->eaqaar_id)->plan;
+        Plan::where('id', $plan->id)->update([
+            'Remaining_amount' => $request->price_sell - $request->Downpayment,
+            'due_date' => $request->due_date
         ]);
+
+
+        if ($file = $request->file('image')) {
+
+            $sold_esqaar->image = asset('upload_images/' . $this->upload_image($file));
+        }
+
+
         return response([
             'status' => 'success',
             'data' => $sold_esqaar
@@ -220,13 +267,25 @@ class SoldEaqaarController extends Controller
     public function destroy($id)
     {
         $soldEaqaar = soldEaqaar::find($id)->delete();
-        $Receivable=Receivable::where('eaqaar_id',$id)->delete();
+        $Receivable = Receivable::where('eaqaar_id', $id)->delete();
 
         if ($soldEaqaar) {
             return response([
                 'status' => 'تم الحذف بنجاح ',
 
             ]);
+        }
+    }
+
+    public function upload_image($file)
+    {
+        if ($file) {
+            $imageName = time() . '.' . $file->getClientOriginalExtension();
+            $file->move('upload_images', $imageName);
+
+            return $imageName;
+        } else {
+            return null;
         }
     }
 }

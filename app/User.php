@@ -16,8 +16,9 @@ class User extends Authenticatable
      *
      * @var array
      */
+    public $table='users';
     protected $fillable = [
-        'account_number','card','login_name', 'full_name', 'email', 'password','Role','date_work','address','phone','Commission','image','api_token','remember_token'
+      'Profit_Company', 'profit_broker', 'number_deals','account_number','card','login_name', 'full_name', 'email', 'password','Role','date_work','address','phone','Commission','image','api_token','remember_token'
     ];
 
     /**
@@ -37,4 +38,18 @@ class User extends Authenticatable
     protected $casts = [
         'email_verified_at' => 'datetime',
     ];
+
+    public function sold_eqaars(){
+
+    return $this->hasMany('App\SoldEaqaar') ;
+
+    }
+
+
+
+    public function eqaars(){
+
+        return $this->hasMany('App\Eaqaar') ;
+
+        }
 }

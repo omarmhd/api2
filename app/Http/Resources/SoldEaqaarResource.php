@@ -14,6 +14,19 @@ class SoldEaqaarResource extends JsonResource
      */
     public function toArray($request)
     {
+
+
+
+        if($this->image_card==null){
+
+
+            $img =$this->image_card;
+        }else{
+
+
+           $img= asset('upload_images/'.$this->image_card);
+        }
+
         return([
             'id'=>$this->id,
 
@@ -25,7 +38,8 @@ class SoldEaqaarResource extends JsonResource
             'Downpayment'=>$this->Downpayment,
             'Remaining_amount'=>$this->Remaining_amount,
             'due_date'=>$this->due_date,
-            'image'=>asset('upload_images/'.$this->eaqaar->image),
+            'image'=>$this->eaqaar->image,
+            'image_card'=>$img,
             'user'=>$this->user,
 
         ]);

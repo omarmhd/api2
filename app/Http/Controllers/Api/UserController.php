@@ -46,9 +46,9 @@ class UserController extends Controller
             'phone' => 'required|Numeric',
             'date_work' => 'required|date',
             'address' => 'required',
-            'card'=>'required',
+            'card' => 'required',
             'Commission' => 'required|Numeric',
-            'account_number'=>'required|Numeric',
+            'account_number' => 'required|Numeric',
             'image' => 'nullable|image',
 
 
@@ -80,10 +80,10 @@ class UserController extends Controller
             ]);
         }
 
-        if($file=$request->file('image')){
-        $uplodeimge = $request->file('image');
-        $imageName = time() . '.' . $uplodeimge->getClientOriginalExtension();
-        $uplodeimge->move('upload_images', $imageName);
+        if ($file = $request->file('image')) {
+            $uplodeimge = $request->file('image');
+            $imageName = time() . '.' . $uplodeimge->getClientOriginalExtension();
+            $uplodeimge->move('upload_images', $imageName);
         }
         $Users = User::create([
 
@@ -93,11 +93,11 @@ class UserController extends Controller
             'Role' => $request->Role ?? '2',
             'date_work' => $request->date_work,
             'address' => $request->address,
-            'card'=> $request->card,
+            'card' => $request->card,
             'phone' => $request->phone,
             'Commission' => $request->Commission,
-            'account_number'=>$request->account_number,
-            'image'=> $imageName ?? 'null'
+            'account_number' => $request->account_number,
+            'image' => $imageName ?? 'null'
         ]);
         return response([
             'status' => 'تمت بنجاح ',
@@ -113,16 +113,16 @@ class UserController extends Controller
 
         $validator = Validator::make($request->all(), [
 
-            'full_name' => 'sometimes|unique:users,full_name,'.$id,
-            'login_name' => 'sometimes|unique:users,login_name,'.$id,
+            'full_name' => 'sometimes|unique:users,full_name,' . $id,
+            'login_name' => 'sometimes|unique:users,login_name,' . $id,
             'password' => 'required',
             'phone' => 'required|Numeric',
-            'card'=>'required',
+            'card' => 'required',
             'date_work' => 'required|date',
             'address' => 'required',
             'Commission' => 'required|Numeric',
             'image' => 'nullable|image',
-            'account_number'=>'required|Numeric'
+            'account_number' => 'required|Numeric'
         ], [
             'full_name.required' => 'الرجاء إدخال إسم السمسار ',
             'full_name.unique' => 'السمسار موجود مسبقا  ',
@@ -156,35 +156,52 @@ class UserController extends Controller
         $Users->login_name = $request->login_name;
         $Users->password = Hash::make($request->password);
         $Users->Role = $request->Role;
-        $Users->date_work= $request->date_work;
+        $Users->date_work = $request->date_work;
         $Users->address = $request->address;
-        $Users->phone= $request->phone;
-        $Users->account_number =$request->account_number;
-        $Users->card= $request->address;
+        $Users->phone = $request->phone;
+        $Users->account_number = $request->account_number;
+        $Users->card = $request->address;
         $Users->Commission = $request->Commission;
 
-        if($file=$request->file('image')){
+        if ($file = $request->file('image')) {
             $uplodeimge = $request->file('image');
             $imageName = time() . '.' . $uplodeimge->getClientOriginalExtension();
             $uplodeimge->move('upload_images', $imageName);
             $Users->image = $imageName;
-            }
-            $Users->save();
+        }
+        $Users->save();
 
-          return  UserResource::collection(User::where('id',$id)->get());
-
+        return  UserResource::collection(User::where('id', $id)->get());
     }
+
+    public function Best_seller(Request $request)
+    {
+
+        if ($request->type_show == 1) {
+            $Best_seller =  User::where('Role', '=', '2')->orderBy('number_deals', 'asc')->get();
+            return UserResource::collection($Best_seller);
+        }
+        if ($request->type_show == 2) {
+            $Best_seller = User::where('Role', '=', '2')->orderBy('Profit_Company', 'asc')->get();
+            return UserResource::collection($Best_seller);
+        }
+        if ($request->type_show == 3) {
+            $Best_seller = User::where('Role', '=', '2')->orderBy('profit_broker', 'asc')->get();
+            return UserResource::collection($Best_seller);
+        }
+        return null;
+    }
+
     public function destroy($id)
     {
 
         $user = User::where('id', $id)->first();
-
-
         $image_path = public_path('upload_images') . '/' . $user->image;
 
         if (file_exists($image_path)) {
             File::delete($image_path);
         }
+
         $user->delete();
         if ($user) {
             return response([

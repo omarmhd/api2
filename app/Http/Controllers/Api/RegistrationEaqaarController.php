@@ -7,6 +7,7 @@ use App\Http\Resources\EaqaarResource;
 use App\Eaqaar;
 use App\Plan;
 use App\Receivable;
+use App\User;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Auth;
 use Illuminate\Support\Facades\DB;
@@ -19,7 +20,7 @@ class RegistrationEaqaarController extends Controller
     public function index()
     {
 
-        $Eaqaar = Eaqaar::all();
+        $Eaqaar = Eaqaar::where('status','متوفر')->get();
         return EaqaarResource::collection($Eaqaar);
     }
 
@@ -96,6 +97,11 @@ class RegistrationEaqaarController extends Controller
             $eqaar->image_card = asset('upload_images/'. $image);
         }
         $eqaar->save();
+
+        $user=User::where('id',auth('api')->user()->id);
+        $number_deals=$user->first()->number_deals + 1;
+
+        $user->update(['number_deals' => $number_deals]);
 
        $eaqaar = Eaqaar::orderBy('id','desc')->take(1)->get();
 
@@ -174,6 +180,7 @@ class RegistrationEaqaarController extends Controller
         $eqaar->url = $request->url;
 
 
+
         if ($file = $request->file('image')) {
 
             $eqaar->image = asset('upload_images/'.$this->upload_image($file));
@@ -185,8 +192,6 @@ class RegistrationEaqaarController extends Controller
 
                 $eqaar->image_card = asset('upload_images/'. $image);
         }
-
-
 
         $eqaar->save();
 
@@ -269,7 +274,7 @@ class RegistrationEaqaarController extends Controller
 
             // ->paginate(10);
             $search=$request->search;
-            $Eaqaar = Eaqaar::where('plan_id', $request->plan_id)->where(function($query) use ($search) {
+            $Eaqaar = Eaqaar::where('plan_id', $request->plan_id)->where('status','متوفر')->where(function($query) use ($search) {
                 $query->where('state','like','%'. $search .'%')
                 ->orwhere('area','like','%'.$search .'%')
                 ->orwhere('square','like','%'. $search .'%')

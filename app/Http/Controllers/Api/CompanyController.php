@@ -3,8 +3,11 @@
 namespace App\Http\Controllers\Api;
 
 use App\DataCompany;
+use App\Expense;
 use App\Http\Controllers\Controller;
 use App\Http\Resources\CompanyResource;
+use App\SoldEaqaar;
+use App\User;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\DB;
 use Illuminate\Support\Facades\Validator;
@@ -103,11 +106,28 @@ class CompanyController extends Controller
             }
         }
     }
-    public function show()
-    {
-    }
-    public function update()
-    {
+
+    public function Company_profits(Request $request){
+
+
+        $to = $request->to;
+        $from = $request->from;
+
+
+            $SoldEaqaar = SoldEaqaar::whereBetween('Date_sale', [$from,$to])->get();
+            $Expense= Expense::whereBetween('date', [$from,$to])->get();
+            ;
+
+           $sum_profit= $SoldEaqaar->sum('profit_company');
+           $sum_amount= $Expense->sum('amount');
+            return response([
+                'profit_company'=>  round($sum_profit,2),
+                'Expense'=>  round($sum_amount,2),
+                'Net_profit'=>round($sum_profit- $sum_amount,2)
+
+            ]);
+
+
     }
     public function destroy($id)
     {

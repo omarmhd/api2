@@ -27,9 +27,10 @@ class CreateUsersTable extends Migration
             $table->string('card');
             $table->string('Commission');
             $table->string('password');
-
             $table->string('image');
-
+            $table->integer('number_deals')->default(0);
+            $table->double('profit_broker')->default(0);
+            $table->double('Profit_Company')->default(0);
             $table->timestamps();
         });
     }

@@ -6,17 +6,21 @@ use Illuminate\Database\Eloquent\Model;
 
 class SoldEaqaar extends Model
 {
+
+    public $table='sold_eaqaars';
     protected $fillable = [
         'eaqaar_id',
         'user_id',
         'name_buyer',
         'card_buyer',
         'phone_buyer',
-        'price_buy',
+        'price_sell',
         'Date_sale',
         'Remaining_amount',
         'due_date',
-        'Downpayment'
+        'Downpayment',
+        'image_card',
+        'profit_company'
     ];
 
     public function user()

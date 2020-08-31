@@ -2,6 +2,7 @@
 
 namespace App\Http\Resources;
 
+use App\User;
 use Illuminate\Http\Resources\Json\JsonResource;
 
 class UserResource extends JsonResource
@@ -27,9 +28,10 @@ class UserResource extends JsonResource
         }
 
 
+        $sold_eaqaars=User::find(1);
         return ([
-            'status'=>'success',
-            'data'=>[
+         'status'=>'success',
+         'data'=>[
           'login_name'=>$this->login_name,
           'full_name'=>$this->full_name,
           'Role'=>$this->Role,
@@ -40,8 +42,14 @@ class UserResource extends JsonResource
           'card'=>$this->card,
           'account_number'=>$this->account_number,
           'image_path'=>$img ,
-          'url'=>$this->url,
-          'id'=>$this->id]
+          'number_deals'=>$this->number_deals,
+          'Profit_Company'=>$this->Profit_Company,
+          'profit_broker'=>$this->profit_broker,
+          'id'=>$this->id
+
+
+
+          ]
 
         ]);
     }
