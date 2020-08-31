@@ -40,6 +40,7 @@ class SoldEaqaarResource extends JsonResource
             'due_date'=>$this->due_date,
             'image'=>$this->eaqaar->image,
             'image_card'=>$img,
+            'details'=>$this->eaqaar->details,
             'user'=>$this->user,
 
         ]);
