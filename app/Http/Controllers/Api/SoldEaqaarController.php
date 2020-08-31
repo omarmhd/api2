@@ -288,4 +288,11 @@ class SoldEaqaarController extends Controller
             return null;
         }
     }
+
+
+    public function paginate_eqaars(){
+        return SoldEaqaarResource::collection(SoldEaqaar::paginate(10));
+
+    }
+
 }
