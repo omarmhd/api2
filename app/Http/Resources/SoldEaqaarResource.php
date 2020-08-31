@@ -33,7 +33,7 @@ class SoldEaqaarResource extends JsonResource
             'name_buyer'=>$this->name_buyer,
             'card_buyer'=>$this->card_buyer,
             'phone_buyer'=>$this->phone_buyer,
-            'price_buy'=>$this->price_buy,
+            'price_sell'=>$this->price_sell,
             'Date_sale'=>$this->Date_sale,
             'Downpayment'=>$this->Downpayment,
             'Remaining_amount'=>$this->Remaining_amount,
