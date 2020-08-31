@@ -178,15 +178,15 @@ class UserController extends Controller
     {
 
         if ($request->type_show == 1) {
-            $Best_seller =  User::where('Role', '=', '2')->orderBy('number_deals', 'asc')->get();
+            $Best_seller =  User::where('Role', '=', '2')->orderBy('number_deals', 'desc')->get();
             return UserResource::collection($Best_seller);
         }
         if ($request->type_show == 2) {
-            $Best_seller = User::where('Role', '=', '2')->orderBy('Profit_Company', 'asc')->get();
+            $Best_seller = User::where('Role', '=', '2')->orderBy('Profit_Company', 'desc')->get();
             return UserResource::collection($Best_seller);
         }
         if ($request->type_show == 3) {
-            $Best_seller = User::where('Role', '=', '2')->orderBy('profit_broker', 'asc')->get();
+            $Best_seller = User::where('Role', '=', '2')->orderBy('profit_broker', 'desc')->get();
             return UserResource::collection($Best_seller);
         }
         return null;
