@@ -28,7 +28,8 @@ class Eaqaar extends Model
         'image',
         'detials',
         'due_date',
-        'image_card'
+        'image_card',
+        'use'
     ];
 
 
