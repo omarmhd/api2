@@ -14,7 +14,7 @@ class Receivable extends Model
 
     public function eaqqar(){
 
-return $this->belongsTo('App\Eaqqar');
+return $this->belongsTo('App\Eaqaar');
 
 
     }
