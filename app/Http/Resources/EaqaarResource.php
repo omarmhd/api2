@@ -17,8 +17,10 @@ class EaqaarResource extends JsonResource
         return [
             'status'=>'success',
               'data'=>[
+
              'id'=>$this->id,
              'state'=>$this->state,
+             'status_aqqaar'=>$this->status,
              'area'=>$this->area,
              'square'=>$this->square,
             'Part_number'=>$this->Part_number,
