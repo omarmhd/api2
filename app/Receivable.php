@@ -6,16 +6,17 @@ use Illuminate\Database\Eloquent\Model;
 
 class Receivable extends Model
 {
+
+    public $table='receivables';
+
     protected $fillable = ['user_name','Remaining_amount','eaqaar_id','type','date'];
 
 
 
 
+    public function eaqaar()
+    {
 
-    public function eaqqar(){
-
-return $this->belongsTo('App\Eaqaar');
-
-
+        return $this->belongsTo('App\Eaqaar');
     }
 }

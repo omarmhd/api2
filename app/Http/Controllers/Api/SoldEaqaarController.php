@@ -120,6 +120,7 @@ class SoldEaqaarController extends Controller
             'due_date' => $request->due_date,
 
             'profit_company' => $profit_company,
+            'Partial_condition'=>$request->Partial_condition,
             'image_card' => $this->upload_image($request->image_card)
         ]);
 
@@ -129,7 +130,7 @@ class SoldEaqaarController extends Controller
 
 
         Eaqaar::find($request->eaqaar_id)->update([
-            'state' => 'مباع',
+            'status' => 'مباع',
         ]);
 
         $receivable = Receivable::where('eaqaar_id', $request->eaqaar_id)->first();
@@ -232,7 +233,8 @@ class SoldEaqaarController extends Controller
             'Downpayment' => $request->Downpayment,
             'due_date' => $request->due_date,
             'image_card' => $image_name,
-            'profit_company' => $profit_company
+            'profit_company' => $profit_company,
+            'Partial_condition'=>$request->Partial_condition
 
         ]);
 

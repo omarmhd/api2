@@ -26,6 +26,9 @@ class CreateSoldEaqaarsTable extends Migration
             $table->date('Date_sale');
             $table->string('Remaining_amount');
             $table->string('Downpayment');
+
+            $table->string('Partial_condition')->nullable();
+
             $table->date('due_date');
             $table->string('image_card')->nullable();
             $table->double('profit_company');

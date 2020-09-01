@@ -43,6 +43,8 @@ class CreateEaqaarsTable extends Migration
             $table->string('url')->nullable();
 
             $table->string('detials')->nullable();
+            $table->string('use')->nullable();
+
             $table->string('status')->default('متوفر');
             $table->date('due_date');
 
