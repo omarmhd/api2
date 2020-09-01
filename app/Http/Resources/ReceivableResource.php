@@ -22,7 +22,7 @@ class ReceivableResource extends JsonResource
             'type'=>$this->type,
             'date'=>$this->date,
             'Remaining_amount'=>$this->Remaining_amount,
-            'eaqaar'=>['state'=>$this->eaqqar->state,
+            'eaqaar'=>['state'=>$this->eaqqar,
             'area'=>$this->eaqqar->area,
             'square'=>$this->eaqqar->square,
             'Part_number'=>$this->eaqqar->Part_number,
