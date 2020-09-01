@@ -129,7 +129,7 @@ class SoldEaqaarController extends Controller
 
 
 
-        Eaqaar::find($request->eaqaar_id)->update([
+        Eaqaar::where('id',$request->eaqaar_id)->update([
             'status' => 'مباع',
         ]);
 
