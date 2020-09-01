@@ -7,4 +7,15 @@ use Illuminate\Database\Eloquent\Model;
 class Receivable extends Model
 {
     protected $fillable = ['user_name','Remaining_amount','eaqaar_id','type','date'];
+
+
+
+
+
+    public function eaqqar(){
+
+return $this->belongsTo('App\Eaqqar');
+
+
+    }
 }
