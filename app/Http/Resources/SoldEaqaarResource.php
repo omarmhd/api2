@@ -28,7 +28,10 @@ class SoldEaqaarResource extends JsonResource
         }
 
         return[
-            'id'=>$this->id,
+
+            'status'=>'success',
+            'sold_eqaar'=>
+            ['id'=>$this->id,
 
             'name_buyer'=>$this->name_buyer,
             'card_buyer'=>$this->card_buyer,
@@ -42,7 +45,7 @@ class SoldEaqaarResource extends JsonResource
             'image_card'=>$img,
             'details'=>$this->eaqaar->detials,
             'user'=>$this->user,
-
+            ]
         ];
     }
 
