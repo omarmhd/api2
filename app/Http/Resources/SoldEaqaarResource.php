@@ -48,12 +48,12 @@ class SoldEaqaarResource extends JsonResource
 
     public function with($request){
 
-        return([
+        return[
 
             'status'=>'success'
 
 
-        ]);
+        ];
 
 
     }
