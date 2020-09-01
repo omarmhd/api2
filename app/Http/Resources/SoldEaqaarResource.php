@@ -27,7 +27,7 @@ class SoldEaqaarResource extends JsonResource
            $img= asset('upload_images/'.$this->image_card);
         }
 
-        return([
+        return[
             'id'=>$this->id,
 
             'name_buyer'=>$this->name_buyer,
@@ -43,12 +43,12 @@ class SoldEaqaarResource extends JsonResource
             'details'=>$this->eaqaar->detials,
             'user'=>$this->user,
 
-        ]);
+        ];
     }
 
     public function with($request){
 
-        return[
+        return [
 
             'status'=>'success'
 
