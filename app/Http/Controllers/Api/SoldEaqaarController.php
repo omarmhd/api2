@@ -135,7 +135,7 @@ class SoldEaqaarController extends Controller
 
         $receivable = Receivable::where('eaqaar_id', $request->eaqaar_id)->first();
 
-        if ($Remaining_amount !== 0 and $receivable == null) {
+        if ($Remaining_amount !== 0 ) {
             Receivable::create([
                 'eaqaar_id' => $request->eaqaar_id,
                 'type' => 'to',
