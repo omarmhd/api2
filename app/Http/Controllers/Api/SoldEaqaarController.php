@@ -268,9 +268,19 @@ class SoldEaqaarController extends Controller
      */
     public function destroy($id)
     {
-        $soldEaqaar = soldEaqaar::find($id)->delete();
-        $Receivable = Receivable::where('eaqaar_id', $id)->delete();
+        $soldEaqaar = soldEaqaar::find($id);
 
+        $Receivable = Receivable::where('eaqaar_id', $soldEaqaar->eaqaar_id)->delete();
+        $soldEaqaar->delete();
+
+        $plan = Eaqaar::find($soldEaqaar->eaqaar_id)->plan;
+        $Plan = Plan::find($plan->id);
+        $count = $Plan->count + 1;
+        $Plan->update(['count' =>  $count]);
+
+        Eaqaar::find( $soldEaqaar->eaqaar_id)->update([
+            'status' => 'متوفر',
+        ]);
         if ($soldEaqaar) {
             return response([
                 'status' => 'تم الحذف بنجاح ',
