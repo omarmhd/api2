@@ -139,7 +139,7 @@ class SoldEaqaarController extends Controller
             Receivable::create([
                 'eaqaar_id' => $request->eaqaar_id,
                 'type' => 'to',
-                'user_name' => auth('api')->user()->full_name,
+                'user_name' => $request->name_buyer,
                 'Remaining_amount' => $Remaining_amount,
                 'date' => $request->due_date
             ]);
@@ -278,7 +278,7 @@ class SoldEaqaarController extends Controller
         $count = $Plan->count + 1;
         $Plan->update(['count' =>  $count]);
 
-        Eaqaar::find( $soldEaqaar->eaqaar_id)->update([
+        Eaqaar::where('id',$soldEaqaar->eaqaar_id)->update([
             'status' => 'متوفر',
         ]);
         if ($soldEaqaar) {
