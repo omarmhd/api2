@@ -17,19 +17,7 @@ class UserController extends Controller
     public function index()
     {
 
-        User::where('id', '=', '2')->update([
-           'number_deals'=>0,
-            'Profit_Company'=>0,
-            'profit_broker'=>0
 
-        ]);
-
-        User::where('id', '=', '1')->update([
-            'number_deals'=>0,
-             'Profit_Company'=>0,
-             'profit_broker'=>0
-
-         ]);
         $Users = User::where('Role', '=', '2')->paginate(10);
         return UserResource::collection($Users);
     }

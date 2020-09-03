@@ -45,4 +45,10 @@ class Eaqaar extends Model
 
         return $this->belongsTo('App\User');
     }
+
+    public  function Soldeaqaar()
+    {
+
+        return $this->belongsTo('App\SoldEaqaar');
+    }
 }

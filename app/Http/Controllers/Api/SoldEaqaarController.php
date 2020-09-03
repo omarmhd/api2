@@ -8,6 +8,7 @@ use App\Http\Resources\ExpenseResource;
 
 use App\Expense;
 use App\Http\Resources\SoldEaqaarResource;
+use App\Http\Resources\SoldEaqaarSearchResource;
 use App\Plan;
 use App\Receivable;
 use App\SoldEaqaar;
@@ -258,7 +259,23 @@ class SoldEaqaarController extends Controller
         ]);
     }
 
+    public function search_eqaars(Request $request){
 
+
+
+
+        $search=$request->search;
+        $Eaqaar = Eaqaar::where('plan_id', $request->plan_id)->where('status','مباع')->where(function($query) use ($search) {
+            $query->where('state','like','%'. $search .'%')
+            ->orwhere('area','like','%'.$search .'%')
+            ->orwhere('square','like','%'. $search .'%')
+            ->orwhere('space','like','%'. $search .'%')
+            ->orwhere('estimated_price','like','%'. $search .'%')
+            ->orwhere('detials','like','%'. $search .'%');
+        })->paginate(10);
+    return SoldEaqaarSearchResource::collection($Eaqaar);
+
+}
 
     /**
      * Remove the specified resource from storage.
