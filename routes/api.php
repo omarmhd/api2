@@ -24,7 +24,7 @@ Route::post('/Best_seller', 'Api\UserController@Best_seller');
 
 
 Route::post('/Company_profits', 'Api\CompanyController@Company_profits');
-Route::post('search-eqaars', 'Api\SoldEaqaarController@search_eqaars');
+Route::post('search-sale', 'Api\SoldEaqaarController@search_eqaars');
 
 Route::group(['middleware' => ['auth:api']], function () {
     Route::get('all-users', 'Api\UserController@all_users');
