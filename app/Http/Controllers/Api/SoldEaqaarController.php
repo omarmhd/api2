@@ -139,6 +139,8 @@ class SoldEaqaarController extends Controller
         if ($Remaining_amount !== 0 ) {
             Receivable::create([
                 'eaqaar_id' => $request->eaqaar_id,
+
+                'sold_id' =>  $sold_esqaar->sold_id,
                 'type' => 'to',
                 'user_name' => $request->name_buyer,
                 'Remaining_amount' => $Remaining_amount,
@@ -149,14 +151,8 @@ class SoldEaqaarController extends Controller
 
             $receivable->delete();
         }
-        if ($Remaining_amount > 0) {
 
-            Receivable::where('eaqaar_id', $request->eaqaar_id)->update([
 
-                'Remaining_amount' => $Remaining_amount,
-                'date' => $request->due_date
-            ]);
-        }
         $sold = SoldEaqaar::orderBy('id', 'desc')->take(1)->get();
         $plan = Eaqaar::find($request->eaqaar_id)->plan;
         $Plan = Plan::find($plan->id);
@@ -241,12 +237,12 @@ class SoldEaqaarController extends Controller
         ]);
 
         $plan = Eaqaar::find($sold_esqaar->eaqaar_id)->plan;
-        Plan::where('id', $plan->id)->update([
+
+        $receivable = Receivable::where('sold_id', $id)->update([
+             'user_name' => $request->name_buyer,
             'Remaining_amount' => $request->price_sell - $request->Downpayment,
-            'due_date' => $request->due_date
-        ]);
-
-
+            'date' => $request->due_date
+    ]);
         if ($file = $request->file('image')) {
 
             $sold_esqaar->image = asset('upload_images/' . $this->upload_image($file));

@@ -16,12 +16,12 @@ class SoldEaqaarSearchResource extends JsonResource
     {
         return[
 
-            "state"=>$this->state,
-            "area"=>$this->area,
-            "square"=>$this->square,
-            "Part_number"=>$this->Part_number,
-            "space"=>$this->space,
-            "Survey_number"=>$this->Survey_number
+            'state'=>$this->state,
+            'area'=>$this->area,
+            'square'=>$this->square,
+            'Part_number'=>$this->Part_number,
+            'space'=>$this->space,
+            'Survey_number'=>$this->Survey_number
 
 
         ];
