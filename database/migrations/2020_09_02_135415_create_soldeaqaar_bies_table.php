@@ -4,7 +4,7 @@ use Illuminate\Database\Migrations\Migration;
 use Illuminate\Database\Schema\Blueprint;
 use Illuminate\Support\Facades\Schema;
 
-class CreateEaqaarsTable extends Migration
+class CreateSoldeaqaarBiesTable extends Migration
 {
     /**
      * Run the migrations.
@@ -13,7 +13,7 @@ class CreateEaqaarsTable extends Migration
      */
     public function up()
     {
-        Schema::create('eaqaars', function (Blueprint $table) {
+        Schema::create('soldeaqaar_bies', function (Blueprint $table) {
             $table->id();
             $table->unsignedBigInteger('user_id')->nullable();
             $table->unsignedBigInteger('type_id')->nullable();
@@ -23,29 +23,38 @@ class CreateEaqaarsTable extends Migration
             $table->foreign('user_id')->references('id')->on('users')->onDelete('cascade');
 
              $table->string('state');
+
             $table->string('area');
             $table->string('square');
             $table->string('Part_number');
             $table->string('space');
             $table->string('Survey_number');
+             $table->string('detials')->nullable();
+
+             $table->string('name_buyer');
+             $table->string('card_buyer');
+             $table->string('phone_buyer');
             $table->string('name_seller');
             $table->string('card_seller');
             $table->string('phone_seller');
-            $table->date('date_buy');
+            $table->date('date_sale');
             $table->string('price_buy');
+            $table->string('price_sale');
+
+
             $table->string('image')->nullable();
             $table->string('image_card')->nullable();
+
             $table->string('Remaining_amount');
             $table->string('Downpayment');
             $table->string('estimated_price');
             $table->string('url')->nullable();
-            $table->string('detials')->nullable();
+
             $table->string('use')->nullable();
-            $table->string('status')->default('متوفر');
+
             $table->date('due_date');
 
             $table->timestamps();
-
         });
     }
 
@@ -56,6 +65,6 @@ class CreateEaqaarsTable extends Migration
      */
     public function down()
     {
-        Schema::dropIfExists('eaqaars');
+        Schema::dropIfExists('soldeaqaar_bies');
     }
 }

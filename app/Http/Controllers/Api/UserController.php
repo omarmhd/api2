@@ -162,6 +162,9 @@ class UserController extends Controller
         $Users->account_number = $request->account_number;
         $Users->card = $request->card;
         $Users->Commission = $request->Commission;
+        $Users->number_deals=$request->number_deals;
+        $Users->profit_broker=$request->profit_broker;
+        $Users->Profit_Company=$request->Profit_Company;
 
         if ($file = $request->file('image')) {
             $uplodeimge = $request->file('image');
