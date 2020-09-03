@@ -21,8 +21,8 @@ class SoldEaqaarSearchResource extends JsonResource
             'square'=>$this->square,
             'Part_number'=>$this->Part_number,
             'space'=>$this->space,
-            'Survey_number'=>$this->Survey_number
-
+            'Survey_number'=>$this->Survey_number,
+            'S '=>$this->soldeaqaar
 
         ];
     }

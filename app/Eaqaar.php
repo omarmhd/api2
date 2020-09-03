@@ -46,9 +46,9 @@ class Eaqaar extends Model
         return $this->belongsTo('App\User');
     }
 
-    public  function Soldeaqaar()
+    public  function soldeaqaar()
     {
 
-        return $this->belongsTo('App\SoldEaqaar');
+        return $this->hasOne('App\SoldEaqaar');
     }
 }

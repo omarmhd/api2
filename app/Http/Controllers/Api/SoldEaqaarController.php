@@ -284,7 +284,7 @@ class SoldEaqaarController extends Controller
     {
         $soldEaqaar = soldEaqaar::find($id);
 
-        $Receivable = Receivable::where('eaqaar_id', $soldEaqaar->eaqaar_id)->delete();
+        $Receivable = Receivable::where('sold_id', $id)->delete();
         $soldEaqaar->delete();
 
         $plan = Eaqaar::find($soldEaqaar->eaqaar_id)->plan;
