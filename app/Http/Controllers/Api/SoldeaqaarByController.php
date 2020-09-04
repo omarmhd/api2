@@ -138,7 +138,9 @@ class SoldeaqaarByController extends Controller
             'Partial_condition'=>$request->Partial_condition,
             'image_card' => $this->upload_image($request->image_card)
         ]);
-        return SoldEaqaarResource::collection($sold_esqaar);
+        $sold = SoldEaqaar::orderBy('id', 'desc')->take(1)->get();
+
+        return SoldEaqaarResource::collection($sold);
 
     }
 
