@@ -109,7 +109,6 @@ class SoldeaqaarByController extends Controller
          $profit_company1 = $user->Profit_Company;
 
 
-         $eqaar = Eaqaar::find($eqaar->eaqaar_id);
          $profit_broker = ($request->price_sell - $eqaar->price_buy) * ($user->Commission / 100);
          $profit_company = ($request->price_sell - $eqaar->price_buy) * (100 - $user->Commission) / 100;
          $profit_broker1 = $profit_broker1 + $profit_broker;
