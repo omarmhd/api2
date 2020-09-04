@@ -206,20 +206,21 @@ class SoldEaqaarController extends Controller
         $number_deals = $user->number_deals + 1;
         $profit_broker1 = $user->profit_broker;
         $profit_company1 = $user->Profit_Company;
-
+//
         $eqaar = Eaqaar::find($request->eaqaar_id);
         $profit_broker = ($request->price_sell - $eqaar->price_buy) * ($user->Commission / 100);
         $profit_company = ($request->price_sell - $eqaar->price_buy) * (100 - $user->Commission) / 100;
 
         $profit_broker1 = $profit_broker1 + $profit_broker;
         $profit_company1 = $profit_company1 + $profit_company;
-
+//
 
         $user->update([
             'number_deals' => $number_deals,
             'profit_broker' => $profit_broker1,
             'Profit_Company' => $profit_company1
         ]);
+ //
         $sold_esqaar = SoldEaqaar::find($id)->update([
 
             'name_buyer' => $request->name_buyer,

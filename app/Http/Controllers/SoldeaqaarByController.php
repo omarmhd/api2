@@ -2,8 +2,12 @@
 
 namespace App\Http\Controllers;
 
+use App\Eaqaar;
+use App\SoldEaqaar;
 use App\soldeaqaar_by;
+use App\User;
 use Illuminate\Http\Request;
+use Illuminate\Support\Facades\Validator;
 
 class SoldeaqaarByController extends Controller
 {
@@ -35,7 +39,100 @@ class SoldeaqaarByController extends Controller
      */
     public function store(Request $request)
     {
-        //
+
+
+        $validator = Validator::make($request->all(), [
+
+            'state' => 'required',
+            'area' => 'required',
+            'square' => 'required',
+            'Part_number' => 'required',
+            'space' => 'required',
+            'Survey_number' => 'required',
+            'name_seller' => 'required|string',
+            'card_seller' => 'required|Numeric',
+            'phone_seller' => 'required|Numeric',
+            'price_buy' => 'required|Numeric',
+            'Downpayment' => 'required|Numeric',
+            'estimated_price' => 'required|Numeric',
+            'image' => 'nullable|image',
+            'url'=>'nullable|url'
+
+        ]);
+
+        if ($validator->fails()) {
+            return response([
+                'status' => 'errors',
+                'errors' => $validator->errors()
+
+            ]);
+        }
+
+
+        $eqaar = new Eaqaar();
+        $eqaar->user_id =auth('api')->user()->id;
+         $eqaar->plan_id = $request->plan_id;
+         $eqaar->state = $request->state;
+         $eqaar->area = $request->area;
+         $eqaar->square = $request->square;
+         $eqaar->Part_number = $request->Part_number;
+         $eqaar->space = $request->space;
+         $eqaar->Survey_number = $request->Survey_number;
+         $eqaar->name_seller = $request->name_seller;
+         $eqaar->card_seller = $request->card_seller;
+         $eqaar->phone_seller = $request->phone_seller;
+         $eqaar->price_buy = $request->price_buy;
+         $eqaar->Downpayment = $request->Downpayment;
+         $eqaar->estimated_price = $request->estimated_price;
+         $eqaar->detials = $request->detials;
+         $eqaar->url = $request->url;
+         $eqaar->use = $request->use;
+         $eqaar->status = 'مباع';
+         if ( $request->file('image')) {
+            $file = $request->file('image');
+            $eqaar->image = asset('upload_images/'.$this->upload_image($file));
+        }
+        $eqaar->save();
+
+
+
+         $user = User::find(auth('api')->user()->id);
+         $number_deals = $user->number_deals + 1;
+         $profit_broker1 = $user->profit_broker;
+         $profit_company1 = $user->Profit_Company;
+
+
+         $eqaar = Eaqaar::find($request->eaqaar_id);
+         $profit_broker = ($request->price_sell - $eqaar->price_buy) * ($user->Commission / 100);
+         $profit_company = ($request->price_sell - $eqaar->price_buy) * (100 - $user->Commission) / 100;
+         $profit_broker1 = $profit_broker1 + $profit_broker;
+         $profit_company1 = $profit_company1 + $profit_company;
+
+
+         $user->update([
+             'number_deals' => $number_deals,
+             'profit_broker' => $profit_broker1,
+             'Profit_Company' => $profit_company1
+         ]);
+
+
+        $sold_esqaar = SoldEaqaar::create([
+            'user_id' => auth('api')->user()->id,
+            'eaqaar_id' => $eqaar->id ,
+            'name_buyer' => $request->name_buyer,
+            'card_buyer' => $request->card_buyer,
+            'phone_buyer' => $request->phone_buyer,
+            'price_sell' => $request->price_sell,
+            'Date_sale' => $request->Date_sale,
+            'Downpayment' => $request->Downpayment,
+            'Remaining_amount' =>  $request->price_sell -$request->Downpayment,
+            'due_date' => $request->due_date,
+
+            'profit_company' => $profit_company,
+            'Partial_condition'=>$request->Partial_condition,
+            'image_card' => $this->upload_image($request->image_card)
+        ]);
+
     }
 
     /**
@@ -82,4 +179,16 @@ class SoldeaqaarByController extends Controller
     {
         //
     }
+
+public function upload_image($file)
+{
+    if ($file) {
+        $imageName = time() . '.' . $file->getClientOriginalExtension();
+        $file->move('upload_images', $imageName);
+
+        return $imageName;
+    } else {
+        return null;
+    }
+}
 }

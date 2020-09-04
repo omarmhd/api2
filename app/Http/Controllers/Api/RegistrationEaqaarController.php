@@ -41,13 +41,17 @@ class RegistrationEaqaarController extends Controller
             'name_seller' => 'required|string',
             'card_seller' => 'required|Numeric',
             'phone_seller' => 'required|Numeric',
-            'date_buy' => 'required|date',
             'price_buy' => 'required|Numeric',
-            'Downpayment' => 'required|Numeric',
             'estimated_price' => 'required|Numeric',
             'image_card' => 'nullable|image',
             'image' => 'nullable|image',
-            'url'=>'nullable|url'
+            'url'=>'nullable|url',
+            'name_buyer' => 'required',
+            'card_buyer' => 'required|Numeric',
+            'price_sell' => 'required|Numeric',
+            'Date_sale' => 'required|date',
+            'due_date' => 'required|date',
+            'Downpayment' => 'required|Numeric',
 
         ]);
 
@@ -99,9 +103,7 @@ class RegistrationEaqaarController extends Controller
         $eqaar->save();
 
         $user=User::where('id',auth('api')->user()->id);
-        $number_deals=$user->first()->number_deals + 1;
 
-        $user->update(['number_deals' => $number_deals]);
 
        $eaqaar = Eaqaar::orderBy('id','desc')->take(1)->get();
 

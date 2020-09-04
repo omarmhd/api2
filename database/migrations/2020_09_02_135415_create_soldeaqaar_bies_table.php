@@ -16,7 +16,6 @@ class CreateSoldeaqaarBiesTable extends Migration
         Schema::create('soldeaqaar_bies', function (Blueprint $table) {
             $table->id();
             $table->unsignedBigInteger('user_id')->nullable();
-            $table->unsignedBigInteger('type_id')->nullable();
             $table->unsignedBigInteger('plan_id')->nullable();
             $table->foreign('type_id')->references('id')->on('types')->onDelete('cascade');
             $table->foreign('plan_id')->references('id')->on('plans')->onDelete('cascade');

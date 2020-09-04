@@ -31,7 +31,7 @@ class CreateEaqaarsTable extends Migration
             $table->string('name_seller');
             $table->string('card_seller');
             $table->string('phone_seller');
-            $table->date('date_buy');
+            $table->date('date_buy')->nullable();
             $table->string('price_buy');
             $table->string('image')->nullable();
             $table->string('image_card')->nullable();
@@ -42,7 +42,7 @@ class CreateEaqaarsTable extends Migration
             $table->string('detials')->nullable();
             $table->string('use')->nullable();
             $table->string('status')->default('متوفر');
-            $table->date('due_date');
+            $table->date('due_date')->nullable();
 
             $table->timestamps();
 

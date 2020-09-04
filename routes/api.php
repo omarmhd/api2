@@ -36,6 +36,8 @@ Route::group(['middleware' => ['auth:api']], function () {
 
 
 });
+Route::apiResource('sold-by', 'Api\SoldeaqaarByController');
+
 Route::get('paginate-eqaars', 'Api\SoldEaqaarController@paginate_eqaars');
 
 Route::post('search-eqaars', 'Api\RegistrationEaqaarController@search_eqaars');

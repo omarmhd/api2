@@ -22,9 +22,7 @@ class SoldEaqaarResource extends JsonResource
 
             $img =$this->image_card;
         }else{
-
-
-           $img= asset('upload_images/'.$this->image_card);
+        $img= asset('upload_images/'.$this->image_card);
         }
 
         return[
@@ -44,8 +42,6 @@ class SoldEaqaarResource extends JsonResource
             'image'=>$this->eaqaar->image ,
             'image_card'=>$img,
             'Partial_condition'=>$this->Partial_condition,
-
-
             'details'=>$this->eaqaar->detials,
             'user'=>$this->user,
             ]
