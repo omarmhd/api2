@@ -3,6 +3,7 @@
 namespace App\Http\Controllers;
 
 use App\Eaqaar;
+use App\Http\Resources\SoldEaqaarResource;
 use App\SoldEaqaar;
 use App\soldeaqaar_by;
 use App\User;
@@ -132,6 +133,7 @@ class SoldeaqaarByController extends Controller
             'Partial_condition'=>$request->Partial_condition,
             'image_card' => $this->upload_image($request->image_card)
         ]);
+        return SoldEaqaarResource::collection($sold_esqaar);
 
     }
 
