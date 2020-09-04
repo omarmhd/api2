@@ -93,6 +93,8 @@ class SoldeaqaarByController extends Controller
          $eqaar->url = $request->url;
          $eqaar->use = $request->use;
          $eqaar->status = 'مباع';
+         $eqaar->Downpayment=0;
+         $eqaar->estimated_price=0;
          if ( $request->file('image')) {
             $file = $request->file('image');
             $eqaar->image = asset('upload_images/'.$this->upload_image($file));
