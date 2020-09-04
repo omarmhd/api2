@@ -1,8 +1,9 @@
 <?php
 
-namespace App\Http\Controllers;
+namespace App\Http\Controllers\Api;
 
 use App\Eaqaar;
+use App\Http\Controllers\Controller;
 use App\Http\Resources\SoldEaqaarResource;
 use App\SoldEaqaar;
 use App\soldeaqaar_by;
