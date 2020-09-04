@@ -55,10 +55,14 @@ class SoldeaqaarByController extends Controller
             'card_seller' => 'required|Numeric',
             'phone_seller' => 'required|Numeric',
             'price_buy' => 'required|Numeric',
-            'Downpayment' => 'required|Numeric',
-            'estimated_price' => 'required|Numeric',
             'image' => 'nullable|image',
-            'url'=>'nullable|url'
+            'url'=>'nullable|url',
+            'name_buyer' => 'required',
+            'card_buyer' => 'required|Numeric',
+            'price_sell' => 'required|Numeric',
+            'Date_sale' => 'required|date',
+            'due_date' => 'required|date',
+            'Downpayment' => 'required|Numeric',
 
         ]);
 
@@ -84,7 +88,6 @@ class SoldeaqaarByController extends Controller
          $eqaar->card_seller = $request->card_seller;
          $eqaar->phone_seller = $request->phone_seller;
          $eqaar->price_buy = $request->price_buy;
-         $eqaar->Downpayment = $request->Downpayment;
          $eqaar->estimated_price = $request->estimated_price;
          $eqaar->detials = $request->detials;
          $eqaar->url = $request->url;

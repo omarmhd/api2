@@ -29,7 +29,7 @@ class CreateSoldEaqaarsTable extends Migration
             $table->string('type')->nullable();
             $table->string('Partial_condition')->nullable();
 
-            $table->date('due_date');
+            $table->date('due_date')->nullable();;
             $table->string('image_card')->nullable();
             $table->double('profit_company');
             $table->timestamps();
