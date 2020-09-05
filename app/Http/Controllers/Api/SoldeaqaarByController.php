@@ -295,7 +295,7 @@ class SoldeaqaarByController extends Controller
 
         $receivable->delete();
     }
-    //   return SoldEaqaarResource::collection();
+   return SoldEaqaarResource::collection($sold_esqaar->first());
 
     }
 
