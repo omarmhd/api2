@@ -15,12 +15,13 @@ class SoldEaqaarSearchResource extends JsonResource
     public function toArray($request)
     {
         return[
-
+            'id'=>$this->soldeaqaar->id,
             'state'=>$this->state,
             'area'=>$this->area,
             'square'=>$this->square,
             'Part_number'=>$this->Part_number,
             'space'=>$this->space,
+            'url'=>$this->url,
             'Survey_number'=>$this->Survey_number,
             'name_buyer'=>$this->soldeaqaar->name_buyer,
             'card_buyer'=>$this->soldeaqaar->card_buyer,
@@ -31,7 +32,10 @@ class SoldEaqaarSearchResource extends JsonResource
             'Downpayment'=>$this->soldeaqaar->Downpayment,
             'Partial_condition'=>$this->soldeaqaar->Partial_condition,
             'due_date'=>$this->soldeaqaar->due_date,
+            'details'=>$this->detials,
+
             'image_card'=>$this->soldeaqaar->image_card,
+            'image'=>$this->image,
 
         ];
     }
