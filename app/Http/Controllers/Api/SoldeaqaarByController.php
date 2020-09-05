@@ -251,7 +251,7 @@ class SoldeaqaarByController extends Controller
        ]);
 
 
-       $sold = SoldEaqaar::where('id',$id)->first();
+       $sold = SoldEaqaar::find($id);
 
        $eqaar = Eaqaar::find( $sold->eaqaar_id);
         $eqaar->state = $request->state;
