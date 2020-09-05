@@ -20,7 +20,8 @@ class SoldEaqaar extends Model
         'due_date',
         'Downpayment',
         'image_card',
-        'profit_company'
+        'profit_company',
+        'Partial_condition'
     ];
 
     public function user()
