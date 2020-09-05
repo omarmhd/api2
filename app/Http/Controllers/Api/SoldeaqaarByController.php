@@ -309,10 +309,10 @@ class SoldeaqaarByController extends Controller
      */
     public function destroy($id)
     {
-        $soldEaqaar = soldEaqaar::find($id);
+        $soldEaqaar = soldEaqaar::where('id',$id)->delete();
 
         $Receivable = Receivable::where('sold_id', $id)->delete();
-        $soldEaqaar->delete();
+
   if ($soldEaqaar) {
             return response([
                 'status' => 'success',
