@@ -235,7 +235,9 @@ class SoldeaqaarByController extends Controller
         ]);
 
         $Remaining_amount= $request->price_sell -$request->Downpayment;
-       $sold_esqaar = SoldEaqaar::where('id',$id)->update([
+       $sold_esqaar = SoldEaqaar::where('id',$id);
+
+       $sold_esqaar->update([
            'name_buyer' => $request->name_buyer,
            'card_buyer' => $request->card_buyer,
            'phone_buyer' => $request->phone_buyer,
