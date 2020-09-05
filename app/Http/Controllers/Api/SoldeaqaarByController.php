@@ -254,7 +254,6 @@ class SoldeaqaarByController extends Controller
 
 
        $eqaar = Eaqaar::find( $sold_esqaar->eaqaar_id);
-       $eqaar->user_id =auth('api')->user()->id;
         $eqaar->plan_id = $request->plan_id;
         $eqaar->state = $request->state;
         $eqaar->area = $request->area;
