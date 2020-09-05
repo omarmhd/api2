@@ -251,9 +251,10 @@ class SoldeaqaarByController extends Controller
        ]);
 
 
+       $sold = SoldEaqaar::orderBy('id', 'desc')->take(1)->get();
 
 
-       $eqaar = Eaqaar::find( $sold_esqaar->eaqaar_id);
+       $eqaar = Eaqaar::find( $sold->eaqaar_id);
         $eqaar->plan_id = $request->plan_id;
         $eqaar->state = $request->state;
         $eqaar->area = $request->area;
@@ -277,7 +278,6 @@ class SoldeaqaarByController extends Controller
            $eqaar->image = asset('upload_images/'.$this->upload_image($file));
        }
        $eqaar->save();
-       $sold = SoldEaqaar::orderBy('id', 'desc')->take(1)->get();
 
 
        $receivable = Receivable::where('eaqaar_id', $sold->eaqaar_id)->first();
