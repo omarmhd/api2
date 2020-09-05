@@ -307,11 +307,19 @@ class SoldeaqaarByController extends Controller
      * @param  \App\soldeaqaar_by  $soldeaqaar_by
      * @return \Illuminate\Http\Response
      */
-    public function destroy(soldeaqaar_by $soldeaqaar_by)
+    public function destroy($id)
     {
-        //
-    }
+        $soldEaqaar = soldEaqaar::find($id);
 
+        $Receivable = Receivable::where('sold_id', $id)->delete();
+        $soldEaqaar->delete();
+  if ($soldEaqaar) {
+            return response([
+                'status' => 'success',
+
+            ]);
+    }
+    }
 public function upload_image($file)
 {
     if ($file) {
