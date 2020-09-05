@@ -280,7 +280,7 @@ class SoldeaqaarByController extends Controller
        $sold = SoldEaqaar::orderBy('id', 'desc')->take(1)->get();
 
 
-       $receivable = Receivable::where('eaqaar_id', $request->eaqaar_id)->first();
+       $receivable = Receivable::where('eaqaar_id', $sold->eaqaar_id)->first();
 
        if ($Remaining_amount !== 0 ) {
            Receivable::create([
