@@ -253,7 +253,7 @@ class SoldeaqaarByController extends Controller
 
        $sold = SoldEaqaar::where('id',$id)->get();
 
-return  response(['$sold->eaqaar_id'=> $sold_esqaar->get()]);
+return  response(['$sold->eaqaar_id'=> $sold_esqaar->eaqaar_id]);
        $eqaar = Eaqaar::find( $sold->eaqaar_id);
         $eqaar->state = $request->state;
         $eqaar->area = $request->area;
