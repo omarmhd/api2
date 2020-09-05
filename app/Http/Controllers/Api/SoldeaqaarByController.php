@@ -251,7 +251,7 @@ class SoldeaqaarByController extends Controller
        ]);
 
 
-       $sold = SoldEaqaar::first($id);
+       $sold = SoldEaqaar::find($id);
 
        $eqaar = Eaqaar::find( $sold->eaqaar_id);
         $eqaar->state = $request->state;
@@ -295,7 +295,7 @@ class SoldeaqaarByController extends Controller
 
         $receivable->delete();
     }
-       return SoldEaqaarResource::collection($sold->get());
+       return SoldEaqaarResource::collection($sold->first());
 
     }
 
