@@ -253,9 +253,8 @@ class SoldeaqaarByController extends Controller
 
        $sold = SoldEaqaar::orderBy('id', 'desc')->take(1)->get();
 
-
+return  response(['$sold->eaqaar_id'=>$sold->eaqaar_id]);
        $eqaar = Eaqaar::find( $sold->eaqaar_id);
-        $eqaar->plan_id = $request->plan_id;
         $eqaar->state = $request->state;
         $eqaar->area = $request->area;
         $eqaar->square = $request->square;
