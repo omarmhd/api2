@@ -135,8 +135,10 @@ class SoldEaqaarController extends Controller
         Eaqaar::where('id',$request->eaqaar_id)->update([
             'status' => 'مباع',
         ]);
-
+        return response(['f'=>$sold_esqaar->id]);
         $receivable = Receivable::where('sold_id', $sold_esqaar->id)->first();
+
+
         if ($Remaining_amount !== 0 ) {
             Receivable::create([
                 'eaqaar_id' => $request->eaqaar_id,
@@ -244,7 +246,7 @@ class SoldEaqaarController extends Controller
 
 
 
-    $receivable = Receivable::where('sold_id', $sold_esqaar->sold_id)->first();
+    $receivable = Receivable::where('sold_id', $sold_esqaar->id)->first();
 
     if ($request->price_sell - $request->Downpayment == 0 and $receivable) {
 
