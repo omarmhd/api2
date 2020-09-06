@@ -135,8 +135,8 @@ class SoldEaqaarController extends Controller
         Eaqaar::where('id',$request->eaqaar_id)->update([
             'status' => 'مباع',
         ]);
-        return response(['f'=>$sold_esqaar->id]);
         $receivable = Receivable::where('sold_id', $sold_esqaar->id)->first();
+        return response(['f'=> $receivable]);
 
 
         if ($Remaining_amount !== 0 ) {
