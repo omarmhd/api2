@@ -169,7 +169,7 @@ class SoldEaqaarController extends Controller
 
             'name_buyer' => 'required',
             'card_buyer' => 'required|Numeric',
-            'phone_buyer' => 'equired|Numeric',
+            'phone_buyer' => 'required|Numeric',
             'price_sell' => 'required|Numeric',
             'Date_sale' => 'required|date',
             'due_date' => 'required|date',
