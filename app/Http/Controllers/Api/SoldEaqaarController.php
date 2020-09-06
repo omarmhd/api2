@@ -137,7 +137,7 @@ class SoldEaqaarController extends Controller
         ]);
 
         $receivable = Receivable::where('sold_id', $sold_esqaar->sold_id)->first();
-
+return response(['d'=>$receivable]);
         if ($Remaining_amount !== 0 ) {
             Receivable::create([
                 'eaqaar_id' => $request->eaqaar_id,
