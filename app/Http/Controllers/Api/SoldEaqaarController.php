@@ -284,6 +284,8 @@ class SoldEaqaarController extends Controller
     public function destroy($id)
     {
         $soldEaqaar = soldEaqaar::find($id);
+       $user=User::find($soldEaqaar->user->id);
+       $user->update(['number_deals'=> $user->number_deals-1]);
 
         $Receivable = Receivable::where('sold_id', $id)->delete();
         $soldEaqaar->delete();
