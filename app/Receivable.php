@@ -9,7 +9,7 @@ class Receivable extends Model
 
     public $table='receivables';
 
-    protected $fillable = ['user_name','Remaining_amount','eaqaar_id','type','date'];
+    protected $fillable = ['sold_id','user_name','Remaining_amount','eaqaar_id','type','date'];
 
 
 
