@@ -316,9 +316,10 @@ class SoldEaqaarController extends Controller
 
        $user->update(['number_deals'=> $user->number_deals-1]);
 
-        $Receivable = Receivable::where('sold_id','=', $id)->delete();
+        $Receivable = Receivable::where('sold_id','=', $id);
         $soldEaqaar->delete();
         //
+        return response(['s'=>$Receivable]);
 
         $plan = Eaqaar::find($soldEaqaar->eaqaar_id)->plan;
         $Plan = Plan::find($plan->id);
