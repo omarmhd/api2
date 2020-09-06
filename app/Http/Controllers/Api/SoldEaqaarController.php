@@ -136,7 +136,6 @@ class SoldEaqaarController extends Controller
             'status' => 'مباع',
         ]);
         $receivable = Receivable::where('sold_id', $sold_esqaar->id)->first();
-        return response(['f'=> $receivable]);
 
 
         if ($Remaining_amount !== 0 ) {
