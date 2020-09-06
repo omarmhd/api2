@@ -205,7 +205,7 @@ class SoldEaqaarController extends Controller
         $sold_esqaar = SoldEaqaar::find($id);
 
 
-        return responce(['s'=>$sold_esqaar->user()->id]);
+        return response(['s'=>$sold_esqaar->user()->id]);
         $user = User::find( $sold_esqaar->user()->id);
         $profit_broker1 = $user->profit_broker;
         $profit_company1 = $user->Profit_Company;
@@ -241,8 +241,7 @@ class SoldEaqaarController extends Controller
 
         $plan = Eaqaar::find($sold_esqaar->eaqaar_id)->plan;
 
-        $receivable = Receivable::where('sold_id', $id)->update([
-             'user_name' => auth('api')->user()->full_name,
+        $receivable = Receivable::where('sold_id','=', $id)->update([
             'Remaining_amount' => $request->price_sell - $request->Downpayment,
             'date' => $request->due_date
     ]);
