@@ -241,7 +241,7 @@ $sold_esqaar = SoldEaqaar::find($id);
         $plan = Eaqaar::find($sold_esqaar->eaqaar_id)->plan;
 
         $receivable = Receivable::where('sold_id', $id)->update([
-             'user_name' => $request->name_buyer,
+             'user_name' => auth('api')->user()->full_name,
             'Remaining_amount' => $request->price_sell - $request->Downpayment,
             'date' => $request->due_date
     ]);
