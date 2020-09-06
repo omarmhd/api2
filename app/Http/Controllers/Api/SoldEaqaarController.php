@@ -19,6 +19,8 @@ use Illuminate\Support\Facades\Validator;
 
 class SoldEaqaarController extends Controller
 {
+
+
     /**
      * Display a listing of the resource.
      *
@@ -88,8 +90,8 @@ class SoldEaqaarController extends Controller
         $Remaining_amount = $request->price_sell - $request->Downpayment;
 
 
-
         $user = User::find(auth('api')->user()->id);
+
         $number_deals = $user->number_deals + 1;
         $profit_broker1 = $user->profit_broker;
         $profit_company1 = $user->Profit_Company;
@@ -134,7 +136,7 @@ class SoldEaqaarController extends Controller
             'status' => 'مباع',
         ]);
 
-        $receivable = Receivable::where('eaqaar_id', $request->eaqaar_id)->first();
+        $receivable = Receivable::where('sold_id', $sold_esqaar->sold_id)->first();
 
         if ($Remaining_amount !== 0 ) {
             Receivable::create([
@@ -240,10 +242,22 @@ class SoldEaqaarController extends Controller
 
         $plan = Eaqaar::find($sold_esqaar->eaqaar_id)->plan;
 
-        $receivable = Receivable::where('sold_id','=', $id)->update([
-            'Remaining_amount' => $request->price_sell - $request->Downpayment,
-            'date' => $request->due_date
-    ]);
+
+
+
+    $receivable = Receivable::where('sold_id', $sold_esqaar->sold_id)->first();
+
+    if ($request->price_sell - $request->Downpayment == 0 and $receivable) {
+
+               $receivable->delete();
+           }else{
+
+            $receivable = Receivable::where('sold_id','=', $id)->update([
+                'Remaining_amount' => $request->price_sell - $request->Downpayment,
+                'date' => $request->due_date
+        ]);
+
+           }
         if ($file = $request->file('image')) {
 
             $sold_esqaar->image = asset('upload_images/' . $this->upload_image($file));
@@ -284,16 +298,35 @@ class SoldEaqaarController extends Controller
     public function destroy($id)
     {
         $soldEaqaar = soldEaqaar::find($id);
+
+
+
+
        $user=User::find($soldEaqaar->user->id);
+
+       $eqaar = Eaqaar::find($soldEaqaar->eaqaar_id);
+       $profit_broker = ($soldEaqaar->price_sell - $eqaar->price_buy) * ($user->Commission / 100);
+
+       $profit_broker1 = $user->profit_broker;
+       $profit_company1 = $user->Profit_Company;
+    $user->update([
+           'profit_broker' =>  abs($profit_broker1-$profit_broker),
+           'Profit_Company' => abs($profit_company1-$soldEaqaar->Profit_Company)
+       ]);
+
        $user->update(['number_deals'=> $user->number_deals-1]);
 
-        $Receivable = Receivable::where('sold_id', $id)->delete();
+        $Receivable = Receivable::where('sold_id','=', $id)->delete();
         $soldEaqaar->delete();
+        //
 
         $plan = Eaqaar::find($soldEaqaar->eaqaar_id)->plan;
         $Plan = Plan::find($plan->id);
         $count = $Plan->count + 1;
         $Plan->update(['count' =>  $count]);
+
+
+
 
         Eaqaar::where('id',$soldEaqaar->eaqaar_id)->update([
             'status' => 'متوفر',
