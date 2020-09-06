@@ -205,8 +205,7 @@ class SoldEaqaarController extends Controller
         $sold_esqaar = SoldEaqaar::find($id);
 
 
-        return response(['s'=>$sold_esqaar->user->id]);
-        $user = User::find( $sold_esqaar->user()->id);
+        $user = User::find( $sold_esqaar->user->id);
         $profit_broker1 = $user->profit_broker;
         $profit_company1 = $user->Profit_Company;
 //
