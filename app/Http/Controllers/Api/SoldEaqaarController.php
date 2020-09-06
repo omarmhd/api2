@@ -202,7 +202,7 @@ class SoldEaqaarController extends Controller
         } else {
             $image_name = null;
         }
-        $sold_esqaar = SoldEaqaar::where('id',$id);
+        $sold_esqaar = SoldEaqaar::find($id)->get();
 
 
         return response(['s'=>$sold_esqaar->user->id]);
