@@ -318,7 +318,7 @@ class SoldEaqaarController extends Controller
            ]);
 
         $Receivable = Receivable::where('sold_id','=',$id)->delete();
-        $soldEaqaar->delete();
+
         //
 
         $plan = Eaqaar::find($soldEaqaar->eaqaar_id)->plan;
@@ -327,11 +327,11 @@ class SoldEaqaarController extends Controller
         $Plan->update(['count' =>  $count]);
 
 
-
-
-        Eaqaar::where('id',$soldEaqaar->eaqaar_id)->update([
+        $eqaar->update([
             'status' => 'متوفر',
         ]);
+
+        $soldEaqaar->delete();
         if ($soldEaqaar) {
             return response([
                 'status' => 'تم الحذف بنجاح ',

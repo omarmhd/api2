@@ -5,6 +5,7 @@ namespace App\Http\Controllers\Api;
 use App\Eaqaar;
 use App\Http\Controllers\Controller;
 use App\Http\Resources\SoldEaqaarResource;
+use App\Plan;
 use App\Receivable;
 use App\SoldEaqaar;
 use App\soldeaqaar_by;
@@ -309,16 +310,40 @@ class SoldeaqaarByController extends Controller
      */
     public function destroy($id)
     {
-        $soldEaqaar = soldEaqaar::where('id',$id)->delete();
+        $soldEaqaar = soldEaqaar::find($id);
 
-        $Receivable = Receivable::where('sold_id', $id)->delete();
 
-  if ($soldEaqaar) {
+
+
+       $user=User::find($soldEaqaar->user->id);
+
+       $eqaar = Eaqaar::find($soldEaqaar->eaqaar_id);
+       $profit_broker = ($soldEaqaar->price_sell - $eqaar->price_buy) * ($user->Commission / 100);
+
+       $profit_broker1 = $user->profit_broker;
+       $profit_company1 = $user->Profit_Company;
+
+    $user->update([
+           'profit_broker' =>  abs($profit_broker1-$profit_broker),
+           'Profit_Company' => abs($profit_company1-$soldEaqaar->profit_company),
+           'number_deals'=> $user->number_deals-1
+
+           ]);
+
+        $Receivable = Receivable::where('sold_id','=',$id)->delete();
+
+        //
+
+
+
+        $eqaar->delete();
+        $soldEaqaar->delete();
+        if ($soldEaqaar) {
             return response([
-                'status' => 'success',
+                'status' => 'تم الحذف بنجاح ',
 
             ]);
-    }
+        }
     }
 public function upload_image($file)
 {
