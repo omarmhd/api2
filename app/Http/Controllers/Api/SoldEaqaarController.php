@@ -303,8 +303,9 @@ class SoldEaqaarController extends Controller
 
 
        $user=User::find($soldEaqaar->user->id);
+       return  $soldEaqaar->eaqaar_id;
 
-       $eqaar = Eaqaar::where('id',$soldEaqaar->eaqaar_id);
+       $eqaar = Eaqaar::find($soldEaqaar->eaqaar_id);
        $profit_broker = ($soldEaqaar->price_sell - $eqaar->price_buy) * ($user->Commission / 100);
 
        $profit_broker1 = $user->profit_broker;
@@ -330,7 +331,6 @@ class SoldEaqaarController extends Controller
         $eqaar->update([
             'status' => 'متوفر',
         ]);
-        return  $eqaar;
 
 
         $soldEaqaar->delete();
