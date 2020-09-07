@@ -41,6 +41,7 @@ class SoldEaqaarResource extends JsonResource
             'type_sale'=>$this->type,
             'due_date'=>$this->due_date,
             'image'=>$this->eaqaar->image ,
+            'status'=>$this->status,
 
             'image_card'=>$img,
             'Partial_condition'=>$this->Partial_condition,
