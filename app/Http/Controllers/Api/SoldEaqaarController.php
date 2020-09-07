@@ -331,7 +331,6 @@ class SoldEaqaarController extends Controller
         $eqaar->update([
             'status' => 'متوفر',
         ]);
-        return  $eqaar;
 
 
         $soldEaqaar->delete();
