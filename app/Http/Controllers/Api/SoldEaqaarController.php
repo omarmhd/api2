@@ -309,7 +309,6 @@ class SoldEaqaarController extends Controller
 
        $profit_broker1 = $user->profit_broker;
        $profit_company1 = $user->Profit_Company;
-       return (['DDD'=>abs($profit_company1-$soldEaqaar->profit_company),'$soldEaqaar->profit_company'=>$soldEaqaar->profit_company]);
 
     $user->update([
            'profit_broker' =>  abs($profit_broker1-$profit_broker),
