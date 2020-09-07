@@ -313,7 +313,7 @@ class SoldEaqaarController extends Controller
 
     $user->update([
            'profit_broker' =>  abs($profit_broker1-$profit_broker),
-           'Profit_Company' => abs($profit_company1-$soldEaqaar->Profit_Company),
+           'Profit_Company' => abs($profit_company1-$soldEaqaar->profit_company),
            'number_deals'=> $user->number_deals-1
 
            ]);
