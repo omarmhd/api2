@@ -15,7 +15,7 @@ class SoldEaqaarSearchResource extends JsonResource
     public function toArray($request)
     {
 
-        if($this->soldeaqaar){
+
         return[
             'id'=>$this->soldeaqaar->id,
             'state'=>$this->state,
@@ -39,7 +39,7 @@ class SoldEaqaarSearchResource extends JsonResource
             'image_card'=>$this->soldeaqaar->image_card,
             'image'=>$this->image,
 
-        ];}
+        ];
 
 
     }
