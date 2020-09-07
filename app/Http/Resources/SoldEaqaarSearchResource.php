@@ -41,9 +41,6 @@ class SoldEaqaarSearchResource extends JsonResource
 
         ];}
 
-        else{
 
-return ;
-        }
     }
 }
