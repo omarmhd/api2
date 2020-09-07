@@ -309,6 +309,8 @@ class SoldEaqaarController extends Controller
 
        $profit_broker1 = $user->profit_broker;
        $profit_company1 = $user->Profit_Company;
+       return (abs($profit_broker1-$profit_broker));
+
     $user->update([
            'profit_broker' =>  abs($profit_broker1-$profit_broker),
            'Profit_Company' => abs($profit_company1-$soldEaqaar->Profit_Company),
