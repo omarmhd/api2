@@ -311,15 +311,14 @@ class SoldEaqaarController extends Controller
        $profit_company1 = $user->Profit_Company;
     $user->update([
            'profit_broker' =>  abs($profit_broker1-$profit_broker),
-           'Profit_Company' => abs($profit_company1-$soldEaqaar->Profit_Company)
-       ]);
+           'Profit_Company' => abs($profit_company1-$soldEaqaar->Profit_Company),
+           'number_deals'=> $user->number_deals-1
 
-       $user->update(['number_deals'=> $user->number_deals-1]);
+           ]);
 
         $Receivable = Receivable::where('sold_id','=',$id)->delete();
         $soldEaqaar->delete();
         //
-        return response(['s'=>$Receivable]);
 
         $plan = Eaqaar::find($soldEaqaar->eaqaar_id)->plan;
         $Plan = Plan::find($plan->id);
