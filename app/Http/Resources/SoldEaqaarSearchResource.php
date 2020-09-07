@@ -43,7 +43,7 @@ class SoldEaqaarSearchResource extends JsonResource
 
         else{
 
-return;
+return $this->soldeaqaar;
         }
     }
 }
