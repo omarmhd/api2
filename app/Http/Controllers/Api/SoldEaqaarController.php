@@ -277,7 +277,7 @@ class SoldEaqaarController extends Controller
 
 
         $search=$request->search;
-        $Eaqaar = Eaqaar::where('plan_id', $request->plan_id)->where('status','مباع')->where(function($query) use ($search) {
+        $Eaqaar = Eaqaar::where('status','مباع')->where('plan_id', $request->plan_id)->where(function($query) use ($search) {
             $query->where('state','like','%'. $search .'%')
             ->orwhere('area','like','%'.$search .'%')
             ->orwhere('square','like','%'. $search .'%')
