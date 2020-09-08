@@ -270,6 +270,20 @@ class SoldEaqaarController extends Controller
                 'user_name' => $request->name_buyer
             ]);
         }
+        if($request->price_sell - $request->Downpayment!==0 and  $receivable==null ){
+            Receivable::create([
+                'eaqaar_id' => $eqaar->id,
+
+                'sold_id' =>  $sold_esqaar->id,
+                'type' => 'to',
+                'user_name' => $request->name_buyer,
+                'Remaining_amount' => $request->price_sell - $request->Downpayment,
+                'date' => $request->due_date
+            ]);
+
+        }
+
+
         if ($file = $request->file('image')) {
 
             $sold_esqaar->image = asset('upload_images/' . $this->upload_image($file));

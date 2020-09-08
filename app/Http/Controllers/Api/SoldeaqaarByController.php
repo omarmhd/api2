@@ -65,6 +65,7 @@ class SoldeaqaarByController extends Controller
             'Date_sale' => 'required|date',
             'due_date' => 'required|date',
             'Downpayment' => 'required|Numeric',
+            'use'=>'nullable'
 
         ]);
 
@@ -75,7 +76,6 @@ class SoldeaqaarByController extends Controller
 
             ]);
         }
-return auth('api')->user()->id;
         $eqaar = new Eaqaar();
         $eqaar->user_id =auth('api')->user()->id;
          $eqaar->plan_id = $request->plan_id;
@@ -142,18 +142,18 @@ return auth('api')->user()->id;
         $sold = SoldEaqaar::orderBy('id', 'desc')->take(1)->get();
 
 
-
         if ($Remaining_amount !== 0 ) {
             Receivable::create([
                 'eaqaar_id' => $eqaar->id ,
 
-                'sold_id' => $sold->id,
+                'sold_id' => $sold_esqaar->id,
                 'type' => 'to',
                 'user_name' => $request->name_buyer,
                 'Remaining_amount' => $Remaining_amount,
                 'date' => $request->due_date
             ]);
         }
+
         return SoldEaqaarResource::collection($sold);
 
     }
@@ -216,27 +216,43 @@ return auth('api')->user()->id;
         }
 
 
-        $user = User::find(auth('api')->user()->id);
-        $number_deals = $user->number_deals + 1;
-        $profit_broker1 = $user->profit_broker;
-        $profit_company1 = $user->Profit_Company;
-
-
-        $profit_broker = ($request->price_sell - $request->price_buy) * ($user->Commission / 100);
-        $profit_company = ($request->price_sell - $request->price_buy) * (100 - $user->Commission) / 100;
-        $profit_broker1 = $profit_broker1 + $profit_broker;
-        $profit_company1 = $profit_company1 + $profit_company;
-
-
-        $user->update([
-            'number_deals' => $number_deals,
-            'profit_broker' => $profit_broker1,
-            'Profit_Company' => $profit_company1
-        ]);
 
         $Remaining_amount= $request->price_sell -$request->Downpayment;
        $sold_esqaar = SoldEaqaar::where('id',$id);
+       $eqaar = Eaqaar::find( $sold_esqaar->eaqaar_id);
 
+
+
+       $user = User::find($sold_esqaar->user->id);
+       $profit_broker1 = $user->profit_broker;
+       $profit_company1 = $user->Profit_Company;
+       $number_deals = $user->number_deals + 1;
+
+       //
+       $eqaar = Eaqaar::find($sold_esqaar->eaqaar_id);
+       $profit_company2 = ($request->price_sell - $request->price_buy) * (100 - $user->Commission) / 100;
+
+       if ($sold_esqaar->price_sell != $request->price_sell) {
+
+
+
+           $profit_broker = ($sold_esqaar->price_sell - $eqaar->price_buy) * ($user->Commission / 100);
+           $profit_company = ($sold_esqaar->price_sell - $eqaar->price_buy) * (100 - $user->Commission) / 100;
+
+           $profit_broker1 = abs($profit_broker1 - $profit_broker);
+           $profit_company1 = abs($profit_company1 - $profit_company);
+
+           $profit_broker2 = ($request->price_sell - $request->price_buy) * ($user->Commission / 100);
+
+           $profit_broker3 = $profit_broker1 + $profit_broker2;
+           $profit_company3 = $profit_company2 + $profit_company1;
+
+
+           $user->update([
+               'profit_broker' => $profit_broker3,
+               'Profit_Company' => $profit_company3
+           ]);
+       }
        $sold_esqaar->update([
            'name_buyer' => $request->name_buyer,
            'card_buyer' => $request->card_buyer,
@@ -247,7 +263,7 @@ return auth('api')->user()->id;
            'Remaining_amount' =>  $request->price_sell -$request->Downpayment,
            'due_date' => $request->due_date,
            'type'=>"by",
-           'profit_company' => $profit_company,
+           'profit_company' => $profit_broker3,
            'Partial_condition'=>$request->Partial_condition,
            'image_card' => $this->upload_image($request->image_card)
        ]);
@@ -255,7 +271,7 @@ return auth('api')->user()->id;
 
        $sold = SoldEaqaar::find($id);
 
-       $eqaar = Eaqaar::find( $sold->eaqaar_id);
+
         $eqaar->state = $request->state;
         $eqaar->area = $request->area;
         $eqaar->square = $request->square;
@@ -280,23 +296,32 @@ return auth('api')->user()->id;
        $eqaar->save();
 
 
-       $receivable = Receivable::where('eaqaar_id', $sold->eaqaar_id)->first();
 
-       if ($Remaining_amount !== 0 ) {
-           Receivable::create([
-               'eaqaar_id' => $eqaar->id ,
+       $receivable = Receivable::where('sold_id', $sold_esqaar->id)->first();
 
-               'sold_id' => $sold->id,
-               'type' => 'to',
-               'user_name' => $request->name_buyer,
-               'Remaining_amount' => $Remaining_amount,
-               'date' => $request->due_date
+       if ($request->price_sell - $request->Downpayment == 0 and $receivable) {
+
+           $receivable->delete();
+       } else {
+
+           $receivable = Receivable::where('sold_id', '=', $id)->update([
+               'Remaining_amount' => $request->price_sell - $request->Downpayment,
+               'date' => $request->due_date,
+               'user_name' => $request->name_buyer
            ]);
        }
-       if ($Remaining_amount == 0 and $receivable) {
+       if($request->price_sell - $request->Downpayment!==0 and  $receivable==null ){
+           Receivable::create([
+               'eaqaar_id' => $eqaar->id,
 
-        $receivable->delete();
-    }
+               'sold_id' =>  $sold_esqaar->id,
+               'type' => 'to',
+               'user_name' => $request->name_buyer,
+               'Remaining_amount' => $request->price_sell - $request->Downpayment,
+               'date' => $request->due_date
+           ]);
+
+       }
    return SoldEaqaarResource::collection($sold_esqaar->get());
 
     }
