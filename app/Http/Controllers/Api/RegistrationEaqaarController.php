@@ -214,6 +214,7 @@ class RegistrationEaqaarController extends Controller
         if( $Remaining_amount>0){
 
         Receivable::where('eaqaar_id',$id)->update([
+            'user_name' => $request->name_seller,
 
             'Remaining_amount' => $Remaining_amount,
             'date' => $request->due_date
