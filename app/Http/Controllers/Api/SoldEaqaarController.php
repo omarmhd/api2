@@ -216,6 +216,7 @@ class SoldEaqaarController extends Controller
 
         if ($sold_esqaar->price_sell != $request->price_sell) {
 
+
             $profit_broker = ($sold_esqaar->price_sell - $eqaar->price_buy) * ($user->Commission / 100);
             $profit_company = ($sold_esqaar->price_sell - $eqaar->price_buy) * (100 - $user->Commission) / 100;
 
@@ -266,7 +267,7 @@ class SoldEaqaarController extends Controller
             $receivable = Receivable::where('sold_id', '=', $id)->update([
                 'Remaining_amount' => $request->price_sell - $request->Downpayment,
                 'date' => $request->due_date,
-                'name_buyer' => $request->name_buyer
+                'user_name' => $request->name_buyer
             ]);
         }
         if ($file = $request->file('image')) {
