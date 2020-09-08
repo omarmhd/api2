@@ -214,8 +214,7 @@ class SoldEaqaarController extends Controller
         //
         $eqaar = Eaqaar::find($sold_esqaar->eaqaar_id);
 
-        return [$sold_esqaar->price_sell,$request->price_sell];
-        if ($sold_esqaar->price_sell !== $request->price_sell) {
+        if ($sold_esqaar->price_sell != $request->price_sell) {
 
             $profit_broker = ($sold_esqaar->price_sell - $eqaar->price_buy) * ($user->Commission / 100);
             $profit_company = ($sold_esqaar->price_sell - $eqaar->price_buy) * (100 - $user->Commission) / 100;
