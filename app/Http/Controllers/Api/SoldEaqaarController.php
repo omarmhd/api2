@@ -210,19 +210,27 @@ class SoldEaqaarController extends Controller
         $user = User::find( $sold_esqaar->user->id);
         $profit_broker1 = $user->profit_broker;
         $profit_company1 = $user->Profit_Company;
-//
-        $eqaar = Eaqaar::find($sold_esqaar->eaqaar_id);
-        $profit_broker = ($request->price_sell - $eqaar->price_buy) * ($user->Commission / 100);
-        $profit_company = ($request->price_sell - $eqaar->price_buy) * (100 - $user->Commission) / 100;
 
-        $profit_broker1 = $profit_broker1 + $profit_broker;
-        $profit_company1 = $profit_company1 + $profit_company;
-//
+        //
+        $eqaar = Eaqaar::find($sold_esqaar->eaqaar_id);
+        if($sold_esqaar->price_sell==$request->price_sell){
+        $profit_broker = ($sold_esqaar->price_sell - $eqaar->price_buy) * ($user->Commission / 100);
+        $profit_company = ($sold_esqaar->price_sell - $eqaar->price_buy) * (100 - $user->Commission) / 100;
+
+        $profit_broker1 = abs($profit_broker1 - $profit_broker);
+        $profit_company1 = abs($profit_company1 - $profit_company);
+
+        $profit_broker2 = ($request->price_sell - $eqaar->price_buy) * ($user->Commission / 100);
+        $profit_company2 = ($request->price_sell - $eqaar->price_buy) * (100 - $user->Commission) / 100;
+
+        $profit_broker3=$profit_broker1+$profit_broker2;
+        $profit_company3=$profit_company2+$profit_company1;
+
 
         $user->update([
-            'profit_broker' => $profit_broker1,
-            'Profit_Company' => $profit_company1
-        ]);
+            'profit_broker' => $profit_broker3,
+            'Profit_Company' => $profit_company3
+        ]);}
  //
         $sold_esqaar->update([
 
@@ -235,7 +243,7 @@ class SoldEaqaarController extends Controller
             'Downpayment' => $request->Downpayment,
             'due_date' => $request->due_date,
             'image_card' => $image_name,
-            'profit_company' => $profit_company,
+            'profit_company' => $profit_company2,
             'Partial_condition'=>$request->Partial_condition
 
         ]);
@@ -254,7 +262,8 @@ class SoldEaqaarController extends Controller
 
             $receivable = Receivable::where('sold_id','=', $id)->update([
                 'Remaining_amount' => $request->price_sell - $request->Downpayment,
-                'date' => $request->due_date
+                'date' => $request->due_date,
+                'name_buyer'=>$request->name_buyer
         ]);
 
            }
