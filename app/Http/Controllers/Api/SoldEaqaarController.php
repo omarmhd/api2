@@ -123,7 +123,7 @@ class SoldEaqaarController extends Controller
             'due_date' => $request->due_date,
 
             'profit_company' => $profit_company,
-            'Partial_condition'=>$request->Partial_condition,
+            'Partial_condition' => $request->Partial_condition,
             'image_card' => $this->upload_image($request->image_card)
         ]);
 
@@ -132,13 +132,13 @@ class SoldEaqaarController extends Controller
 
 
 
-        Eaqaar::where('id',$request->eaqaar_id)->update([
+        Eaqaar::where('id', $request->eaqaar_id)->update([
             'status' => 'مباع',
         ]);
         $receivable = Receivable::where('sold_id', $sold_esqaar->id)->first();
 
 
-        if ($Remaining_amount !== 0 ) {
+        if ($Remaining_amount !== 0) {
             Receivable::create([
                 'eaqaar_id' => $request->eaqaar_id,
 
@@ -207,31 +207,35 @@ class SoldEaqaarController extends Controller
         $sold_esqaar = SoldEaqaar::find($id);
 
 
-        $user = User::find( $sold_esqaar->user->id);
+        $user = User::find($sold_esqaar->user->id);
         $profit_broker1 = $user->profit_broker;
         $profit_company1 = $user->Profit_Company;
 
         //
         $eqaar = Eaqaar::find($sold_esqaar->eaqaar_id);
-        if($sold_esqaar->price_sell==$request->price_sell){
-        $profit_broker = ($sold_esqaar->price_sell - $eqaar->price_buy) * ($user->Commission / 100);
-        $profit_company = ($sold_esqaar->price_sell - $eqaar->price_buy) * (100 - $user->Commission) / 100;
 
-        $profit_broker1 = abs($profit_broker1 - $profit_broker);
-        $profit_company1 = abs($profit_company1 - $profit_company);
+        return [$sold_esqaar->price_sell,$request->price_sell];
+        if ($sold_esqaar->price_sell !== $request->price_sell) {
 
-        $profit_broker2 = ($request->price_sell - $eqaar->price_buy) * ($user->Commission / 100);
-        $profit_company2 = ($request->price_sell - $eqaar->price_buy) * (100 - $user->Commission) / 100;
+            $profit_broker = ($sold_esqaar->price_sell - $eqaar->price_buy) * ($user->Commission / 100);
+            $profit_company = ($sold_esqaar->price_sell - $eqaar->price_buy) * (100 - $user->Commission) / 100;
 
-        $profit_broker3=$profit_broker1+$profit_broker2;
-        $profit_company3=$profit_company2+$profit_company1;
+            $profit_broker1 = abs($profit_broker1 - $profit_broker);
+            $profit_company1 = abs($profit_company1 - $profit_company);
+
+            $profit_broker2 = ($request->price_sell - $eqaar->price_buy) * ($user->Commission / 100);
+            $profit_company2 = ($request->price_sell - $eqaar->price_buy) * (100 - $user->Commission) / 100;
+
+            $profit_broker3 = $profit_broker1 + $profit_broker2;
+            $profit_company3 = $profit_company2 + $profit_company1;
 
 
-        $user->update([
-            'profit_broker' => $profit_broker3,
-            'Profit_Company' => $profit_company3
-        ]);}
- //
+            $user->update([
+                'profit_broker' => $profit_broker3,
+                'Profit_Company' => $profit_company3
+            ]);
+        }
+        //
         $sold_esqaar->update([
 
             'name_buyer' => $request->name_buyer,
@@ -244,7 +248,7 @@ class SoldEaqaarController extends Controller
             'due_date' => $request->due_date,
             'image_card' => $image_name,
             'profit_company' => $profit_company2,
-            'Partial_condition'=>$request->Partial_condition
+            'Partial_condition' => $request->Partial_condition
 
         ]);
 
@@ -253,20 +257,19 @@ class SoldEaqaarController extends Controller
 
 
 
-    $receivable = Receivable::where('sold_id', $sold_esqaar->id)->first();
+        $receivable = Receivable::where('sold_id', $sold_esqaar->id)->first();
 
-    if ($request->price_sell - $request->Downpayment == 0 and $receivable) {
+        if ($request->price_sell - $request->Downpayment == 0 and $receivable) {
 
-               $receivable->delete();
-           }else{
+            $receivable->delete();
+        } else {
 
-            $receivable = Receivable::where('sold_id','=', $id)->update([
+            $receivable = Receivable::where('sold_id', '=', $id)->update([
                 'Remaining_amount' => $request->price_sell - $request->Downpayment,
                 'date' => $request->due_date,
-                'name_buyer'=>$request->name_buyer
-        ]);
-
-           }
+                'name_buyer' => $request->name_buyer
+            ]);
+        }
         if ($file = $request->file('image')) {
 
             $sold_esqaar->image = asset('upload_images/' . $this->upload_image($file));
@@ -280,23 +283,23 @@ class SoldEaqaarController extends Controller
         ]);
     }
 
-    public function search_eqaars(Request $request){
+    public function search_eqaars(Request $request)
+    {
 
 
 
 
-        $search=$request->search;
-        $Eaqaar = Eaqaar::where('status','مباع')->where('plan_id', $request->plan_id)->where(function($query) use ($search) {
-            $query->where('state','like','%'. $search .'%')
-            ->orwhere('area','like','%'.$search .'%')
-            ->orwhere('square','like','%'. $search .'%')
-            ->orwhere('space','like','%'. $search .'%')
-            ->orwhere('estimated_price','like','%'. $search .'%')
-            ->orwhere('detials','like','%'. $search .'%');
+        $search = $request->search;
+        $Eaqaar = Eaqaar::where('status', 'مباع')->where('plan_id', $request->plan_id)->where(function ($query) use ($search) {
+            $query->where('state', 'like', '%' . $search . '%')
+                ->orwhere('area', 'like', '%' . $search . '%')
+                ->orwhere('square', 'like', '%' . $search . '%')
+                ->orwhere('space', 'like', '%' . $search . '%')
+                ->orwhere('estimated_price', 'like', '%' . $search . '%')
+                ->orwhere('detials', 'like', '%' . $search . '%');
         })->paginate(10);
-    return SoldEaqaarSearchResource::collection($Eaqaar);
-
-}
+        return SoldEaqaarSearchResource::collection($Eaqaar);
+    }
 
     /**
      * Remove the specified resource from storage.
@@ -311,23 +314,23 @@ class SoldEaqaarController extends Controller
 
 
 
-       $user=User::find($soldEaqaar->user->id);
+        $user = User::find($soldEaqaar->user->id);
 
-       $eqaar = Eaqaar::find($soldEaqaar->eaqaar_id);
+        $eqaar = Eaqaar::find($soldEaqaar->eaqaar_id);
 
-       $profit_broker = ($soldEaqaar->price_sell - $eqaar->price_buy) * ($user->Commission / 100);
+        $profit_broker = ($soldEaqaar->price_sell - $eqaar->price_buy) * ($user->Commission / 100);
 
-       $profit_broker1 = $user->profit_broker;
-       $profit_company1 = $user->Profit_Company;
+        $profit_broker1 = $user->profit_broker;
+        $profit_company1 = $user->Profit_Company;
 
-    $user->update([
-           'profit_broker' =>  abs($profit_broker1-$profit_broker),
-           'Profit_Company' => abs($profit_company1-$soldEaqaar->profit_company),
-           'number_deals'=> $user->number_deals-1
+        $user->update([
+            'profit_broker' =>  abs($profit_broker1 - $profit_broker),
+            'Profit_Company' => abs($profit_company1 - $soldEaqaar->profit_company),
+            'number_deals' => $user->number_deals - 1
 
-           ]);
+        ]);
 
-        $Receivable = Receivable::where('sold_id','=',$id)->delete();
+        $Receivable = Receivable::where('sold_id', '=', $id)->delete();
 
         //
 
@@ -364,9 +367,8 @@ class SoldEaqaarController extends Controller
     }
 
 
-    public function paginate_eqaars(){
+    public function paginate_eqaars()
+    {
         return SoldEaqaarResource::collection(SoldEaqaar::paginate(10));
-
     }
-
 }
