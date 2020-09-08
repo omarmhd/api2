@@ -196,7 +196,7 @@ class RegistrationEaqaarController extends Controller
         $eqaar->save();
 
         $receivable=Receivable::where('eaqaar_id',$id)->first();
-        if( $Remaining_amount==0 and $receivable){
+        if( $Remaining_amount==0 ){
 
             $receivable->delete();
 

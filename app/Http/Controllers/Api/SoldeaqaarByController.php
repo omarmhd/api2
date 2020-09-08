@@ -75,8 +75,7 @@ class SoldeaqaarByController extends Controller
 
             ]);
         }
-
-
+return auth('api')->user()->id;
         $eqaar = new Eaqaar();
         $eqaar->user_id =auth('api')->user()->id;
          $eqaar->plan_id = $request->plan_id;
