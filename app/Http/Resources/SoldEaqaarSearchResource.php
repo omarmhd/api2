@@ -30,6 +30,8 @@ class SoldEaqaarSearchResource extends JsonResource
             'phone_buyer'=>$this->soldeaqaar->phone_buyer,
             'price_sell'=>$this->soldeaqaar->price_sell,
             'Date_sale'=>$this->soldeaqaar->Date_sale,
+            'type_sale'=>$this->soldeaqaar->type,
+
             'Remaining_amount'=>$this->soldeaqaar->Remaining_amount,
             'Downpayment'=>$this->soldeaqaar->Downpayment,
             'Partial_condition'=>$this->soldeaqaar->Partial_condition,
