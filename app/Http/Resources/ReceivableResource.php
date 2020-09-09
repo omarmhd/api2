@@ -28,7 +28,7 @@ class ReceivableResource extends JsonResource
             'Part_number'=>$this->eaqaar->Part_number,
             'space'=>$this->eaqaar->space,
             'Survey_number'=>$this->eaqaar->Survey_number,
-            'detials'=>$this->eaqaar->space,
+            'detials'=>$this->eaqaar->detials,
         ]
             ];
     }

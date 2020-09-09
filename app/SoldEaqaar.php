@@ -21,7 +21,8 @@ class SoldEaqaar extends Model
         'Downpayment',
         'image_card',
         'profit_company',
-        'Partial_condition'
+        'Partial_condition',
+        'type'
     ];
 
     public function user()
