@@ -121,6 +121,7 @@ class SoldEaqaarController extends Controller
             'Downpayment' => $request->Downpayment,
             'Remaining_amount' => $Remaining_amount,
             'due_date' => $request->due_date,
+            'type'=>"by",
 
             'profit_company' => $profit_company,
             'Partial_condition' => $request->Partial_condition,

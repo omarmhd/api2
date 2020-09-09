@@ -134,7 +134,7 @@ class SoldeaqaarByController extends Controller
             'Downpayment' => $request->Downpayment,
             'Remaining_amount' =>  $request->price_sell -$request->Downpayment,
             'due_date' => $request->due_date,
-            'type'=>"by",
+            'type'=>"between",
             'profit_company' => $profit_company,
             'Partial_condition'=>$request->Partial_condition,
             'image_card' => $this->upload_image($request->image_card)
