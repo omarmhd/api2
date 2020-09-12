@@ -5,6 +5,7 @@ namespace App\Http\Controllers\Api;
 use App\Eaqaar;
 use App\Http\Controllers\Controller;
 use App\Http\Resources\SoldEaqaarResource;
+use App\Http\Resources\SoldEaqaarSearchResource;
 use App\Plan;
 use App\Receivable;
 use App\SoldEaqaar;
@@ -159,8 +160,11 @@ class SoldeaqaarByController extends Controller
     }
 
 
-    public function show(soldeaqaar_by $soldeaqaar_by)
+    public function show($id)
     {
+        $sold=SoldEaqaar::where('user_id',$id)->where('type','between')->get();
+
+        return SoldEaqaarResource::collection($sold);
 
     }
 
