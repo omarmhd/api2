@@ -40,6 +40,8 @@ class SoldEaqaarSearchResource extends JsonResource
 
             'image_card'=>$this->soldeaqaar->image_card,
             'image'=>$this->image,
+            'user'=>$this->user,
+
 
         ];
 
