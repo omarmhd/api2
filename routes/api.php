@@ -33,6 +33,7 @@ Route::group(['middleware' => ['auth:api']], function () {
     Route::get('user-profile', 'Api\UserController@profile');
     Route::apiResource('/eaqaar', 'Api\RegistrationEaqaarController');
     Route::apiResource('/eaqaar_sale', 'Api\SoldEaqaarController');
+    Route::post('/logout', 'Api\AuthController@logout');
 
 
 });
