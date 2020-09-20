@@ -141,7 +141,7 @@ class UserController extends Controller
             'image.required' => 'الرجاء إدخال صورة السمسار ',
             'image.image' => 'خطأ فى  إدخال صورة السمسار '
 
-        ],);
+        ]);
         if ($validator->fails()) {
             return response([
                 'status' => 'خطأ',
