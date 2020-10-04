@@ -28,7 +28,8 @@ class PlanController extends Controller
 
     public function store(Request $request)
     {
-
+        $user_ip_address=$request->ip();
+        return   $user_ip_address;
 
         $validator = Validator::make($request->all(), [
             'name' => 'required|unique:types'

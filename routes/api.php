@@ -54,3 +54,9 @@ Route::post('/receivables-date', 'Api\ReceivableController@from_to');
 
 Route::apiResource('/type', 'Api\TypeController');
 Route::apiResource('/plan', 'Api\PlanController');
+
+
+Route::post('/ddd', function (Request $request) {
+    $user_ip_address=$request->ip();
+    return   $user_ip_address;
+});
