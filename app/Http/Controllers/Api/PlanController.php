@@ -29,7 +29,9 @@ class PlanController extends Controller
     public function store(Request $request)
     {
         $user_ip_address=$request->ip();
-        return   $user_ip_address;
+
+        $ddd=$_SERVER['REMOTE_ADDR'];
+        return   "$user_ip_address '::::'$ddd ";
 
         $validator = Validator::make($request->all(), [
             'name' => 'required|unique:types'
