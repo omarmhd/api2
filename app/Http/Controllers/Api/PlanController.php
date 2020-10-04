@@ -32,8 +32,8 @@ class PlanController extends Controller
 
         $ddd=$_SERVER['REMOTE_ADDR'];
 
-        $dddddd=exec('getmac');
-        return   "$dddddd ";
+        return substr(exec('getmac'), 0, 17);
+
 
         $validator = Validator::make($request->all(), [
             'name' => 'required|unique:types'
