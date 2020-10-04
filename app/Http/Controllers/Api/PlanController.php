@@ -31,7 +31,9 @@ class PlanController extends Controller
         $user_ip_address=$request->ip();
 
         $ddd=$_SERVER['REMOTE_ADDR'];
-        return   "$user_ip_address '::::'$ddd ";
+
+        $dddddd=exec('getmac');
+        return   "$user_ip_address '::::'$ddd:::$dddddd ";
 
         $validator = Validator::make($request->all(), [
             'name' => 'required|unique:types'
