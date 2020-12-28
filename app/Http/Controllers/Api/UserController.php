@@ -48,6 +48,8 @@ class UserController extends Controller
             'address' => 'required',
             'card' => 'required',
             'Commission' => 'required|Numeric',
+            'purchase_commission'=>'required|Numeric',//edit
+            'account_type'=> 'required',//edit
             'account_number' => 'required|Numeric',
             'image' => 'nullable|image',
 
@@ -96,8 +98,10 @@ class UserController extends Controller
             'card' => $request->card,
             'phone' => $request->phone,
             'Commission' => $request->Commission,
+            'purchase_commission'=>$request->purchase_commission,//
             'account_number' => $request->account_number,
-            'image' => $imageName ?? 'null'
+            'account_type'=>$request->account_type,//
+            'image' => $imageName ?? 'null',
         ]);
         return response([
             'status' => 'تمت بنجاح ',
@@ -121,8 +125,10 @@ class UserController extends Controller
             'date_work' => 'required|date',
             'address' => 'required',
             'Commission' => 'required|Numeric',
+            'purchase_commission'=> 'required|Numeric',
             'image' => 'nullable|image',
-            'account_number' => 'required|Numeric'
+            'account_number' => 'required|Numeric',
+            'account_type'=>'required'
         ], [
             'full_name.required' => 'الرجاء إدخال إسم السمسار ',
             'full_name.unique' => 'السمسار موجود مسبقا  ',
@@ -162,6 +168,9 @@ class UserController extends Controller
         $Users->account_number = $request->account_number;
         $Users->card = $request->card;
         $Users->Commission = $request->Commission;
+        $Users->purchase_commission = $request->purchase_commission;
+        $Users->account_type =$request->account_type;
+
 
         if ($file = $request->file('image')) {
             $uplodeimge = $request->file('image');

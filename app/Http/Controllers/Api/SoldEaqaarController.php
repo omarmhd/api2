@@ -90,7 +90,7 @@ class SoldEaqaarController extends Controller
         $Remaining_amount = $request->price_sell - $request->Downpayment;
 
 
-        $user = User::find(auth('api')->user()->id);
+        $user = User::find(1);
 
         $number_deals = $user->number_deals + 1;
         $profit_broker1 = $user->profit_broker;
@@ -111,7 +111,7 @@ class SoldEaqaarController extends Controller
         ]);
 
         $sold_esqaar = SoldEaqaar::create([
-            'user_id' => auth('api')->user()->id,
+            'user_id' => 1,
             'eaqaar_id' => $request->eaqaar_id,
             'name_buyer' => $request->name_buyer,
             'card_buyer' => $request->card_buyer,
@@ -125,7 +125,8 @@ class SoldEaqaarController extends Controller
 
             'profit_company' => $profit_company,
             'Partial_condition' => $request->Partial_condition,
-            'image_card' => $this->upload_image($request->image_card)
+            'image_card' => $this->upload_image($request->image_card),
+            'notes'=> $request->notes
         ]);
 
 
@@ -249,7 +250,9 @@ class SoldEaqaarController extends Controller
             'due_date' => $request->due_date,
             'image_card' => $image_name,
             'profit_company' => $profit_company2,
-            'Partial_condition' => $request->Partial_condition
+            'Partial_condition' => $request->Partial_condition,
+            'notes'=> $request->notes
+
 
         ]);
 

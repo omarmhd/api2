@@ -22,7 +22,8 @@ class SoldEaqaar extends Model
         'image_card',
         'profit_company',
         'Partial_condition',
-        'type'
+        'type',
+        'notes'
     ];
 
     public function user()

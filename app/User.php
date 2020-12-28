@@ -18,7 +18,10 @@ class User extends Authenticatable
      */
     public $table='users';
     protected $fillable = [
-      'Profit_Company', 'profit_broker', 'number_deals','account_number','card','login_name', 'full_name', 'email', 'password','Role','date_work','address','phone','Commission','image','api_token','remember_token'
+      'Profit_Company', 'profit_broker', 'number_deals','account_number'
+      ,'card','login_name', 'full_name', 'email', 'password','Role','date_work','address','phone','Commission','image','api_token','remember_token'
+
+             ,'purchase_commission','account_type','profit_purchase'
     ];
 
     /**

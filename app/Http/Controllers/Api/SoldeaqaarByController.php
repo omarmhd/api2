@@ -78,7 +78,7 @@ class SoldeaqaarByController extends Controller
             ]);
         }
         $eqaar = new Eaqaar();
-        $eqaar->user_id =auth('api')->user()->id;
+        $eqaar->user_id =1;//auth('api')->user()->id;
          $eqaar->plan_id = $request->plan_id;
          $eqaar->state = $request->state;
          $eqaar->area = $request->area;
@@ -101,31 +101,41 @@ class SoldeaqaarByController extends Controller
             $file = $request->file('image');
             $eqaar->image = asset('upload_images/'.$this->upload_image($file));
         }
+        $eqaar->notes= $request->notes;
+
         $eqaar->save();
 
 
 
-         $user = User::find(auth('api')->user()->id);
+         $user = User::find(1);
          $number_deals = $user->number_deals + 1;
          $profit_broker1 = $user->profit_broker;
          $profit_company1 = $user->Profit_Company;
+         $profit_purchase = $user->profit_purchase;
+
+         $profit_broker1 += ($request->price_sell - $eqaar->price_buy) * ($user->Commission / 100);
+        // $profit_company = ($request->price_sell - $eqaar->price_buy) * (100 - $user->Commission) / 100;
 
 
-         $profit_broker = ($request->price_sell - $eqaar->price_buy) * ($user->Commission / 100);
-         $profit_company = ($request->price_sell - $eqaar->price_buy) * (100 - $user->Commission) / 100;
-         $profit_broker1 = $profit_broker1 + $profit_broker;
-         $profit_company1 = $profit_company1 + $profit_company;
+        $profit_company= ($request->price_sell - $eqaar->price_buy) * (100 - abs($user->Commission-$user->purchase_commission )) / 100;
+        $profit_company1+= $profit_company;
+        $profit_purchase+= ($request->price_sell - $eqaar->price_buy) * ($user->purchase_commission / 100);
+        //$profit_company1 = $profit_company1 + $profit_company;
+
+
+
 
 
          $user->update([
              'number_deals' => $number_deals,
              'profit_broker' => $profit_broker1,
-             'Profit_Company' => $profit_company1
+             'Profit_Company' => $profit_company1,
+             'profit_purchase'=>$profit_purchase
          ]);
 
          $Remaining_amount= $request->price_sell -$request->Downpayment;
         $sold_esqaar = SoldEaqaar::create([
-            'user_id' => auth('api')->user()->id,
+            'user_id' => 1,//auth('api')->user()->id,
             'eaqaar_id' => $eqaar->id ,
             'name_buyer' => $request->name_buyer,
             'card_buyer' => $request->card_buyer,
@@ -223,7 +233,7 @@ class SoldeaqaarByController extends Controller
 
         $Remaining_amount= $request->price_sell -$request->Downpayment;
        $sold_esqaar = SoldEaqaar::where('id',$id);
-       $eqaar = Eaqaar::find( $sold_esqaar->eaqaar_id);
+       $eqaar = Eaqaar::find($sold_esqaar->eaqaar_id);
 
 
 
@@ -231,30 +241,36 @@ class SoldeaqaarByController extends Controller
        $profit_broker1 = $user->profit_broker;
        $profit_company1 = $user->Profit_Company;
        $number_deals = $user->number_deals + 1;
-
+       $profit_purchase1= $user->profit_purchase;
        //
        $eqaar = Eaqaar::find($sold_esqaar->eaqaar_id);
-       $profit_company2 = ($request->price_sell - $request->price_buy) * (100 - $user->Commission) / 100;
+       $profit_company2 = ($request->price_sell - $request->price_buy) * (100 -abs($user->Commission-$user->purchase_commission )) / 100;
 
        if ($sold_esqaar->price_sell != $request->price_sell) {
 
 
 
            $profit_broker = ($sold_esqaar->price_sell - $eqaar->price_buy) * ($user->Commission / 100);
-           $profit_company = ($sold_esqaar->price_sell - $eqaar->price_buy) * (100 - $user->Commission) / 100;
+           $profit_company= ($sold_esqaar->price_sell - $eqaar->price_buy) * (100 - abs($user->Commission-$user->purchase_commission )) / 100;
+           $profit_purchase = ($sold_esqaar->price_sell - $eqaar->price_buy) * ($user->purchase_commission / 100);
+
+           $profit_broker2 = ($request->price_sell - $eqaar->price_buy) * ($user->Commission / 100);
+           $profit_purchase2 = ($request->price_sell - $eqaar->price_buy) * ($user->purchase_commission / 100);
 
            $profit_broker1 = abs($profit_broker1 - $profit_broker);
            $profit_company1 = abs($profit_company1 - $profit_company);
-
-           $profit_broker2 = ($request->price_sell - $request->price_buy) * ($user->Commission / 100);
+           $profit_purchase1 = abs($profit_purchase1 - $profit_purchase);
 
            $profit_broker3 = $profit_broker1 + $profit_broker2;
            $profit_company3 = $profit_company2 + $profit_company1;
+           $profit_purchase3 = $profit_purchase2 + $profit_purchase1;
 
 
            $user->update([
                'profit_broker' => $profit_broker3,
-               'Profit_Company' => $profit_company3
+               'Profit_Company' => $profit_company3,
+               'profit_purchase' => $profit_purchase3
+
            ]);
        }
        $sold_esqaar->update([
@@ -267,7 +283,7 @@ class SoldeaqaarByController extends Controller
            'Remaining_amount' =>  $request->price_sell -$request->Downpayment,
            'due_date' => $request->due_date,
            'type'=>"by",
-           'profit_company' => $profit_broker3,
+           'profit_company' => $profit_company2,
            'Partial_condition'=>$request->Partial_condition,
            'image_card' => $this->upload_image($request->image_card)
        ]);
@@ -336,24 +352,35 @@ class SoldeaqaarByController extends Controller
      * @param  \App\soldeaqaar_by  $soldeaqaar_by
      * @return \Illuminate\Http\Response
      */
-    public function destroy($id)
+    public function destroy(  $id)
     {
+
+        return response([
+            'status' => 'تم الحذف بنجاح ',
+
+        ]);
         $soldEaqaar = soldEaqaar::find($id);
 
 
+        dd('2');
 
 
        $user=User::find($soldEaqaar->user->id);
 
        $eqaar = Eaqaar::find($soldEaqaar->eaqaar_id);
        $profit_broker = ($soldEaqaar->price_sell - $eqaar->price_buy) * ($user->Commission / 100);
+       $profit_purchase = ($soldEaqaar->price_sell - $eqaar->price_buy) * ($user->purchase_commission / 100);
 
        $profit_broker1 = $user->profit_broker;
        $profit_company1 = $user->Profit_Company;
+       $profit_purchase1=$user->profit_purchase;
+
+       dd('2');
 
     $user->update([
            'profit_broker' =>  abs($profit_broker1-$profit_broker),
            'Profit_Company' => abs($profit_company1-$soldEaqaar->profit_company),
+           'profit_purchase'=>abs($profit_purchase1-$profit_purchase),
            'number_deals'=> $user->number_deals-1
 
            ]);

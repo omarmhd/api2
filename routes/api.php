@@ -27,16 +27,18 @@ Route::post('/Company_profits', 'Api\CompanyController@Company_profits');
 Route::post('search-sale', 'Api\SoldEaqaarController@search_eqaars');
 
 Route::group(['middleware' => ['auth:api']], function () {
-    Route::get('all-users', 'Api\UserController@all_users');
 
-    Route::apiResource('company', 'Api\CompanyController');
-    Route::get('user-profile', 'Api\UserController@profile');
-    Route::apiResource('/eaqaar', 'Api\RegistrationEaqaarController');
-    Route::apiResource('/eaqaar_sale', 'Api\SoldEaqaarController');
-    Route::post('/logout', 'Api\AuthController@logout');
 
 
 });
+
+Route::get('all-users', 'Api\UserController@all_users');
+
+Route::apiResource('company', 'Api\CompanyController');
+Route::get('user-profile', 'Api\UserController@profile');
+Route::apiResource('/eaqaar', 'Api\RegistrationEaqaarController');
+Route::apiResource('/eaqaar_sale', 'Api\SoldEaqaarController');
+Route::post('/logout', 'Api\AuthController@logout');
 Route::apiResource('sold-by', 'Api\SoldeaqaarByController');
 
 Route::get('paginate-eqaars', 'Api\SoldEaqaarController@paginate_eqaars');
@@ -56,7 +58,4 @@ Route::apiResource('/type', 'Api\TypeController');
 Route::apiResource('/plan', 'Api\PlanController');
 
 
-Route::post('/ddd', function (Request $request) {
-    $user_ip_address=$request->ip();
-    return   $user_ip_address;
-});
+

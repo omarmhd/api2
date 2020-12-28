@@ -2,6 +2,7 @@
 
 namespace App\Http\Controllers\Api;
 
+use App\Eaqaar;
 use App\Http\Resources\PlanResource;
 use App\Plan;
 use Illuminate\Http\Request;
@@ -28,17 +29,10 @@ class PlanController extends Controller
 
     public function store(Request $request)
     {
-        $user_ip_address=$request->ip();
-
-        $ddd=$_SERVER['REMOTE_ADDR'];
-        $MAC = exec('getmac');
-
-        $MAC = strtok($MAC, ' ');
-        return  $MAC  ;
 
 
         $validator = Validator::make($request->all(), [
-            'name' => 'required|unique:types'
+            'name' => 'required|unique:plans'
         ], ['name.required' => 'الرجاء إدخال إسم المخطط']);
 
         if ($validator->fails()) {
@@ -69,7 +63,7 @@ class PlanController extends Controller
     {
 
         $validator = Validator::make($request->all(), [
-            'name' => 'required|unique:types,name,'.$id
+            'name' => 'required|unique:plans,name,'.$id
         ], ['name.required' => 'الرجاء إدخال إسم المخطط']);
 
         if ($validator->fails()) {
@@ -98,6 +92,19 @@ class PlanController extends Controller
     {
 
         $Plan = Plan::find($id);
+
+
+        $Eaqaar = Eaqaar::where("plan_id","=",$id)->get();
+
+        $Eaqaar->toArray();
+        if(!$Eaqaar->isEmpty()){
+
+            return response([
+                'status' => $Eaqaar,
+
+
+            ]);        }
+
 
         if (file_exists($Plan->image)) {
             File::delete($Plan->image);

@@ -32,6 +32,8 @@ class CreateSoldEaqaarsTable extends Migration
             $table->date('due_date')->nullable();;
             $table->string('image_card')->nullable();
             $table->double('profit_company');
+            $table->string('notes')->nullable();
+
             $table->timestamps();
             $table->foreign('user_id')->references('id')->on('users')->onDelete('cascade');
             $table->foreign('eaqaar_id')->references('id')->on('eaqaars')->onDelete('cascade');

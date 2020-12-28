@@ -43,7 +43,7 @@ class CreateEaqaarsTable extends Migration
             $table->string('use')->nullable();
             $table->string('status')->default('متوفر');
             $table->date('due_date')->nullable();
-
+            $table->string('notes')->nullable();
             $table->timestamps();
 
         });

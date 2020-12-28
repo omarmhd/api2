@@ -63,7 +63,7 @@ class RegistrationEaqaarController extends Controller
         $Remaining_amount = $request->price_buy - $request->Downpayment;
 
         $eqaar = new Eaqaar();
-       $eqaar->user_id =auth('api')->user()->id;
+       $eqaar->user_id =6;
         $eqaar->plan_id = $request->plan_id;
         $eqaar->state = $request->state;
         $eqaar->area = $request->area;
@@ -83,6 +83,7 @@ class RegistrationEaqaarController extends Controller
         $eqaar->due_date = $request->due_date;
         $eqaar->url = $request->url;
         $eqaar->use = $request->use;
+        $eqaar->use=$request->notes;
 
         $eqaar->status = 'متوفر';
 
@@ -100,7 +101,7 @@ class RegistrationEaqaarController extends Controller
         }
         $eqaar->save();
 
-        $user=User::where('id',auth('api')->user()->id);
+        $user=User::where('id',6);
 
 
        $eaqaar = Eaqaar::orderBy('id','desc')->take(1)->get();
@@ -246,8 +247,6 @@ class RegistrationEaqaarController extends Controller
 
 
     public function search_eqaars(Request $request){
-
-
 
 
             $search=$request->search;
